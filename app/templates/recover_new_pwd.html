@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recover</title>
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="{{ url_for('static', filename='favicon.ico') }}">
+    <script type=text/javascript src="{{ url_for('static', filename='jquery-3.3.1.js') }}"></script>
+</head>
+<body>
+
+<h1>New Pwd</h1>
+{% if context.success == "true" %}
+<form>
+    <div><input id="rec_pwd_inp" type="password" name="password" placeholder="Password" minlength="6" maxlength="100"></div>
+	<button type="submit" id="register_btm" onclick="new_pwd('{{ url_for('ajax_new_pwd') }}', '{{context.token}}', '{{context.email}}')">Submit</button>
+</form>
+{% else %}
+	<p>wrong token or email</p>
+{% endif %}
+
+
+<script src="{{ url_for('static', filename='auth.js') }}"></script>
+
+</body>
+</html>

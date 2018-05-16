@@ -3,20 +3,20 @@ from config.databse import db_connect
 
 def create_users_table():
     res = db_connect('''
-    CREATE TABLE IF NOT EXISTS users (
-    id_user INTEGER PRIMARY KEY AUTOINCREMENT,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    login VARCHAR(255) NOT NULL UNIQUE,
-    date_creation TIMESTAMP,
-    active BOOLEAN DEFAULT 0 NOT NULL,
-    token VARCHAR(255),
-    first_name VARCHAR(255),
-    last_name VARCHAR(255),
-    gender INT NOT NULL DEFAULT 1,
-    sex_pref INT,
-    biography TEXT)
-    ''')
+        CREATE TABLE IF NOT EXISTS users (
+        id_user INTEGER PRIMARY KEY AUTOINCREMENT,
+        email VARCHAR(255) NOT NULL UNIQUE,
+        password VARCHAR(255) NOT NULL,
+        login VARCHAR(255) NOT NULL UNIQUE,
+        date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
+        active BOOLEAN DEFAULT 0 NOT NULL,
+        token VARCHAR(255),
+        first_name VARCHAR(255),
+        last_name VARCHAR(255),
+        gender INT NOT NULL DEFAULT 1,
+        sex_pref INT,
+        biography TEXT)
+        ''')
     if res:
         print(res)
     else:
@@ -25,10 +25,10 @@ def create_users_table():
 
 def create_tags_table():
     res = db_connect('''
-    CREATE TABLE IF NOT EXISTS tags (
-    id_tag INTEGER PRIMARY KEY AUTOINCREMENT,
-    tag VARCHAR(255) NOT NULL UNIQUE)
-    ''')
+        CREATE TABLE IF NOT EXISTS tags (
+        id_tag INTEGER PRIMARY KEY AUTOINCREMENT,
+        tag VARCHAR(255) NOT NULL UNIQUE)
+        ''')
     if res:
         print(res)
     else:
@@ -49,12 +49,12 @@ def create_tags_table():
 
 def create_img_table():
     res = db_connect('''
-    CREATE TABLE IF NOT EXISTS images (
-    id_img INTEGER PRIMARY KEY AUTOINCREMENT,
-    img_src VARCHAR(255) NOT NULL,
-    avatar BOOLEAN DEFAULT 0 NOT NULL,
-    date_creation TIMESTAMP)
-    ''')
+        CREATE TABLE IF NOT EXISTS images (
+        id_img INTEGER PRIMARY KEY AUTOINCREMENT,
+        img_src VARCHAR(255) NOT NULL,
+        avatar BOOLEAN DEFAULT 0 NOT NULL,
+        date_creation DATETIME DEFAULT CURRENT_TIMESTAMP)
+        ''')
     if res:
         print(res)
     else:

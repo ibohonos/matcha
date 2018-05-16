@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, session
+import random
+from flask import Flask, render_template, request, session, redirect, url_for
 from flask_mail import Mail, Message
 import re
 import hashlib
@@ -23,7 +24,7 @@ mail = Mail(app)
 
 
 @app.route('/')
-def hello_world():
+def index():
 	return 'Hello Ludochka!!'
 
 
@@ -61,6 +62,8 @@ def ajax_registration():
 		return "long_mail"
 	if len(r_login) > 40:
 		return "long_login"
+	if not re.match("^[a-zA-Z0-9]+$", r_login):
+		return "wrong_login"
 	if len(pwd) > 100:
 		return "long_pwd"
 	if not re.match("^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$", r_email.lower()):
@@ -103,16 +106,16 @@ def activate():
 
 @app.route('/login')
 def login():
-	context = {'success': 'false'}
-	# session['id_user'] = 'admin'
-	# session.pop('username', None)
-	# print(session)
+	if session.get('id_user_logged'):
+		return redirect(url_for('index'))
 
-	return render_template('login.html', context=context)
+	return render_template('login.html')
 
 
 @app.route('/ajax_login', methods=['POST'])
 def ajax_login():
+	if session.get('id_user_logged'):
+		return "already_logged"
 	l_login = html.escape(request.form['login'])
 	pwd = request.form['pwd']
 
@@ -125,15 +128,93 @@ def ajax_login():
 	if len(pwd) > 100:
 		return "long_pwd"
 	res = check_user(l_login, l_login)
-	print(res)
+	if len(res) == 1:
+		res = res[0]
+		pwd_hash = hashlib.sha512(pwd.encode('utf-8')).hexdigest()
+		if res['password'] == pwd_hash:
+			session['id_user_logged'] = res['id_user']
+			return "logged_in"
+		else:
+			return "wrong_pwd"
+	else:
+		return "no_user"
 
-	return "return"
 
-
-@app.route('/ajax_logout', methods=['POST'])
+# @app.route('/ajax_logout', methods=['POST'])
+@app.route('/ajax_logout')
 def ajax_logout():
-	session.pop('id_user', None)
+	session.pop('id_user_logged', None)
 	return "logged_out"
+
+
+@app.route('/recover')
+def recover():
+	context = {'success': 'false'}
+	if session.get('id_user_logged'):
+		return redirect(url_for('index'))
+
+	email = request.args.get('email')
+	token = request.args.get('token')
+	if email and token:
+		check = check_user_token(email)
+		if check:
+			check = check[0]
+			if token == check['token']:
+				context.update({'success': 'true', 'token': token, 'email': email})
+				return render_template('recover_new_pwd.html', context=context)
+		return render_template('recover_new_pwd.html', context=context)
+
+	return render_template('recover_req.html', context=context)
+
+
+@app.route('/ajax_recover', methods=['POST'])
+def ajax_recover():
+	r_login = html.escape(request.form['login'])
+
+	check = check_user(r_login, r_login)
+	if len(check) == 1:
+		check = check[0]
+	else:
+		return "no_user"
+	if check["active"] != 1:
+		return "not_active"
+
+	token_hash = hashlib.md5((r_login + "asdasd").encode('utf-8')).hexdigest()
+
+	req = user_update_token(check['id_user'], token_hash)
+	if not req:
+		msg = Message('matcha recover', sender="rkhilenksmtp@gmail.com", recipients=[check['email']])
+		msg.body = "To recover pwd goto http://localhost:5000/recover?email=" + check['email'] + "&token=" + token_hash
+		msg.html = "<p>To recover pwd goto http://localhost:5000/recover?email=" + check[
+			'email'] + "&token=" + token_hash + "</p>"
+		mail.send(msg)
+
+	return "msg_sent"
+
+
+@app.route('/ajax_new_pwd', methods=['POST'])
+def ajax_new_pwd():
+	pwd = request.form['pwd']
+	token = request.form['token']
+	email = request.form['email']
+	if len(pwd) > 100:
+		return "long_pwd"
+	if re.search("[a-zA-Z]+", pwd.lower()) is None or re.search("[0-9]+", pwd) is None:
+		return "week_pwd"
+	pwd_hash = hashlib.sha512(pwd.encode('utf-8')).hexdigest()
+	check = check_user_token(email)
+
+	if len(check) == 1:
+		check = check[0]
+	else:
+		return "no_user"
+
+	if check['token'] == token:
+		res = user_new_pwd(check['id_user'], pwd_hash)
+		if not res:
+			return "changed"
+	else:
+		return "error"
 
 
 if __name__ == '__main__':
