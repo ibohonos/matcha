@@ -25,6 +25,7 @@ mail = Mail(app)
 
 @app.route('/')
 def index():
+	print(session)
 	return 'Hello Ludochka!!'
 
 
@@ -128,8 +129,11 @@ def ajax_login():
 	if len(pwd) > 100:
 		return "long_pwd"
 	res = check_user(l_login, l_login)
+
 	if len(res) == 1:
 		res = res[0]
+		if res['active'] != 1:
+			return "not_active"
 		pwd_hash = hashlib.sha512(pwd.encode('utf-8')).hexdigest()
 		if res['password'] == pwd_hash:
 			session['id_user_logged'] = res['id_user']
