@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Chat</title>
+	<link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="{{ url_for('static', filename='favicon.ico') }}">
+    <script type=text/javascript src="{{ url_for('static', filename='jquery-3.3.1.js') }}"></script>
+</head>
+<body>
+
+<h1>chat</h1>
+<div id="chat_room">{{context.chat_room}}</div>
+
+<ul id="chat_list"></ul>
+<input type="text" id="message_input">
+<button id="mesage_submit">Send</button>
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+<script src="{{ url_for('static', filename='chat.js') }}"></script>
+</body>
+</html>

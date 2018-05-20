@@ -1,15 +1,17 @@
-import random
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_mail import Mail, Message
+from flask_socketio import SocketIO, send, join_room, leave_room, emit
 import re
 import hashlib
 import html
 import os
 from models.users import *
+from models.chat import *
 
 app = Flask(__name__)
-
 app.secret_key = os.urandom(16)
+socketio = SocketIO(app)
+
 app.config.update(dict(
 	DEBUG=True,
 	MAIL_SERVER='smtp.gmail.com',
@@ -25,7 +27,7 @@ mail = Mail(app)
 
 @app.route('/')
 def index():
-	print(session)
+	print(request.url_root)
 	return 'Hello Ludochka!!'
 
 
@@ -77,8 +79,8 @@ def ajax_registration():
 
 	if not req:
 		msg = Message('matcha registration', sender="rkhilenksmtp@gmail.com", recipients=[r_email])
-		msg.body = "To activate account goto http://localhost:5000/activate?email=" + r_email + "&token=" + token_hash
-		msg.html = "<p>To activate account goto http://localhost:5000/activate?email=" + r_email + "&token=" + token_hash + "</p>"
+		msg.body = "To activate account goto " + request.url_root + "activate?email=" + r_email + "&token=" + token_hash
+		msg.html = "<p>To activate account goto " + request.url_root + "activate?email=" + r_email + "&token=" + token_hash + "</p>"
 		mail.send(msg)
 		return "registered"
 	else:
@@ -188,8 +190,9 @@ def ajax_recover():
 	req = user_update_token(check['id_user'], token_hash)
 	if not req:
 		msg = Message('matcha recover', sender="rkhilenksmtp@gmail.com", recipients=[check['email']])
-		msg.body = "To recover pwd goto http://localhost:5000/recover?email=" + check['email'] + "&token=" + token_hash
-		msg.html = "<p>To recover pwd goto http://localhost:5000/recover?email=" + check[
+		msg.body = "To recover pwd goto " + request.url_root + "recover?email=" + check[
+			'email'] + "&token=" + token_hash
+		msg.html = "<p>To recover pwd goto " + request.url_root + "recover?email=" + check[
 			'email'] + "&token=" + token_hash + "</p>"
 		mail.send(msg)
 
@@ -221,8 +224,66 @@ def ajax_new_pwd():
 		return "error"
 
 
+@app.route('/chat')
+def chat():
+	if not session.get('id_user_logged'):
+		return redirect(url_for('login'))
+
+	if session.get('id_user_logged') == 1 or session.get('id_user_logged') == 3:
+		context = {'chat_room': 'test_room_1_2'}
+	else:
+		context = {'chat_room': 'room_for_all'}
+	return render_template('chat.html', context=context)
+
+
+# @socketio.on('message')
+# def handleMessage(msg, user):
+# 	print('Message: ' + msg)
+# 	msg = html.escape(msg)
+# 	send(msg, broadcast=True)
+
+
+chat_users_sid_to_id = {}
+chat_users_sid_to_room = {}
+
+
+@socketio.on('test_print', namespace='/chat')
+def test_print(msg):
+	print(msg['room'])
+
+
+@socketio.on('message', namespace='/chat')
+def message(msg):
+	print("msg: " + msg)
+	room = chat_users_sid_to_room[request.sid]
+	emit('message_from_server', msg, room=room)
+
+
+@socketio.on('connect', namespace='/chat')
+def connect():
+	chat_users_sid_to_id[request.sid] = session.get('id_user_logged')
+
+
+@socketio.on('disconnect', namespace='/chat')
+def disconnect():
+	chat_users_sid_to_id.pop(request.sid)
+	room = chat_users_sid_to_room[request.sid]
+	leave_room(room)
+	chat_users_sid_to_room.pop(request.sid)
+
+
+@socketio.on('join_room', namespace='/chat')
+def test_print(data):
+	join_room(data['room'])
+	chat_users_sid_to_room[request.sid] = data['room']
+
+	print("sid:" + request.sid + " joined room " + data['room'])
+	print(chat_users_sid_to_id)
+	print(chat_users_sid_to_room)
+
+
 if __name__ == '__main__':
-	app.run(host="0.0.0.0")
+	socketio.run(app, host="0.0.0.0")
 
 
 # rkhilenksmtp@gmail.com
