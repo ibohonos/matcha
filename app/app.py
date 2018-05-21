@@ -27,8 +27,12 @@ mail = Mail(app)
 
 @app.route('/')
 def index():
-	print(request.url_root)
-	return 'Hello Ludochka!!'
+	return render_template('index-register.html')
+
+
+@app.route('/newsfeed')
+def newsfeed():
+	return render_template('newsfeed.html')
 
 
 @app.route('/registration')
