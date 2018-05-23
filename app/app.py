@@ -5,6 +5,7 @@ import re
 import hashlib
 import html
 import os
+from datetime import datetime, date
 from models.users import *
 from models.chat import *
 
@@ -27,17 +28,19 @@ mail = Mail(app)
 
 @app.route('/')
 def index():
+	if session.get('id_user_logged'):
+		return render_template('newsfeed.html')
 	return render_template('index-register.html')
 
 
-@app.route('/newsfeed')
-def newsfeed():
-	return render_template('newsfeed.html')
+@app.route('/test')
+def test():
+	return render_template('activate.html')
 
 
-@app.route('/registration')
-def registration():
-	return render_template('register.html')
+# @app.route('/registration')
+# def registration():
+# 	return render_template('register.html')
 
 
 # def ajax_registration():
@@ -51,9 +54,18 @@ def registration():
 def ajax_registration():
 	r_email = html.escape(request.form['email'])
 	r_login = html.escape(request.form['login'])
-	pwd = request.form['pwd']
+	pwd = request.form['pasword']
+	r_first = request.form['first_name']
+	r_last = request.form['first_name']
+	r_gender = request.form['gender']
 
+	str_date = request.form['day'] + " " + request.form['month'] + " " + request.form['year']
+	try:
+		r_birthday = datetime.strptime(str_date, '%d %b %Y')
+	except:
+		return "wrong_data"
 	check = check_user(r_login, r_email)
+
 	if check:
 		if check[0]["email"] == r_email:
 			return "email_exist"
@@ -79,7 +91,7 @@ def ajax_registration():
 		return "week_pwd"
 	pwd_hash = hashlib.sha512(pwd.encode('utf-8')).hexdigest()
 	token_hash = hashlib.md5((r_email + r_login).encode('utf-8')).hexdigest()
-	req = user_to_db(r_login, r_email, pwd_hash, token_hash)
+	req = user_to_db(r_login, r_email, pwd_hash, token_hash, r_first, r_last, r_gender, r_birthday)
 
 	if not req:
 		msg = Message('matcha registration', sender="rkhilenksmtp@gmail.com", recipients=[r_email])
@@ -111,12 +123,12 @@ def activate():
 	return render_template('activate.html', context=context)
 
 
-@app.route('/login')
-def login():
-	if session.get('id_user_logged'):
-		return redirect(url_for('index'))
-
-	return render_template('login.html')
+# @app.route('/login')
+# def login():
+# 	if session.get('id_user_logged'):
+# 		return redirect(url_for('index'))
+#
+# 	return render_template('login.html')
 
 
 @app.route('/ajax_login', methods=['POST'])
@@ -159,7 +171,7 @@ def ajax_logout():
 
 @app.route('/recover')
 def recover():
-	context = {'success': 'false'}
+	context = {'success': 'false', 'token': "none", 'email': "none"}
 	if session.get('id_user_logged'):
 		return redirect(url_for('index'))
 
@@ -171,10 +183,10 @@ def recover():
 			check = check[0]
 			if token == check['token']:
 				context.update({'success': 'true', 'token': token, 'email': email})
-				return render_template('recover_new_pwd.html', context=context)
-		return render_template('recover_new_pwd.html', context=context)
+				return render_template('recover.html', context=context)
+		return render_template('recover.html', context=context)
 
-	return render_template('recover_req.html', context=context)
+	return render_template('recover.html', context=context)
 
 
 @app.route('/ajax_recover', methods=['POST'])

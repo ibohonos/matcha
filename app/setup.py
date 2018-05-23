@@ -9,7 +9,7 @@ def create_users_table():
         password VARCHAR(255) NOT NULL,
         login VARCHAR(255) NOT NULL UNIQUE,
         date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
-        date_birth DATE,
+        date_birth DATETIME,
         active BOOLEAN DEFAULT 0 NOT NULL,
         token VARCHAR(255),
         first_name VARCHAR(255),

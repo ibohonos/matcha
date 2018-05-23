@@ -14,6 +14,7 @@
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/ionicons.min.css') }}" />
         <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/my_style.css') }}" />
     
     <!--Google Font-->
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,700i" rel="stylesheet">
@@ -121,16 +122,16 @@
               <!-- Register/Login Tabs-->
               <div class="reg-options">
                 <ul class="nav nav-tabs">
-                  <li class="active"><a href="#register" data-toggle="tab">Register</a></li>
-                  <li><a href="#login" data-toggle="tab">Login</a></li>
+                  <li><a href="#register" data-toggle="tab" id="register_tab_btn">Register</a></li>
+                  <li class="active"><a href="#login" data-toggle="tab" id="login_tab_btn">Login</a></li>
                 </ul><!--Tabs End-->
               </div>
               
               <!--Registration Form Contents-->
               <div class="tab-content">
-                <div class="tab-pane active" id="register">
-                  <h3>Register Now !!!</h3>
-                  <p class="text-muted">Be cool and join today. Meet millions</p>
+                <div class="tab-pane" id="register">
+                  <h3>Join Now !!!</h3>
+                  <p class="text-muted">Be cool and join Astra Militarum today. Meet millions</p>
                   
                   <!--Register Form-->
                   <form name="registration_form" id='registration_form' class="form-inline">
@@ -225,7 +226,24 @@
                         <label for="year" class="sr-only"></label>
                         <select class="form-control" id="year">
                           <option value="year" disabled selected>Year</option>
-							<option>1990</option>
+                          <option>1973</option>
+                          <option>1974</option>
+                          <option>1975</option>
+                          <option>1976</option>
+                          <option>1977</option>
+                          <option>1978</option>
+                          <option>1979</option>
+                          <option>1980</option>
+                          <option>1981</option>
+                          <option>1982</option>
+                          <option>1983</option>
+                          <option>1984</option>
+                          <option>1985</option>
+                          <option>1986</option>
+                          <option>1987</option>
+                          <option>1988</option>
+                          <option>1989</option>
+                          <option>1990</option>
                           <option>1991</option>
                           <option>1992</option>
                           <option>1993</option>
@@ -263,7 +281,7 @@
                 </div><!--Registration Form Contents Ends-->
                 
                 <!--Login-->
-                <div class="tab-pane" id="login">
+                <div class="tab-pane active" id="login">
                   <h3>Login</h3>
                   <p class="text-muted">Log into your account</p>
                   
@@ -272,7 +290,7 @@
                      <div class="row">
                       <div class="form-group col-xs-12">
                         <label for="my-email" class="sr-only">Email</label>
-                        <input id="my-email" class="form-control input-group-lg" type="text" name="Email" title="Enter Email" placeholder="Your Email"/>
+                        <input id="my-email" class="form-control input-group-lg" type="text" name="Email" title="Enter Email" placeholder="Your Email or Login"/>
                       </div>
                     </div>
                     <div class="row">
@@ -283,7 +301,7 @@
                     </div>
                   </form><!--Login Form Ends--> 
                   <p><a href="#" id="forg_pwd_btn">Forgot Password?</a></p>
-                  <button class="btn btn-primary">Login Now</button>
+                  <button class="btn btn-primary" onclick="login('{{ url_for('ajax_login') }}')" style="outline:none;">Login Now</button>
                 </div>
 
 				  <!--Forgot pwd-->
@@ -302,7 +320,7 @@
 
                   </form><!--Forgot pwd Form Ends-->
                   <p><a id="rem_pwd_btn" href="#">Remembered Password?</a></p>
-                  <button class="btn btn-primary">Send</button>
+                  <button class="btn btn-primary" onclick="recover('{{ url_for('ajax_recover') }}')" style="outline:none;">Send</button>
                 </div>
               </div>
             </div>
