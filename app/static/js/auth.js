@@ -1,6 +1,7 @@
 function register(view_url)
 {
 	event.preventDefault();
+	var button = event.srcElement;
 	var error = 0;
 	first_name = $("#firstname").val();
 	last_name = $("#lastname").val();
@@ -55,7 +56,7 @@ function register(view_url)
 	if (error == 1)
 		return("error");
 
-    this.prop('disabled', true);
+    button.disabled = true;
 
 	$.ajax({
 		url: view_url,
@@ -84,6 +85,8 @@ function register(view_url)
 				$('#login_tab_btn').removeAttr('href');
 				$('#register_tab_btn').removeAttr('href');
 			}
+
+			button.disabled = false;
 		},
 		error: function(error)
 		{
@@ -135,6 +138,7 @@ function login(view_url)
 function recover(view_url)
 {
 	event.preventDefault();
+	var button = event.srcElement;
 	const login = $("#forg_my_email").val();
 	$("#forg_my_email").removeClass("unvalid");
 
@@ -142,6 +146,7 @@ function recover(view_url)
 	$("#forg_my_email").addClass("unvalid");
 	return ("error");}
 
+    button.disabled = true;
 
 	$.ajax({
 		url: view_url,
@@ -152,12 +157,17 @@ function recover(view_url)
 			if (response == "no_user" || response == "not_active"){
 			$("#forg_my_email").addClass("unvalid");}
 
+			if (response != "msg_sent"){
+			event.srcElement.disabled = false;}
+
 			if (response == "msg_sent"){
 				$('#forgot_pwd').fadeOut(600, function(){ $(this).html("<p id='reg_tnx'>Mesaage sent<br>Look your email for instructions</p>");});
 				$('#forgot_pwd').fadeIn(600, function(){});
 				$('#login_tab_btn').removeAttr('href');
 				$('#register_tab_btn').removeAttr('href');
 			}
+
+			button.disabled = false;
 		},
 		error: function(error)
 		{
