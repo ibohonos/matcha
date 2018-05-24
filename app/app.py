@@ -56,7 +56,7 @@ def ajax_registration():
 	r_login = html.escape(request.form['login'])
 	pwd = request.form['pasword']
 	r_first = request.form['first_name']
-	r_last = request.form['first_name']
+	r_last = request.form['last_name']
 	r_gender = request.form['gender']
 
 	str_date = request.form['day'] + " " + request.form['month'] + " " + request.form['year']
