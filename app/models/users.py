@@ -1,4 +1,4 @@
-from config.databse import db_connect
+from matcha.config import db_connect
 
 
 def user_to_db(login, email, pwd, token, first_name, last_name, gender, birthday):

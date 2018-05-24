@@ -1,4 +1,4 @@
-from config.databse import db_connect
+from app.config.databse import db_connect
 
 
 def create_users_table():
