@@ -1,2 +1,5 @@
 venv_matcha
-app/.idea
+*/.idea
+.idea
+.DS_Store
+*/.DS_Store
