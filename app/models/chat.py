@@ -1,4 +1,4 @@
-from config.databse import db_connect
+from matcha.config import db_connect
 
 
 def create_chat_room(room_name):

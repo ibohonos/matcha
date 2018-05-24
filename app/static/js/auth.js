@@ -55,6 +55,8 @@ function register(view_url)
 	if (error == 1)
 		return("error");
 
+    this.prop('disabled', true);
+
 	$.ajax({
 		url: view_url,
 		data: {'email': email, 'login': login, 'pasword': pasword, 'first_name': first_name, 'last_name': last_name, 'day': day,
