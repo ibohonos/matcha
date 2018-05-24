@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_mail import Mail, Message
 from flask_socketio import SocketIO
+from app.models.users import get_by_id
 
 app = Flask(__name__)
 
@@ -18,13 +19,13 @@ app.config.update(dict(
 ))
 mail = Mail(app)
 
-from app.views import newsfeed, login, chat
+from app.views import newsfeed, login, chat, profiles
 
 
 @app.route('/')
 def index():
 	if session.get('id_user_logged'):
-		return render_template('newsfeed.html')
+		return render_template('newsfeed.html', user=get_by_id(session.get('id_user_logged')))
 	return render_template('index-register.html')
 
 # app.add_url_rule("/test2", "test2", test2, methods=['GET', 'POST'])
