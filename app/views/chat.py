@@ -33,7 +33,7 @@ def test_print(msg):
 
 @socketio.on('message', namespace='/chat')
 def message(msg):
-	print("msg: " + msg)
+	print(msg)
 	room = chat_users_sid_to_room[request.sid]
 	emit('message_from_server', msg, room=room)
 

@@ -3,7 +3,10 @@ var chat_socket = io('http://' + document.domain + ':' + location.port + '/chat'
 var room = $("#chat_room").text();
 
 $('#mesage_submit').on('click', function(){
-	chat_socket.emit('message', $("#message_input").val());
+    var message = $("#message_input").val()
+    if (!message){return;}
+
+	chat_socket.emit('message', message);
 	$("#message_input").val("");
 });
 
