@@ -10,9 +10,9 @@
     		<div class="row">
     			<div id="rx_activation_response">
 					{% if context.success == "true" %}
-						<form>
+						<form id="recover_form">
     					<div><input id="rec_pwd_inp" type="password" name="password" placeholder="New password" minlength="6" maxlength="100" class="form-control input-group-lg"></div>
-						<button class="btn btn-primary" type="submit" id="new_pwd_btm" onclick="new_pwd('{{ url_for('ajax_new_pwd') }}', '{{context.token}}', '{{context.email}}')">Submit</button>
+						<button class="btn btn-primary" type="submit" style="outline:none;" id="new_pwd_btm" onclick="new_pwd('{{ url_for('ajax_new_pwd') }}', '{{context.token}}', '{{context.email}}')">Submit</button>
 						</form>
 					{% else %}
 						<p>wrong token or email</p>
@@ -22,10 +22,11 @@
     		</div>
     	</div>
     </div>
-
-
 {% endblock %}
 
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+{% endblock %}
 
 <!--<html lang="en">-->
 <!--<head>-->

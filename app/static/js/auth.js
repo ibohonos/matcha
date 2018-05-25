@@ -179,15 +179,32 @@ function recover(view_url)
 function new_pwd(view_url, token, email)
 {
 	event.preventDefault();
-	const pwd = document.getElementById("rec_pwd_inp").value;
+	const password = document.getElementById("rec_pwd_inp").value;
+	$("#rec_pwd_inp").removeClass("unvalid");
+
+	if (password.length < 6 || password.length > 40)
+	{
+	$("#rec_pwd_inp").addClass("unvalid");
+	return;
+	}
 
 	$.ajax({
 		url: view_url,
-		data: {'pwd': pwd, 'token': token, 'email': email},
+		data: {'pwd': password, 'token': token, 'email': email},
 		type: 'POST',
 		success: function(response)
 		{
-			console.log(response);
+			if (response != "changed")
+			{
+			    $("#rec_pwd_inp").addClass("unvalid");
+			    return;
+			}
+			else
+			{
+				$('#recover_form').fadeOut(600, function(){ $(this).html("<p id='reg_tnx'>Password changed</p>");});
+				$('#recover_form').fadeIn(600, function(){});
+			}
+
 		},
 		error: function(error)
 		{
