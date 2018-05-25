@@ -5,8 +5,8 @@ from flask import Flask, render_template, request, session, redirect, url_for
 
 @app.route('/chat')
 def chat():
-	# if not session.get('id_user_logged'):
-	# 	return redirect(url_for('login'))
+	if not session.get('id_user_logged'):
+		return redirect(url_for('index'))
 
 	if session.get('id_user_logged') == 1 or session.get('id_user_logged') == 3:
 		context = {'chat_room': 'test_room_1_2'}
@@ -41,6 +41,7 @@ def message(msg):
 @socketio.on('connect', namespace='/chat')
 def connect():
 	chat_users_sid_to_id[request.sid] = session.get('id_user_logged')
+	print("connected")
 
 
 @socketio.on('disconnect', namespace='/chat')
@@ -59,7 +60,3 @@ def test_print(data):
 	print("sid:" + request.sid + " joined room " + data['room'])
 	print(chat_users_sid_to_id)
 	print(chat_users_sid_to_room)
-
-
-if __name__ == '__main__':
-	socketio.run(app, host="0.0.0.0")

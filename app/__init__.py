@@ -28,6 +28,7 @@ def index():
 		return render_template('newsfeed.html', user=get_by_id(session.get('id_user_logged')))
 	return render_template('index-register.html')
 
+
 # app.add_url_rule("/test2", "test2", test2, methods=['GET', 'POST'])
 
 # rkhilenksmtp@gmail.com

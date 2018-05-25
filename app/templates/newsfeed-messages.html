@@ -2,6 +2,7 @@
 {% block title %}Chat{% endblock %}
     <!--Header End-->
 {% block main %}
+<div class="none" id="chat_room">{{ context.chat_room }}</div>
     <div id="page-contents" class="rx_chat_content">
     	<div class="container">
     		<div class="row">
@@ -310,7 +311,7 @@
                     <div class="input-group">
                       <input type="text" class="form-control" placeholder="Type your message">
                       <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">Send</button>
+                        <button class="btn btn-default" type="button" id="mesage_submit">Send</button>
                       </span>
                     </div>
                   </div>
@@ -369,5 +370,6 @@
 {% endblock %}
 
 {% block scripts %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
 <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 {% endblock %}
