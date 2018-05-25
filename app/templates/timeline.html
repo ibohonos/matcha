@@ -56,33 +56,38 @@
 
 		</div>
 		<div id="page-contents">
-		  <div class="row">
-			<div class="col-md-3"></div>
-			<div class="col-md-9">
-
-			  <!-- Post Create Box
-			  ================================================= -->
-			  <div class="create-post">
-				<div class="row">
-				  <div class="col-md-7 col-sm-7">
-					<div class="form-group">
-						<img src="{{ user_cur.avatar }}" alt="" class="profile-photo-md" />
-						<textarea name="texts" id="exampleTextarea" cols="50" rows="1" class="form-control" placeholder="Write what you wish"></textarea>
-					</div>
-				  </div>
-				  <div class="col-md-5 col-sm-5">
-					<div class="tools">
-					  <ul class="publishing-tools list-inline">
-						<li><a href="#"><i class="ion-compose"></i></a></li>
-						<li><a href="#"><i class="ion-images"></i></a></li>
-						<li><a href="#"><i class="ion-ios-videocam"></i></a></li>
-{#						<li><a href="#"><i class="ion-map"></i></a></li>#}
-					  </ul>
-					  <button class="btn btn-primary pull-right">Publish</button>
-					</div>
-				  </div>
-				</div>
-			  </div><!-- Post Create Box End-->
+			<div class="row">
+				<div class="col-md-3"></div>
+				{% if session.get('user_data') %}
+					<div class="col-md-7">
+				{% else %}
+					<div class="col-md-9">
+				{% endif %}
+				<!-- Post Create Box
+				================================================= -->
+				<div class="create-post">
+					{% if session.get('user_data') %}
+						<div class="row">
+						  <div class="col-md-7 col-sm-7">
+							<div class="form-group">
+								<img src="{{ user_cur.avatar }}" alt="" class="profile-photo-md" />
+								<textarea name="texts" id="exampleTextarea" cols="50" rows="1" class="form-control" placeholder="Write what you wish"></textarea>
+							</div>
+						  </div>
+						  <div class="col-md-5 col-sm-5">
+							<div class="tools">
+							  <ul class="publishing-tools list-inline">
+								<li><a href="#"><i class="ion-compose"></i></a></li>
+								<li><a href="#"><i class="ion-images"></i></a></li>
+								<li><a href="#"><i class="ion-ios-videocam"></i></a></li>
+		{#						<li><a href="#"><i class="ion-map"></i></a></li>#}
+							  </ul>
+							  <button class="btn btn-primary pull-right">Publish</button>
+							</div>
+						  </div>
+						</div>
+					{% endif %}
+				</div><!-- Post Create Box End-->
 
 			  <!-- Post Content
 			  ================================================= -->
@@ -213,35 +218,38 @@
 			  </div>
 
 			</div>
-{#			<div class="col-md-2 static">#}
-{#			  <div id="sticky-sidebar">#}
-{#				<h4 class="grey">Sarah's activity</h4>#}
-{#				<div class="feed-item">#}
-{#				  <div class="live-activity">#}
-{#					<p><a href="#" class="profile-link">Sarah</a> Commended on a Photo</p>#}
-{#					<p class="text-muted">5 mins ago</p>#}
-{#				  </div>#}
-{#				</div>#}
-{#				<div class="feed-item">#}
-{#				  <div class="live-activity">#}
-{#					<p><a href="#" class="profile-link">Sarah</a> Has posted a photo</p>#}
-{#					<p class="text-muted">an hour ago</p>#}
-{#				  </div>#}
-{#				</div>#}
-{#				<div class="feed-item">#}
-{#				  <div class="live-activity">#}
-{#					<p><a href="#" class="profile-link">Sarah</a> Liked her friend's post</p>#}
-{#					<p class="text-muted">4 hours ago</p>#}
-{#				  </div>#}
-{#				</div>#}
-{#				<div class="feed-item">#}
-{#				  <div class="live-activity">#}
-{#					<p><a href="#" class="profile-link">Sarah</a> has shared an album</p>#}
-{#					<p class="text-muted">a day ago</p>#}
-{#				  </div>#}
-{#				</div>#}
-{#			  </div>#}
-{#			</div>#}
+			{% if session.get('user_data') %}
+				<div class="col-md-2 static">
+				  <div id="sticky-sidebar">
+					<h4 class="grey">Sarah's activity</h4>
+					<div class="feed-item">
+					  <div class="live-activity">
+						<p><a href="#" class="profile-link">Sarah</a> Commended on a Photo</p>
+						<p class="text-muted">5 mins ago</p>
+					  </div>
+					</div>
+					<div class="feed-item">
+					  <div class="live-activity">
+						<p><a href="#" class="profile-link">Sarah</a> Has posted a photo</p>
+						<p class="text-muted">an hour ago</p>
+					  </div>
+					</div>
+					<div class="feed-item">
+					  <div class="live-activity">
+						<p><a href="#" class="profile-link">Sarah</a> Liked her friend's post</p>
+						<p class="text-muted">4 hours ago</p>
+					  </div>
+					</div>
+					<div class="feed-item">
+					  <div class="live-activity">
+						<p><a href="#" class="profile-link">Sarah</a> has shared an album</p>
+						<p class="text-muted">a day ago</p>
+					  </div>
+					</div>
+				  </div>
+				</div>
+			{% endif %}
+
 		  </div>
 		</div>
 	  </div>
