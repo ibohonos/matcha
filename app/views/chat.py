@@ -5,14 +5,14 @@ from flask import Flask, render_template, request, session, redirect, url_for
 
 @app.route('/chat')
 def chat():
-	if not session.get('id_user_logged'):
-		return redirect(url_for('login'))
+	# if not session.get('id_user_logged'):
+	# 	return redirect(url_for('login'))
 
 	if session.get('id_user_logged') == 1 or session.get('id_user_logged') == 3:
 		context = {'chat_room': 'test_room_1_2'}
 	else:
 		context = {'chat_room': 'room_for_all'}
-	return render_template('chat.html', context=context)
+	return render_template('newsfeed-messages.html', context=context)
 
 
 # @socketio.on('message')

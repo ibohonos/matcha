@@ -7,6 +7,10 @@
   min-height: calc(100vh - 352px);
 }
 
+.rx_chat_content{
+  min-height: calc(100vh - 102px);
+}
+
 #rx_activation_response{
 	display:flex;
 	align-items:center;
@@ -28,4 +32,9 @@
 .btn
 {
     outline:none;
+}
+
+.scrollbar-wrapper.tab-content {
+    overflow-y: auto;
+    height: 700px;
 }
