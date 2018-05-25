@@ -6,6 +6,7 @@ import re
 from datetime import datetime
 from flask_mail import Message
 from app.models.users import *
+from random import randint
 
 
 @app.route('/ajax_registration', methods=['POST'])
@@ -16,6 +17,11 @@ def ajax_registration():
 	r_first = request.form['first_name']
 	r_last = request.form['last_name']
 	r_gender = request.form['gender']
+	num = randint(1, 12)
+	if num > 0 & num <= 6:
+		cover = str(num) + ".jpg"
+	else:
+		cover = str(num) + ".jpeg"
 
 	str_date = request.form['day'] + " " + request.form['month'] + " " + request.form['year']
 	try:
@@ -50,12 +56,13 @@ def ajax_registration():
 	date_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 	pwd_hash = hashlib.sha512(pwd.encode('utf-8')).hexdigest()
 	token_hash = hashlib.md5((r_email + r_login + date_str).encode('utf-8')).hexdigest()
-	req = user_to_db(r_login, r_email, pwd_hash, token_hash, r_first, r_last, r_gender, r_birthday)
+	cover_img = "/static/uploads/covers/" + cover
+	req = user_to_db(r_login, r_email, pwd_hash, token_hash, r_first, r_last, r_gender, r_birthday, cover_img)
 
 	if not req:
 		msg = Message('matcha registration', sender="rkhilenksmtp@gmail.com", recipients=[r_email])
 		msg.body = "To activate account goto " + request.url_root + "activate?email=" + r_email + "&token=" + token_hash
-		msg.html = "<p>To activate account goto " + request.url_root + "activate?email=" + r_email + "&token=" + token_hash + "</p>"
+		msg.html = "<p>To activate account goto <a href='" + request.url_root + "activate?email=" + r_email + "&token=" + token_hash + "'>this link</a></p>"
 		mail.send(msg)
 		return "registered"
 	else:

@@ -1,9 +1,9 @@
 from app.config.databse import db_connect
 
 
-def user_to_db(login, email, pwd, token, first_name, last_name, gender, birthday):
-	agruments = [login, email, pwd, token, first_name, last_name, gender, birthday]
-	sql = "INSERT INTO users (login, email, password, token, first_name, last_name, gender, date_birth) VALUES (?,?,?,?,?,?,?,?)"
+def user_to_db(login, email, pwd, token, first_name, last_name, gender, birthday, cover):
+	agruments = [login, email, pwd, token, first_name, last_name, gender, birthday, cover]
+	sql = "INSERT INTO users (login, email, password, token, first_name, last_name, gender, date_birth, cover) VALUES (?,?,?,?,?,?,?,?,?)"
 	res = db_connect(sql, agruments)
 	return res
 
