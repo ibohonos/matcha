@@ -1,5 +1,5 @@
-const auth_id = $("#auth_id")[0].innerText;
-const user_id = $("#user_id")[0].innerText;
+var auth_id = $("#auth_id")[0].innerText;
+var user_id = $("#user_id")[0].innerText;
 var friends_button = $("#friends_request button");
 
 $(document).ready(function () {
@@ -17,6 +17,9 @@ $(document).ready(function () {
 		// 	console.log(error.responseText);
 		// });
 		// console.log("auth id: " + auth_id);
+	}
+	else {
+		$("#friends_request").addClass("hidden");
 	}
 });
 
@@ -59,6 +62,9 @@ function friends_status(response) {
 		friends_button.addClass("btn-default");
 		friends_button.on('click', delete_user_friend);
 		friends_button[0].innerText = "You are friends";
+	}
+	else if (response == "same user") {
+		$("#friends_request").addClass("hidden");
 	}
 }
 

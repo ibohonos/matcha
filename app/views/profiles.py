@@ -2,17 +2,26 @@ from app import app
 from flask import render_template, session, redirect, request
 from app.models.users import get_by_id
 from app.models.friendship import *
+from app.models.posts import all_user_post
 
 
 @app.route('/profile/')
 @app.route('/user/id<int:id_user>')
 def profile(id_user=None):
+	if id_user:
+		user = get_by_id(id_user)
+		posts = all_user_post(id_user)
+	else:
+		user = None
+		posts = all_user_post(session.get('id_user_logged'))
+	user_cur = session.get('user_data')
+
 	if session.get('id_user_logged'):
 		if id_user:
-			return render_template('timeline.html', user=get_by_id(id_user), user_cur=session.get('user_data'))
-		return render_template('timeline.html', user=session.get('user_data'), user_cur=session.get('user_data'))
+			return render_template('timeline.html', user=user, user_cur=user_cur, posts=posts, get_by_id=get_by_id)
+		return render_template('timeline.html', user=user_cur, user_cur=user_cur, posts=posts, get_by_id=get_by_id)
 	if id_user:
-		return render_template('timeline.html', user=get_by_id(id_user), user_cur=None)
+		return render_template('timeline.html', user=user, user_cur=None, posts=posts, get_by_id=get_by_id)
 	return redirect('/')
 
 
