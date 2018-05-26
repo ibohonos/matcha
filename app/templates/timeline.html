@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 {% block title %}{{ user.first_name }} {{ user.last_name }} - Matcha 40k{% endblock %}
+{% block scripts %}
+	<script src="{{ url_for('static', filename='js/users.js') }}"></script>
+{% endblock %}
 {% block main %}
-
+	<div class="hidden" id="auth_id">{{ session.get('id_user_logged') }}</div>
+	<div class="hidden" id="user_id">{{ user.id_user }}</div>
 	<div class="container">
 
 	  <!-- Timeline
@@ -29,8 +33,11 @@
 				  <li><a href="timeline-friends.html">Friends</a></li>
 				</ul>
 				<ul class="follow-me list-inline">
-				  <li>1,299 people following her</li>
-				  <li><button class="btn-primary">Add Friend</button></li>
+					<li>1,299 people following her</li>
+					<li id="friends_request" {% if not session.get('id_user_logged') or session.get('id_user_logged') == user.id_user %} class="hidden"{% endif %}>
+						<button class="btn-primary">Add Friend</button>
+					</li>
+
 				</ul>
 			  </div>
 			</div>

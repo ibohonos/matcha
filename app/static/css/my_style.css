@@ -1,6 +1,6 @@
 #reg_tnx{
 	margin-top: 110px;
-    font-size: 20px;
+	font-size: 20px;
 }
 
 .rx_content{
@@ -21,20 +21,34 @@
 
 #rec_pwd_inp
 {
-    margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 #new_pwd_btm
 {
-    margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
 .btn
 {
-    outline:none;
+	outline:none;
 }
 
 .scrollbar-wrapper.tab-content {
-    overflow-y: auto;
-    height: 700px;
+	overflow-y: auto;
+	height: 700px;
+}
+
+.timeline-cover .timeline-nav-bar .follow-me li:first-child {
+	padding: 13px 15px;
+}
+
+.btn-my{
+	padding: 7px 25px;
+	border: none;
+	font-size: 14px;
+	position: relative;
+	font-weight: 600;
+	outline: none;
+	border-radius: 30px;
 }
