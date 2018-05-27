@@ -12,16 +12,19 @@ def profile(id_user=None):
 		user = get_by_id(id_user)
 		posts = all_user_post(id_user)
 	else:
-		user = None
+		user = session.get('user_data')
 		posts = all_user_post(session.get('id_user_logged'))
-	user_cur = session.get('user_data')
+	if session.get('user_data'):
+		user_cur = session.get('user_data')
+	else:
+		user_cur = None
 
+	# data = {'user': user, user_cur=user_cur, posts=posts, get_by_id=get_by_id, datetime=datetime}
+	data = {'user': user, 'user_cur': user_cur, 'posts': posts, 'get_by_id': get_by_id}
 	if session.get('id_user_logged'):
-		if id_user:
-			return render_template('timeline.html', user=user, user_cur=user_cur, posts=posts, get_by_id=get_by_id)
-		return render_template('timeline.html', user=user_cur, user_cur=user_cur, posts=posts, get_by_id=get_by_id)
+		return render_template('timeline.html', data=data)
 	if id_user:
-		return render_template('timeline.html', user=user, user_cur=None, posts=posts, get_by_id=get_by_id)
+		return render_template('timeline.html', data=data)
 	return redirect('/')
 
 

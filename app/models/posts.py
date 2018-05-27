@@ -10,6 +10,6 @@ def create_post(id_user, id_user_from, type_p, status, content, img, video):
 
 def all_user_post(id_user):
 	arguments = [id_user]
-	sql = "SELECT * FROM posts WHERE id_user=?"
+	sql = "SELECT * FROM posts WHERE id_user=? ORDER BY id_post DESC"
 	res = db_connect(sql, arguments)
 	return res

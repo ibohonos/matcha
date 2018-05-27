@@ -1,33 +1,33 @@
 {% extends "base.html" %}
-{% block title %}{{ user.first_name }} {{ user.last_name }} - Matcha 40k{% endblock %}
+{% block title %}{{ data.user.first_name }} {{ data.user.last_name }} - Matcha 40k{% endblock %}
 {% block scripts %}
 	<script src="{{ url_for('static', filename='js/users.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/posts.js') }}"></script>
 {% endblock %}
 {% block main %}
 	<div class="hidden" id="auth_id">{{ session.get('id_user_logged') }}</div>
-	<div class="hidden" id="user_id">{{ user.id_user }}</div>
+	<div class="hidden" id="user_id">{{ data.user.id_user }}</div>
 	<div class="container">
 
 	  <!-- Timeline
 	  ================================================= -->
 	  <div class="timeline">
-		<div class="timeline-cover" style="background-image: url({{ user.cover }});">
+		<div class="timeline-cover" style="background-image: url({{ data.user.cover }});">
 
 		  <!--Timeline Menu for Large Screens-->
 		  <div class="timeline-nav-bar hidden-sm hidden-xs">
 			<div class="row">
 			  <div class="col-md-3">
 				<div class="profile-info">
-				  <img src="{{ user.avatar }}" alt="" class="img-responsive profile-photo" />
+				  <img src="{{ data.user.avatar }}" alt="" class="img-responsive profile-photo" />
 				  <!--<img src="http://placehold.it/300x300" alt="" class="img-responsive profile-photo" />-->
-				  <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+				  <h3>{{ data.user.first_name }} {{ data.user.last_name }}</h3>
 				  <p class="text-muted">Creative Director</p>
 				</div>
 			  </div>
 			  <div class="col-md-9">
 				<ul class="list-inline profile-menu">
-				  <li><a href="{{ url_for('profile', id_user=user.id_user) }}" class="active">Timeline</a></li>
+				  <li><a href="{{ url_for('profile', id_user=data.user.id_user) }}" class="active">Timeline</a></li>
 {#				  <li><a href="timeline.html" class="active">Timeline</a></li>#}
 				  <li><a href="timeline-about.html">About</a></li>
 				  <li><a href="timeline-album.html">Album</a></li>
@@ -79,7 +79,7 @@
 							<div class="row">
 							  <div class="col-md-7 col-sm-7">
 								<div class="form-group">
-									<img src="{{ user_cur.avatar }}" alt="" class="profile-photo-md" />
+									<img src="{{ data.user_cur.avatar }}" alt="" class="profile-photo-md" />
 									<textarea name="content" id="content" cols="50" rows="2" class="form-control" placeholder="Write what you wish"></textarea>
 								</div>
 							  </div>
@@ -99,58 +99,55 @@
 					{% endif %}
 				</div><!-- Post Create Box End-->
 
-			  <!-- Post Content
-			  ================================================= -->
-				{% for post in posts %}
-					<div class="post-content">
-						<!--Post Date-->
-						<div class="post-date hidden-xs hidden-sm">
-							<h5>{{ get_by_id(post.id_user_from).first_name }}</h5>
-							<p class="text-grey">Sometimes ago</p>
-						</div><!--Post Date End-->
-{#						<img src="http://placehold.it/1920x1280" alt="post-image" class="img-responsive post-image" />#}
-						<div class="post-container">
-							<img src="http://placehold.it/300x300" alt="user" class="profile-photo-md pull-left" />
-							<div class="post-detail">
-								<div class="user-info">
-									<h5><a href="{{ url_for('profile', id_user=get_by_id(post.id_user_from).id_user) }}" class="profile-link">{{ get_by_id(post.id_user_from).first_name }} {{ get_by_id(post.id_user_from).last_name }}</a> <span class="following">following</span></h5>
-									<p class="text-muted">Published a photo about 15 mins ago</p>
-								</div>
-								<div class="reaction">
-									<a class="btn text-green"><i class="icon ion-thumbsup"></i> 13</a>
-									<a class="btn text-red"><i class="fa fa-thumbs-down"></i> 0</a>
-								</div>
-								<div class="line-divider"></div>
-								<div class="post-text">
-									<p>{{ post.content }}</p>
-								</div>
-								<div class="line-divider"></div>
-								<div class="post-comment">
-									<img src="http://placehold.it/300x300" alt="" class="profile-photo-sm" />
-									<p><a href="timeline.html" class="profile-link">Diana </a><i class="em em-laughing"></i> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud </p>
-								</div>
-								<div class="post-comment">
-									<img src="http://placehold.it/300x300" alt="" class="profile-photo-sm" />
-									<p><a href="timeline.html" class="profile-link">John</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud </p>
-								</div>
-								<div class="post-comment">
-									<img src="http://placehold.it/300x300" alt="" class="profile-photo-sm" />
-									<input type="text" class="form-control" placeholder="Post a comment">
+				<div id="all_posts">
+					<!-- Post Content
+					================================================= -->
+					{% for post in data.posts %}
+
+						<div class="post-content">
+							<!--Post Date-->
+							<div class="post-date hidden-xs hidden-sm">
+								<h5>{{ data.get_by_id(post.id_user_from).first_name }}</h5>
+								<p class="text-grey">{{ post.date_creation }}</p>
+							</div><!--Post Date End-->
+	{#						<img src="http://placehold.it/1920x1280" alt="post-image" class="img-responsive post-image" />#}
+							<div class="post-container">
+								<img src="{{ data.get_by_id(post.id_user_from).avatar }}" alt="user" class="profile-photo-md pull-left" />
+								<div class="post-detail">
+									<div class="user-info">
+										<h5><a href="{{ url_for('profile', id_user=data.get_by_id(post.id_user_from).id_user) }}" class="profile-link">{{ data.get_by_id(post.id_user_from).first_name }} {{ data.get_by_id(post.id_user_from).last_name }}</a> <span class="following">following</span></h5>
+										<p class="text-muted">Published a {{ post.type }} on a {{ post.date_creation }}</p>
+									</div>
+									<div class="reaction">
+										<a class="btn text-green" id="like{{ post.id_post }}"><i class="icon ion-thumbsup"></i> 0</a>
+										<a class="btn text-red" id="dislike{{ post.id_post }}"><i class="fa fa-thumbs-down"></i> 0</a>
+									</div>
+									<div class="line-divider"></div>
+									<div class="post-text">
+										<p>{{ post.content }}</p>
+									</div>
+									<div class="line-divider"></div>
+									{% if session.get('user_data') %}
+										<div class="post-comment">
+											<img src="{{ session.get('user_data').avatar }}" alt="" class="profile-photo-sm" />
+											<input type="text" class="form-control" placeholder="Post a comment">
+										</div>
+									{% endif %}
 								</div>
 							</div>
 						</div>
-					</div>
-				{% else %}
-					<div class="post-content">
-						<div class="post-container">
-							<div class="post-detail">
-								<div class="post-text">
-									<p>No posts.</p>
+					{% else %}
+						<div class="post-content">
+							<div class="post-container">
+								<div class="post-detail">
+									<div class="post-text">
+										<p>No posts.</p>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				{% endfor %}
+					{% endfor %}
+				</div>
 
 {#				<div class="post-content">#}
 {##}
