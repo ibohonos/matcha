@@ -104,8 +104,48 @@ def create_chat_table():
 		print("chat_message ok")
 
 
+def create_friends_table():
+	res = db_connect('''
+		CREATE TABLE IF NOT EXISTS friendships (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		id_requester INTEGER NOT NULL,
+		id_user_requested INTEGER NOT NULL,
+		status BOOLEAN DEFAULT 0 NOT NULL,
+		date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
+		FOREIGN KEY (id_requester) REFERENCES users(id_user) ON DELETE CASCADE,
+		FOREIGN KEY (id_user_requested) REFERENCES users(id_user) ON DELETE CASCADE)
+		''')
+	if res:
+		print(res)
+	else:
+		print("friendships ok")
+
+
+def create_posts_table():
+	res = db_connect('''
+		CREATE TABLE IF NOT EXISTS posts (
+		id_post INTEGER PRIMARY KEY AUTOINCREMENT,
+		id_user INTEGER NOT NULL,
+		id_user_from INTEGER NOT NULL,
+		`type` VARCHAR(255) NOT NULL,
+		status VARCHAR(255) NOT NULL DEFAULT "public",
+		content TEXT DEFAULT NULL,
+		img VARCHAR(255) DEFAULT NULL,
+		video VARCHAR(255) DEFAULT NULL,
+		date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
+		FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE,
+		FOREIGN KEY (id_user_from) REFERENCES users(id_user) ON DELETE CASCADE)
+		''')
+	if res:
+		print(res)
+	else:
+		print("posts ok")
+
+
 if __name__ == '__main__':
 	create_users_table()
 	create_tags_table()
 	create_img_table()
 	create_chat_table()
+	create_friends_table()
+	create_posts_table()

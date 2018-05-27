@@ -19,13 +19,13 @@ app.config.update(dict(
 ))
 mail = Mail(app)
 
-from app.views import newsfeed, login, chat, profiles
+from app.views import newsfeed, login, chat, profiles, posts
 
 
 @app.route('/')
 def index():
 	if session.get('id_user_logged'):
-		return render_template('newsfeed.html', user=get_by_id(session.get('id_user_logged')))
+		return render_template('newsfeed.html', user=session.get('user_data'))
 	return render_template('index-register.html')
 
 

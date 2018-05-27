@@ -49,9 +49,3 @@ def get_by_id(id_user):
 	res = db_connect(sql, arguments)
 	return res[0]
 
-
-def get_user_avatar(id_user):
-	arguments = [id_user]
-	sql = "SELECT img_src FROM images INNER JOIN images_con ON images_con.id_img = images.id_img WHERE images_con.id_user = ? AND images.avatar = 1"
-	res = db_connect(sql, arguments)
-	return res

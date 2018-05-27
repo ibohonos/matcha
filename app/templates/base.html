@@ -50,7 +50,11 @@
 {#							</ul>#}
 {#						</li>#}
 						<li class="dropdown">
-							<a href="{{ url_for('index') }}">Newsfeed</a>
+							{% if session.get('user_data') %}
+								<a href="{{ url_for('index') }}">Newsfeed</a>
+							{% else %}
+								<a href="{{ url_for('index') }}">Login / Register</a>
+							{% endif %}
 {#							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Newsfeed <span><img src="{{ url_for('static', filename='images/down-arrow.png') }}" alt="" /></span></a>#}
 {#							<ul class="dropdown-menu newsfeed-home">#}
 {#								<li><a href="newsfeed.html">Newsfeed</a></li>#}
@@ -122,8 +126,8 @@
 	<script src="{{ url_for('static', filename='js/jquery.sticky-kit.min.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/jquery.scrollbar.min.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqLNucodvPuxX_30MWoh6g1YT6hWnvzS4&callback=initMap"
-  type="text/javascript"></script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqLNucodvPuxX_30MWoh6g1YT6hWnvzS4&callback=initMap"
+			type="text/javascript"></script>
 	{% block scripts %}{% endblock %}
 </body>
 </html>

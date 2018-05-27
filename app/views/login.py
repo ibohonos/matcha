@@ -18,7 +18,8 @@ def ajax_registration():
 	r_last = request.form['last_name']
 	r_gender = request.form['gender']
 	num = randint(1, 12)
-	if num > 0 & num <= 6:
+
+	if num > 0 and num <= 6:
 		cover = str(num) + ".jpg"
 	else:
 		cover = str(num) + ".jpeg"
@@ -113,12 +114,7 @@ def ajax_login():
 		pwd_hash = hashlib.sha512(pwd.encode('utf-8')).hexdigest()
 		if res['password'] == pwd_hash:
 			session['id_user_logged'] = res['id_user']
-			session['login_user_logged'] = res['login']
-			session['email_user_logged'] = res['email']
-			session['date_birth_user_logged'] = res['date_birth']
-			session['first_name_user_logged'] = res['first_name']
-			session['last_name_user_logged'] = res['last_name']
-			session['gender_user_logged'] = res['gender']
+			session['user_data'] = res
 			return "logged_in"
 		else:
 			return "wrong_pwd"
@@ -130,12 +126,7 @@ def ajax_login():
 @app.route('/logout')
 def ajax_logout():
 	session.pop('id_user_logged', None)
-	session.pop('login_user_logged', None)
-	session.pop('email_user_logged', None)
-	session.pop('date_birth_user_logged', None)
-	session.pop('first_name_user_logged', None)
-	session.pop('last_name_user_logged', None)
-	session.pop('gender_user_logged', None)
+	session.pop('user_data', None)
 	return redirect(url_for('index'))
 
 
