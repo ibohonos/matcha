@@ -126,7 +126,7 @@ function login(view_url)
 			if (response == "no_pwd" || response == "long_pwd" || response == "wrong_pwd"){
 			$("#my-password").addClass("unvalid");}
 			if (response == "logged_in"){
-			location.reload();}
+			location.replace("/");}
 		},
 		error: function(error)
 		{

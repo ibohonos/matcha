@@ -69,7 +69,7 @@ def create_chat_table():
 	res = db_connect('''
 		CREATE TABLE IF NOT EXISTS chat_room (
 		id_chat_room INTEGER PRIMARY KEY AUTOINCREMENT,
-		room_name VARCHAR(255) NOT NULL)
+		room_name VARCHAR(255) NOT NULL UNIQUE)
 		''')
 	if res:
 		print(res)
