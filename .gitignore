@@ -215,3 +215,6 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+db_matcha.sqlite3
+db_matcha.sqlite3-journal
