@@ -1,25 +1,54 @@
 from app import app, socketio
 from flask_socketio import SocketIO, join_room, leave_room, emit
 from flask import Flask, render_template, request, session, redirect, url_for
+from app.models.chat import *
+from app.models.users import *
+from collections import Counter
+import hashlib
+from random import randint
 
 
-@app.route('/chat')
+@app.route('/chat', methods=['POST'])
 def chat():
 	if not session.get('id_user_logged'):
-		return redirect(url_for('index'))
+		return render_template('index-register.html')
 
-	if session.get('id_user_logged') == 1 or session.get('id_user_logged') == 3:
-		context = {'chat_room': 'test_room_1_2'}
-	else:
-		context = {'chat_room': 'room_for_all'}
+	context = {'chat_room': 'room_for_all'}
+	try:
+		context['chat_room'] = request.form['room_name']
+	except:
+		return render_template('index-register.html')
+
 	return render_template('newsfeed-messages.html', context=context)
 
 
-# @socketio.on('message')
-# def handleMessage(msg, user):
-# 	print('Message: ' + msg)
-# 	msg = html.escape(msg)
-# 	send(msg, broadcast=True)
+def create_room(user_from, user_to):
+	room_name = str(user_from + user_to)
+	create_chat_room_in_db(room_name)
+	add_user_to_chat_room(room_name, user_from)
+	add_user_to_chat_room(room_name, user_to)
+	return room_name
+
+
+@app.route('/ajax_create_chat', methods=['POST'])
+def ajax_create_chat():
+	user_from = request.form['chat_from']
+	user_to = request.form['chat_to']
+	room_name = None
+
+	res = check_room_by_users(user_from, user_to)
+	if not res:
+		room_name = create_room(user_from, user_to)
+	else:
+		rooms = []
+		for i in res:
+			rooms.append(i['room_name'])
+		for room, i in Counter(rooms).items():
+			if i == 2:
+				room_name = room
+		if room_name is None:
+			room_name = create_room(user_from, user_to)
+	return room_name
 
 
 chat_users_sid_to_id = {}
