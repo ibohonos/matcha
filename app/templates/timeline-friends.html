@@ -1,7 +1,7 @@
 {% extends "base.html" %}
+{% block title %}{{ data.user.first_name }} {{ data.user.last_name }} friends - Matcha 40k{% endblock %}
 {% block scripts %}
 	<script src="{{ url_for('static', filename='js/users.js') }}"></script>
-	<script src="{{ url_for('static', filename='js/posts.js') }}"></script>
 {% endblock %}
 {% block main %}
 
@@ -10,52 +10,7 @@
 	  <!-- Timeline
 	  ================================================= -->
 	  <div class="timeline">
-		<div class="timeline-cover">
-
-		  <!--Timeline Menu for Large Screens-->
-		  <div class="timeline-nav-bar hidden-sm hidden-xs">
-			<div class="row">
-			  <div class="col-md-3">
-				<div class="profile-info">
-				  <img src="http://placehold.it/300x300" alt="" class="img-responsive profile-photo" />
-				  <h3>Sarah Cruiz</h3>
-				  <p class="text-muted">Creative Director</p>
-				</div>
-			  </div>
-			  <div class="col-md-9">
-				<ul class="list-inline profile-menu">
-				  <li><a href="{{ url_for('profile') }}">Timeline</a></li>
-				  <li><a href="timeline-about.html">About</a></li>
-				  <li><a href="timeline-album.html">Album</a></li>
-				  <li><a href="timeline-friends.html" class="active">Friends</a></li>
-				</ul>
-				<ul class="follow-me list-inline">
-				  <li>1,299 people following her</li>
-				  <li><button class="btn-primary">Add Friend</button></li>
-				</ul>
-			  </div>
-			</div>
-		  </div><!--Timeline Menu for Large Screens End-->
-
-		  <!--Timeline Menu for Small Screens-->
-		  <div class="navbar-mobile hidden-lg hidden-md">
-			<div class="profile-info">
-			  <img src="http://placehold.it/300x300" alt="" class="img-responsive profile-photo" />
-			  <h4>Sarah Cruiz</h4>
-			  <p class="text-muted">Creative Director</p>
-			</div>
-			<div class="mobile-menu">
-			  <ul class="list-inline">
-				<li><a href="timline.html">Timeline</a></li>
-				<li><a href="timeline-about.html">About</a></li>
-				<li><a href="timeline-album.html">Album</a></li>
-				<li><a href="timeline-friends.html" class="active">Friends</a></li>
-			  </ul>
-			  <button class="btn-primary">Add Friend</button>
-			</div>
-		  </div><!--Timeline Menu for Small Screens End-->
-
-		</div>
+		{% include('parts/header_bottom.html') %}
 		<div id="page-contents">
 		  <div class="row">
 			<div class="col-md-3"></div>
@@ -65,123 +20,47 @@
 			  ================================================= -->
 			  <div class="friend-list">
 				<div class="row">
-				  <div class="col-md-6 col-sm-6">
-					<div class="friend-card">
-					  <img src="http://placehold.it/1030x360" alt="profile-cover" class="img-responsive cover" />
-					  <div class="card-info">
-						<img src="http://placehold.it/300x300" alt="user" class="profile-photo-lg" />
-						<div class="friend-info">
-						  <a href="#" class="pull-right text-green">My Friend</a>
-						  <h5><a href="timeline.html" class="profile-link">Sophia Lee</a></h5>
-						  <p>Student at Harvard</p>
+					{% for friend in data.friends %}
+						{% if friend.id_requester == data.user.id_user %}
+							<div class="col-md-6 col-sm-6">
+								<div class="friend-card">
+									<img src="{{ data.get_by_id(friend.id_user_requested).cover }}" alt="profile-cover" class="img-responsive cover" />
+									<div class="card-info">
+										<img src="{{ data.get_by_id(friend.id_user_requested).avatar }}" alt="user" class="profile-photo-lg" />
+										<div class="friend-info">
+											<a href="#" class="pull-right text-green">My Friend</a>
+											<h5><a href="{{ url_for('profile', id_user=data.get_by_id(friend.id_user_requested).id_user) }}" class="profile-link">{{ data.get_by_id(friend.id_user_requested).first_name }} {{ data.get_by_id(friend.id_user_requested).last_name }}</a></h5>
+											<p>Student at Harvard</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						{% elif friend.id_user_requested == data.user.id_user %}
+							<div class="col-md-6 col-sm-6">
+								<div class="friend-card">
+									<img src="{{ data.get_by_id(friend.id_requester).cover }}" alt="profile-cover" class="img-responsive cover" />
+									<div class="card-info">
+										<img src="{{ data.get_by_id(friend.id_requester).avatar }}" alt="user" class="profile-photo-lg" />
+										<div class="friend-info">
+											<a href="#" class="pull-right text-green">My Friend</a>
+											<h5><a href="{{ url_for('profile', id_user=data.get_by_id(friend.id_requester).id_user) }}" class="profile-link">{{ data.get_by_id(friend.id_requester).first_name }} {{ data.get_by_id(friend.id_requester).last_name }}</a></h5>
+											<p>Student at Harvard</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						{% endif %}
+					{% else %}
+						<div class="col-12">
+							<div class="friend-card">
+								<div class="card-info">
+									<div class="friend-info">
+										<p style="text-align: center">No friends</p>
+									</div>
+								</div>
+							</div>
 						</div>
-					  </div>
-					</div>
-				  </div>
-				  <div class="col-md-6 col-sm-6">
-					<div class="friend-card">
-					  <img src="http://placehold.it/1030x360" alt="profile-cover" class="img-responsive cover" />
-					  <div class="card-info">
-						<img src="http://placehold.it/300x300" alt="user" class="profile-photo-lg" />
-						<div class="friend-info">
-						  <a href="#" class="pull-right text-green">My Friend</a>
-						  <h5><a href="timeline.html" class="profile-link">John Doe</a></h5>
-						  <p>Traveler</p>
-						</div>
-					  </div>
-					</div>
-				  </div>
-				  <div class="col-md-6 col-sm-6">
-					<div class="friend-card">
-					  <img src="http://placehold.it/1030x360" alt="profile-cover" class="img-responsive cover" />
-					  <div class="card-info">
-						<img src="http://placehold.it/300x300" alt="user" class="profile-photo-lg" />
-						<div class="friend-info">
-						  <a href="timeline.html" class="pull-right text-green">My Friend</a>
-						  <h5><a href="#" class="profile-link">Julia Cox</a></h5>
-						  <p>Art Designer</p>
-						</div>
-					  </div>
-					</div>
-				  </div>
-				  <div class="col-md-6 col-sm-6">
-					<div class="friend-card">
-					  <img src="http://placehold.it/1030x360" alt="profile-cover" class="img-responsive cover" />
-					  <div class="card-info">
-						<img src="http://placehold.it/300x300" alt="user" class="profile-photo-lg" />
-						<div class="friend-info">
-						  <a href="#" class="pull-right text-green">My Friend</a>
-						  <h5><a href="timelime.html" class="profile-link">Robert Cook</a></h5>
-						  <p>Photographer at Photography</p>
-						</div>
-					  </div>
-					</div>
-				  </div>
-				  <div class="col-md-6 col-sm-6">
-					<div class="friend-card">
-					  <img src="http://placehold.it/1030x360" alt="profile-cover" class="img-responsive cover" />
-					  <div class="card-info">
-						<img src="http://placehold.it/300x300" alt="user" class="profile-photo-lg" />
-						<div class="friend-info">
-						  <a href="#" class="pull-right text-green">My Friend</a>
-						  <h5><a href="timeline.html" class="profile-link">Richard Bell</a></h5>
-						  <p>Graphic Designer at Envato</p>
-						</div>
-					  </div>
-					</div>
-				  </div>
-				  <div class="col-md-6 col-sm-6">
-					<div class="friend-card">
-					  <img src="http://placehold.it/1030x360" alt="profile-cover" class="img-responsive cover" />
-					  <div class="card-info">
-						<img src="http://placehold.it/300x300" alt="user" class="profile-photo-lg" />
-						<div class="friend-info">
-						  <a href="#" class="pull-right text-green">My Friend</a>
-						  <h5><a href="timeline.html" class="profile-link">Linda Lohan</a></h5>
-						  <p>Software Engineer</p>
-						</div>
-					  </div>
-					</div>
-				  </div>
-				  <div class="col-md-6 col-sm-6">
-					<div class="friend-card">
-					  <img src="http://placehold.it/1030x360" alt="profile-cover" class="img-responsive cover" />
-					  <div class="card-info">
-						<img src="http://placehold.it/300x300" alt="user" class="profile-photo-lg" />
-						<div class="friend-info">
-						  <a href="#" class="pull-right text-green">My Friend</a>
-						  <h5><a href="timeline.html" class="profile-link">Anna Young</a></h5>
-						  <p>Musician</p>
-						</div>
-					  </div>
-					</div>
-				  </div>
-				  <div class="col-md-6 col-sm-6">
-					<div class="friend-card">
-					  <img src="http://placehold.it/1030x360" alt="profile-cover" class="img-responsive cover" />
-					  <div class="card-info">
-						<img src="http://placehold.it/300x300" alt="user" class="profile-photo-lg" />
-						<div class="friend-info">
-						  <a href="#" class="pull-right text-green">My Friend</a>
-						  <h5><a href="timeline.html" class="profile-link">James Carter</a></h5>
-						  <p>CEO at IT Farm</p>
-						</div>
-					  </div>
-					</div>
-				  </div>
-				  <div class="col-md-6 col-sm-6">
-					<div class="friend-card">
-					  <img src="http://placehold.it/1030x360" alt="profile-cover" class="img-responsive cover" />
-					  <div class="card-info">
-						<img src="http://placehold.it/300x300" alt="user" class="profile-photo-lg" />
-						<div class="friend-info">
-						  <a href="#" class="pull-right text-green">My Friend</a>
-						  <h5><a href="timeline.html" class="profile-link">Alexis Clark</a></h5>
-						  <p>Traveler</p>
-						</div>
-					  </div>
-					</div>
-				  </div>
+					{% endfor %}
 				</div>
 			  </div>
 			</div>

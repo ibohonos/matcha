@@ -8,6 +8,8 @@ from app.models.posts import all_user_post
 @app.route('/profile/')
 @app.route('/user/id<int:id_user>/')
 def profile(id_user=None):
+	if not session.get('user_data') and not id_user:
+		return redirect('/')
 	if id_user:
 		user = get_by_id(id_user)
 		posts = all_user_post(id_user)
@@ -21,11 +23,7 @@ def profile(id_user=None):
 
 	# data = {'user': user, user_cur=user_cur, posts=posts, get_by_id=get_by_id, datetime=datetime}
 	data = {'user': user, 'user_cur': user_cur, 'posts': posts, 'get_by_id': get_by_id}
-	if session.get('id_user_logged'):
-		return render_template('timeline.html', data=data)
-	if id_user:
-		return render_template('timeline.html', data=data)
-	return redirect('/')
+	return render_template('timeline.html', data=data)
 
 
 @app.route('/profile/edit/')
