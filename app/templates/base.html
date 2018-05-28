@@ -99,6 +99,9 @@
 							</ul>
 						</li>
 						<li class="dropdown"><a href="contact.html">Contact</a></li>
+						{% if session.get('user_data') %}
+							<li class="dropdown"><a href="{{ url_for('ajax_logout') }}">Logout</a></li>
+						{% endif %}
 					</ul>
 				</div><!-- /.navbar-collapse -->
 			</div><!-- /.container -->
