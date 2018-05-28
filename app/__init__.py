@@ -19,7 +19,7 @@ app.config.update(dict(
 ))
 mail = Mail(app)
 
-from app.views import newsfeed, login, chat, profiles, posts
+from app.views import newsfeed, login, chat, profiles, posts, friends
 
 
 @app.route('/')
