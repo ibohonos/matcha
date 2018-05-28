@@ -2,6 +2,7 @@
 {% block title %}Chat{% endblock %}
     <!--Header End-->
 {% block main %}
+
 <div class="none" id="chat_room">{{ context.chat_room }}</div>
     <div id="page-contents" class="rx_chat_content">
     	<div class="container">
@@ -48,11 +49,36 @@
                     <div class="tab-pane active">
                       <div class="chat-body">
                       	<ul class="chat-message" id="chat_body">
+                            {% if context.messages %}
+                                {% for message in context.messages %}
+                                    {% if message.id_user_from == session.id_user_logged %}
+                                    <li class="right">
+                      			        <img src="{{session.user_data.avatar}}" alt="" class="profile-photo-sm pull-right">
+                      			        <div class="chat-item">
+                                        <div class="chat-item-header">
+                              	        <h5>{{session.user_data.first_name}} {{session.user_data.last_name}}</h5>
+                                        </div>
+                                        <p>{{message.message}}</p>
+                                        </div>
+                                    </li>
+                                    {% else %}
+                                    <li class="left">
+                      			        <img src="context.chat_to[0].avatar" alt="" class="profile-photo-sm pull-left">
+                      			        <div class="chat-item">
+                                        <div class="chat-item-header">
+                                    	<h5>{{context.chat_to[0].first_name}} {{context.chat_to[0].last_name}}</h5>
+                                        </div>
+                                        <p>{{message.message}}</p>
+                                        </div>
+                      		        </li>
+                                    {% endif %}
+
+                                {% endfor %}
+                            {% endif %}
 
                       	</ul>
                       </div>
                     </div>
-
 
 
 
@@ -118,11 +144,13 @@
     	</div>
     </div>
 
-<div class="" id="session_data">{{session.user_data}}</div>
+<div class="none" id="user_login">{{session.user_data.login}}</div> <!--нужно для создания чат комнаты-->
 <div class="none" id="user_id">{{session.id_user_logged}}</div>
+<div class="none" id="user_to_id">{{context.chat_to[0].id_user}}</div> <!--нужно для отправки сообщения-->
 {% endblock %}
 
 {% block scripts %}
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
 <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+<script src="{{ url_for('static', filename='js/make_chat.js') }}"></script>
 {% endblock %}

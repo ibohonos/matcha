@@ -12,9 +12,10 @@ function chat_start()
 		type: 'POST',
 		success: function(response)
 		{
-			var url = window.location.href + "chat";
-            var form = $('<form action="' + url + '" method="post">' +
-            '<input type="text" name="room_name" value="' + response + '" />' + '</form>');
+            var form = $('<form action="/chat" method="post">' +
+            '<input type="text" name="room_name" value="' + response + '" />' +
+            '<input type="text" name="chat_to" value="' + chat_to + '" />' +
+            '<input type="text" name="chat_from" value="' + chat_from + '" /></form>');
             $('body').append(form);
             form.submit();
 		},

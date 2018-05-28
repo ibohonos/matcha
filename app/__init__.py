@@ -2,7 +2,7 @@ import os
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_mail import Mail, Message
 from flask_socketio import SocketIO
-from app.models.users import get_by_id
+from app.models.users import get_user_by_id
 
 
 app = Flask(__name__)

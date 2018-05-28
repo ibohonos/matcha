@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template, session, redirect, request
-from app.models.users import get_by_id
+from app.models.users import get_user_by_id
 from app.models.friendship import *
 from app.models.posts import all_user_post
 
@@ -9,7 +9,7 @@ from app.models.posts import all_user_post
 @app.route('/user/id<int:id_user>')
 def profile(id_user=None):
 	if id_user:
-		user = get_by_id(id_user)
+		user = get_user_by_id(id_user)
 		posts = all_user_post(id_user)
 	else:
 		user = session.get('user_data')
@@ -20,7 +20,7 @@ def profile(id_user=None):
 		user_cur = None
 
 	# data = {'user': user, user_cur=user_cur, posts=posts, get_by_id=get_by_id, datetime=datetime}
-	data = {'user': user, 'user_cur': user_cur, 'posts': posts, 'get_by_id': get_by_id}
+	data = {'user': user, 'user_cur': user_cur, 'posts': posts, 'get_by_id': get_user_by_id}
 	if session.get('id_user_logged'):
 		return render_template('timeline.html', data=data)
 	if id_user:

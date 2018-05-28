@@ -7,7 +7,7 @@ $('#mesage_submit').on('click', function(){
 
     var message = $("#message_input").val();
     if (!message){return;}
-    var data =  {'user_id': $("#user_id").text(), 'message': message};
+    var data =  {'user_id': $("#user_id").text(),'user_to_id': $("#user_to_id").text(), 'message': message};
 	chat_socket.emit('message', data);
 	$("#message_input").val("");
 });

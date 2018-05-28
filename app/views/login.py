@@ -22,7 +22,7 @@ def get_friendlist(id_user):
 			friends_ids.append(i['id_requester'])
 	frends_data = []
 	for i in friends_ids:
-		frends_data.append(get_by_id(i))
+		frends_data.append(get_user_by_id(i))
 	return frends_data
 
 
