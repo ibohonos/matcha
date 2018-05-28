@@ -12,7 +12,6 @@ from random import randint
 def chat():
 	if not session.get('id_user_logged'):
 		return render_template('index-register.html')
-
 	context = {'chat_room': 'room_for_all'}
 	try:
 		context['chat_room'] = request.form['room_name']
@@ -61,10 +60,11 @@ def test_print(msg):
 
 
 @socketio.on('message', namespace='/chat')
-def message(msg):
-	print(msg)
+def message(data):
 	room = chat_users_sid_to_room[request.sid]
-	emit('message_from_server', msg, room=room)
+	user_data = get_by_id(data['user_id'])
+	data['user_data'] = user_data
+	emit('message_from_server', data, room=room)
 
 
 @socketio.on('connect', namespace='/chat')

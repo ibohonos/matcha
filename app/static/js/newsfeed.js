@@ -4,6 +4,8 @@ function chat_start()
     var chat_to = event.srcElement.parentNode.childNodes[2].innerHTML;
     var chat_from = $("#user_login").text();
 
+    console.log(chat_from);
+
     $.ajax({
 		url: "/ajax_create_chat",
 		data: {'chat_to': chat_to, 'chat_from': chat_from},

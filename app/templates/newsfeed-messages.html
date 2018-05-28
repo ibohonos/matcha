@@ -11,8 +11,8 @@
           ================================================= -->
     			<div class="col-md-3 static">
             <div class="profile-card">
-            	<img src="http://placehold.it/300x300" alt="user" class="profile-photo" />
-            	<h5><a href="timeline.html" class="text-white">Sarah Cruiz</a></h5>
+            	<img src="{{ session.user_data.avatar }}" alt="user" class="profile-photo" />
+            	<h5><a href="{{ url_for('profile', id_user=session.id_user_logged) }}" class="text-white">{{ session.user_data.first_name }} {{ session.user_data.last_name }}</a></h5>
             	<a href="#" class="text-white"><i class="ion ion-android-person-add"></i> 1,299 followers</a>
             </div><!--profile card ends-->
             <ul class="nav-news-feed">
@@ -26,15 +26,11 @@
             <div id="chat-block">
               <div class="title">Chat online</div>
               <ul class="online-users list-inline">
-                <li><a href="newsfeed-messages.html" title="Linda Lohan"><img src="http://placehold.it/300x300" alt="user" class="img-responsive profile-photo" /><span class="online-dot"></span></a></li>
-                <li><a href="newsfeed-messages.html" title="Sophia Lee"><img src="http://placehold.it/300x300" alt="user" class="img-responsive profile-photo" /><span class="online-dot"></span></a></li>
-                <li><a href="newsfeed-messages.html" title="John Doe"><img src="http://placehold.it/300x300" alt="user" class="img-responsive profile-photo" /><span class="online-dot"></span></a></li>
-                <li><a href="newsfeed-messages.html" title="Alexis Clark"><img src="http://placehold.it/300x300" alt="user" class="img-responsive profile-photo" /><span class="online-dot"></span></a></li>
-                <li><a href="newsfeed-messages.html" title="James Carter"><img src="http://placehold.it/300x300" alt="user" class="img-responsive profile-photo" /><span class="online-dot"></span></a></li>
-                <li><a href="newsfeed-messages.html" title="Robert Cook"><img src="http://placehold.it/300x300" alt="user" class="img-responsive profile-photo" /><span class="online-dot"></span></a></li>
-                <li><a href="newsfeed-messages.html" title="Richard Bell"><img src="http://placehold.it/300x300" alt="user" class="img-responsive profile-photo" /><span class="online-dot"></span></a></li>
-                <li><a href="newsfeed-messages.html" title="Anna Young"><img src="http://placehold.it/300x300" alt="user" class="img-responsive profile-photo" /><span class="online-dot"></span></a></li>
-                <li><a href="newsfeed-messages.html" title="Julia Cox"><img src="http://placehold.it/300x300" alt="user" class="img-responsive profile-photo" /><span class="online-dot"></span></a></li>
+                  {% if session.friendlist %}
+                    {% for friend in session.friendlist %}
+                    <li><a href="#" title="{{friend.first_name}} {{friend.last_name}}"><img src="{{friend.avatar}}" alt="user" class="img-responsive profile-photo" onclick="chat_start()"/><span class="online-dot"></span><div class="none">{{friend.login}}</div></a></li>
+                    {% endfor %}
+                  {% endif %}
               </ul>
             </div><!--chat block ends-->
           </div>
@@ -48,70 +44,11 @@
                 <div class="col-md-12">
 
                   <!--Chat Messages in Right-->
-                  <div class="tab-content scrollbar-wrapper wrapper scrollbar-outer">
+                  <div class="tab-content scrollbar-wrapper wrapper scrollbar-outer" id="scrollbar_wrapper">
                     <div class="tab-pane active">
                       <div class="chat-body">
                       	<ul class="chat-message" id="chat_body">
-                      		<li class="left">
-                      			<img src="http://placehold.it/300x300" alt="" class="profile-photo-sm pull-left" />
-                      			<div class="chat-item">
-                              <div class="chat-item-header">
-                              	<h5>Linda Lohan</h5>
-                              	<small class="text-muted">3 days ago</small>
-                              </div>
-                              <p>Hi honey, how are you doing???? Long time no see. Where have you been?</p>
-                            </div>
-                      		</li>
-                          <li class="right">
-                      			<img src="http://placehold.it/300x300" alt="" class="profile-photo-sm pull-right" />
-                      			<div class="chat-item">
-                              <div class="chat-item-header">
-                              	<h5>Sarah Cruiz</h5>
-                              	<small class="text-muted">3 days ago</small>
-                              </div>
-                              <p>I have been on vacation</p>
-                            </div>
-                      		</li>
-                          <li class="right">
-                      			<img src="http://placehold.it/300x300" alt="" class="profile-photo-sm pull-right" />
-                      			<div class="chat-item">
-                              <div class="chat-item-header">
-                              	<h5>Sarah Cruiz</h5>
-                              	<small class="text-muted">3 days ago</small>
-                              </div>
-                              <p>it was a great time for me. we had a lot of fun <i class="em em-blush"></i></p>
-                            </div>
-                      		</li>
-                          <li class="left">
-                      			<img src="http://placehold.it/300x300" alt="" class="profile-photo-sm pull-left" />
-                      			<div class="chat-item">
-                              <div class="chat-item-header">
-                              	<h5>Linda Lohan</h5>
-                              	<small class="text-muted">3 days ago</small>
-                              </div>
-                              <p>that's cool I wish I were you <i class="em em-expressionless"></i></p>
-                            </div>
-                      		</li>
-                          <li class="right">
-                      			<img src="http://placehold.it/300x300" alt="" class="profile-photo-sm pull-right" />
-                      			<div class="chat-item">
-                              <div class="chat-item-header">
-                              	<h5>Sarah Cruiz</h5>
-                              	<small class="text-muted">3 days ago</small>
-                              </div>
-                              <p><i class="em em-hand"></i></p>
-                            </div>
-                      		</li>
-                          <li class="left">
-                      			<img src="http://placehold.it/300x300" alt="" class="profile-photo-sm pull-left" />
-                      			<div class="chat-item">
-                              <div class="chat-item-header">
-                              	<h5>Linda Lohan</h5>
-                              	<small class="text-muted">a min ago</small>
-                              </div>
-                              <p>Hi there, how are you</p>
-                            </div>
-                      		</li>
+
                       	</ul>
                       </div>
                     </div>
@@ -181,7 +118,8 @@
     	</div>
     </div>
 
-<div class="" id="user_login">{{session}}</div>
+<div class="" id="session_data">{{session.user_data}}</div>
+<div class="none" id="user_id">{{session.id_user_logged}}</div>
 {% endblock %}
 
 {% block scripts %}
