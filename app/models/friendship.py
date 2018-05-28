@@ -33,7 +33,14 @@ def confirm_user_request(id_requester, id_user_requested):
 
 def all_friends(id_user):
 	arguments = [id_user, id_user]
-	sql = "SELECT * FROM friendships WHERE id_requester=? OR id_user_requested=?"
+	sql = "SELECT * FROM friendships WHERE status=1 AND (id_requester=? OR id_user_requested=?)"
+	res = db_connect(sql, arguments)
+	return res
+
+
+def all_friends_request(id_user):
+	arguments = [id_user, id_user]
+	sql = "SELECT * FROM friendships WHERE status=0 AND (id_requester=? OR id_user_requested=?)"
 	res = db_connect(sql, arguments)
 	return res
 
