@@ -173,6 +173,53 @@ def create_about_table():
 		print("about ok")
 
 
+def create_comments_table():
+	res = db_connect('''
+		CREATE TABLE IF NOT EXISTS comments (
+		id_comment INTEGER PRIMARY KEY AUTOINCREMENT,
+		id_user INTEGER NOT NULL,
+		id_post INTEGER NOT NULL,
+		text TEXT DEFAULT NULL,
+		date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
+		FOREIGN KEY (id_post) REFERENCES posts(id_post) ON DELETE CASCADE,
+		FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE)
+		''')
+	if res:
+		print(res)
+	else:
+		print("comments ok")
+
+
+def create_likes_table():
+	res = db_connect('''
+		CREATE TABLE IF NOT EXISTS likes (
+		id_user INTEGER NOT NULL,
+		id_post INTEGER NOT NULL,
+		date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
+		FOREIGN KEY (id_post) REFERENCES posts(id_post) ON DELETE CASCADE,
+		FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE)
+		''')
+	if res:
+		print(res)
+	else:
+		print("likes ok")
+
+
+def create_dislikes_table():
+	res = db_connect('''
+		CREATE TABLE IF NOT EXISTS dislikes (
+		id_user INTEGER NOT NULL,
+		id_post INTEGER NOT NULL,
+		date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
+		FOREIGN KEY (id_post) REFERENCES posts(id_post) ON DELETE CASCADE,
+		FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE)
+		''')
+	if res:
+		print(res)
+	else:
+		print("dislikes ok")
+
+
 if __name__ == '__main__':
 	create_users_table()
 	create_tags_table()
@@ -181,4 +228,7 @@ if __name__ == '__main__':
 	create_friends_table()
 	create_posts_table()
 	create_about_table()
+	create_comments_table()
+	create_likes_table()
+	create_dislikes_table()
 

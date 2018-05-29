@@ -1,5 +1,8 @@
 {% extends "base.html" %}
-{% block title %}Edit profile {{ user.first_name }} {{ user.last_name }} - Matcha 40k{% endblock %}
+{% block title %}Edit profile {{ data.user.first_name }} {{ data.user.last_name }} - Matcha 40k{% endblock %}
+{% block scripts %}
+	<script src="{{ url_for('static', filename='js/users.js') }}"></script>
+{% endblock %}
 {% block main %}
 
 	<div class="container">
@@ -7,63 +10,18 @@
 	  <!-- Timeline
 	  ================================================= -->
 	  <div class="timeline">
-		<div class="timeline-cover" style="background-image: url({{ user.cover }});">
-
-		  <!--Timeline Menu for Large Screens-->
-		  <div class="timeline-nav-bar hidden-sm hidden-xs">
-			<div class="row">
-			  <div class="col-md-3">
-				<div class="profile-info">
-				  <img src="{{ user.avatar }}" alt="" class="img-responsive profile-photo" />
-				  <h3>{{ user.first_name }} {{ user.last_name }}</h3>
-				  <p class="text-muted">Creative Director</p>
-				</div>
-			  </div>
-			  <div class="col-md-9">
-				<ul class="list-inline profile-menu">
-				  <li><a href="{{ url_for('profile', id_user=user.id_user) }}">Timeline</a></li>
-				  <li><a href="timeline-about.html" class="active">About</a></li>
-				  <li><a href="timeline-album.html">Album</a></li>
-				  <li><a href="timeline-friends.html">Friends</a></li>
-				</ul>
-				<ul class="follow-me list-inline">
-				  <li>1,299 people following her</li>
-				  <li><button class="btn-primary">Add Friend</button></li>
-				</ul>
-			  </div>
-			</div>
-		  </div><!--Timeline Menu for Large Screens End-->
-
-		  <!--Timeline Menu for Small Screens-->
-		  <div class="navbar-mobile hidden-lg hidden-md">
-			<div class="profile-info">
-			  <img src="{{ user.avatar }}" alt="" class="img-responsive profile-photo" />
-			  <h4>{{ user.first_name }} {{ user.last_name }}</h4>
-			  <p class="text-muted">Creative Director</p>
-			</div>
-			<div class="mobile-menu">
-			  <ul class="list-inline">
-				<li><a href="{{ url_for('profile', id_user=user.id_user) }}">Timeline</a></li>
-				<li><a href="timeline-about.html" class="active">About</a></li>
-				<li><a href="timeline-album.html">Album</a></li>
-				<li><a href="timeline-friends.html">Friends</a></li>
-			  </ul>
-			  <button class="btn-primary">Add Friend</button>
-			</div>
-		  </div><!--Timeline Menu for Small Screens End-->
-
-		</div>
+		{% include('parts/header_bottom.html') %}
 		<div id="page-contents">
 		  <div class="row">
 			<div class="col-md-3">
 
 			  <!--Edit Profile Menu-->
 			  <ul class="edit-menu">
-				<li class="active"><i class="icon ion-ios-information-outline"></i><a href="edit-profile-basic.html">Basic Information</a></li>
-				<li><i class="icon ion-ios-briefcase-outline"></i><a href="edit-profile-work-edu.html">Education and Work</a></li>
-				<li><i class="icon ion-ios-heart-outline"></i><a href="edit-profile-interests.html">My Interests</a></li>
-				<li><i class="icon ion-ios-settings"></i><a href="edit-profile-settings.html">Account Settings</a></li>
-				<li><i class="icon ion-ios-locked-outline"></i><a href="edit-profile-password.html">Change Password</a></li>
+				<li class="active"><i class="icon ion-ios-information-outline"></i><a href="{{ url_for('edit_profile') }}">Basic Information</a></li>
+				<li><i class="icon ion-ios-briefcase-outline"></i><a href="{{ url_for('edit_profile_work') }}">Education and Work</a></li>
+				<li><i class="icon ion-ios-heart-outline"></i><a href="{{ url_for('edit_profile_interests') }}">My Interests</a></li>
+				<li><i class="icon ion-ios-settings"></i><a href="{{ url_for('edit_profile_settings') }}">Account Settings</a></li>
+				<li><i class="icon ion-ios-locked-outline"></i><a href="{{ url_for('edit_profile_password') }}">Change Password</a></li>
 			  </ul>
 			</div>
 			<div class="col-md-7">
@@ -82,17 +40,17 @@
 					<div class="row">
 					  <div class="form-group col-xs-6">
 						<label for="firstname">First name</label>
-						<input id="firstname" class="form-control input-group-lg" type="text" name="firstname" title="Enter first name" placeholder="First name" value="{{ user.first_name }}" />
+						<input id="firstname" class="form-control input-group-lg" type="text" name="firstname" title="Enter first name" placeholder="First name" value="{{ data.user.first_name }}" />
 					  </div>
 					  <div class="form-group col-xs-6">
 						<label for="lastname" class="">Last name</label>
-						<input id="lastname" class="form-control input-group-lg" type="text" name="lastname" title="Enter last name" placeholder="Last name" value="{{ user.last_name }}" />
+						<input id="lastname" class="form-control input-group-lg" type="text" name="lastname" title="Enter last name" placeholder="Last name" value="{{ data.user.last_name }}" />
 					  </div>
 					</div>
 					<div class="row">
 					  <div class="form-group col-xs-12">
 						<label for="email">My email</label>
-						<input id="email" class="form-control input-group-lg" type="text" name="Email" title="Enter Email" placeholder="My Email" value="{{ user.email }}" />
+						<input id="email" class="form-control input-group-lg" type="text" name="Email" title="Enter Email" placeholder="My Email" value="{{ data.user.email }}" />
 					  </div>
 					</div>
 					<div class="row">
@@ -444,7 +402,7 @@
 					<div class="row">
 					  <div class="form-group col-xs-12">
 						<label for="my-info">About me</label>
-						<textarea id="my-info" name="information" class="form-control" placeholder="Some texts about me" rows="4" cols="400">{{ user.biography }}</textarea>
+						<textarea id="my-info" name="information" class="form-control" placeholder="Some texts about me" rows="4" cols="400">{{ data.user.biography }}</textarea>
 					  </div>
 					</div>
 					<button class="btn btn-primary">Save Changes</button>

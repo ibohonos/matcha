@@ -1,8 +1,10 @@
 from app import app
 from flask import render_template, session, redirect, request
-from app.models.users import get_by_id
+from app.models.users import get_by_id, get_about
 from app.models.friendship import *
 from app.models.posts import all_user_post
+from app.models.comments import all_post_comments
+from app.models.likes import like, liked, dislike, disliked, undislike, unlike, len_post_dislikes, len_post_likes
 
 
 @app.route('/profile/')
@@ -21,15 +23,61 @@ def profile(id_user=None):
 	else:
 		user_cur = None
 
-	# data = {'user': user, user_cur=user_cur, posts=posts, get_by_id=get_by_id, datetime=datetime}
-	data = {'user': user, 'user_cur': user_cur, 'posts': posts, 'get_by_id': get_by_id}
+	data = {
+		'user': user,
+		'user_cur': user_cur,
+		'posts': posts,
+		'get_by_id': get_by_id,
+		'all_post_comments': all_post_comments,
+		'len_post_likes': len_post_likes,
+		'len_post_dislikes': len_post_dislikes,
+		'like': like,
+		'dislike': dislike,
+		'liked': liked,
+		'disliked': disliked,
+		'unlike': unlike,
+		'undislike': undislike
+	}
 	return render_template('timeline.html', data=data)
 
 
-@app.route('/profile/edit/')
+@app.route('/profile/edit/basic/')
 def edit_profile():
 	if session.get('id_user_logged'):
-		return render_template('edit-profile-basic.html', user=session.get('user_data'))
+		data = {'user': session.get('user_data'), 'about': get_about(session.get('id_user_logged'))}
+		return render_template('edit-profile-basic.html', data=data)
+	return redirect('/')
+
+
+@app.route('/profile/edit/work/')
+def edit_profile_work():
+	if session.get('id_user_logged'):
+		data = {'user': session.get('user_data'), 'about': get_about(session.get('id_user_logged'))}
+		return render_template('edit-profile-work-edu.html', data=data)
+	return redirect('/')
+
+
+@app.route('/profile/edit/interests/')
+def edit_profile_interests():
+	if session.get('id_user_logged'):
+		data = {'user': session.get('user_data'), 'about': get_about(session.get('id_user_logged'))}
+		return render_template('edit-profile-interests.html', data=data)
+	return redirect('/')
+
+
+@app.route('/profile/edit/settings/')
+def edit_profile_settings():
+	if session.get('id_user_logged'):
+		data = {'user': session.get('user_data'), 'about': get_about(session.get('id_user_logged'))}
+		return render_template('edit-profile-settings.html', data=data)
+	return redirect('/')
+
+
+@app.route('/profile/edit/password/')
+def edit_profile_password():
+	if session.get('id_user_logged'):
+		data = {'user': session.get('user_data'), 'about': get_about(session.get('id_user_logged'))}
+		return render_template('edit-profile-password.html', data=data)
 	return redirect('/')
 
 

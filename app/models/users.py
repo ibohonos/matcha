@@ -49,3 +49,12 @@ def get_by_id(id_user):
 	res = db_connect(sql, arguments)
 	return res[0]
 
+
+def get_about(id_user):
+	arguments = [id_user]
+	sql = "SELECT * FROM about WHERE id_user=?"
+	res = db_connect(sql, arguments)
+	if res:
+		return res[0]
+	return res
+
