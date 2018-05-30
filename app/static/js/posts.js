@@ -3,12 +3,14 @@ var user_id = $("#user_id")[0].innerText;
 
 function create_post_action(form) {
 	let content = $("#content");
+	let no_posts = $("#no_posts");
 	$.post('/ajax_create_post', {
 		'content': content.val(),
 		'auth_id': auth_id,
 		'user_id': user_id
 	}).done(function (resp) {
 		content.val("");
+		no_posts.remove();
 		let all_posts = $("#all_posts");
 		let data = '<div class="post-content"><!--Post Date-->' +
 			'<div class="post-date hidden-xs hidden-sm">' +

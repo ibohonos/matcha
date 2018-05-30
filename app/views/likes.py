@@ -1,6 +1,6 @@
 from app import app
 from flask import request
-from app.models.likes import like, dislike, unlike, undislike
+from app.models.likes import like, dislike, unlike, undislike, liked, disliked
 
 
 @app.route('/ajax_like/', methods=['POST'])
