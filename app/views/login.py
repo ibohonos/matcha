@@ -145,8 +145,7 @@ def ajax_login():
 def ajax_logout():
 	session.pop('id_user_logged', None)
 	session.pop('user_data', None)
-	session.pop('friendlist', None)
-	return redirect(url_for('index'))
+	return redirect(request.referrer)
 
 
 @app.route('/recover')

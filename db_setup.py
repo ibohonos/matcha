@@ -17,7 +17,6 @@ def create_users_table():
 		token VARCHAR(255),
 		gender INT NOT NULL DEFAULT 1,
 		sex_pref INT,
-		biography TEXT DEFAULT NULL,
 		date_creation DATETIME DEFAULT CURRENT_TIMESTAMP)
 		''')
 	if res:
@@ -127,6 +126,37 @@ def create_posts_table():
 		print("posts ok")
 
 
+def create_about_table():
+	res = db_connect('''
+		CREATE TABLE IF NOT EXISTS about (
+		id_about INTEGER PRIMARY KEY AUTOINCREMENT,
+		id_user INTEGER NOT NULL,
+		biography TEXT DEFAULT NULL,
+		location VARCHAR(255) DEFAULT NULL,
+		`language` VARCHAR(255) DEFAULT NULL,
+		phone VARCHAR(255) DEFAULT NULL,
+		status VARCHAR(255) DEFAULT NULL,
+		political VARCHAR(255) DEFAULT NULL,
+		fb VARCHAR(255) DEFAULT NULL,
+		tw VARCHAR(255) DEFAULT NULL,
+		inst VARCHAR(255) DEFAULT NULL,
+		site VARCHAR(255) DEFAULT NULL,
+		hobbies TEXT DEFAULT NULL,
+		tv_shows TEXT DEFAULT NULL,
+		movies TEXT DEFAULT NULL,
+		games TEXT DEFAULT NULL,
+		music TEXT DEFAULT NULL,
+		books TEXT DEFAULT NULL,
+		writers TEXT DEFAULT NULL,
+		others TEXT DEFAULT NULL,
+		date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
+		FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE)
+    if res:
+      print(res)
+    else:
+      print("about ok")
+
+
 def create_messages_table():
 	res = db_connect('''
 		CREATE TABLE IF NOT EXISTS messages (
@@ -143,7 +173,54 @@ def create_messages_table():
 	if res:
 		print(res)
 	else:
-		print("messages ok")
+    print("messages ok")
+
+
+def create_comments_table():
+	res = db_connect('''
+		CREATE TABLE IF NOT EXISTS comments (
+		id_comment INTEGER PRIMARY KEY AUTOINCREMENT,
+		id_user INTEGER NOT NULL,
+		id_post INTEGER NOT NULL,
+		text TEXT DEFAULT NULL,
+		date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
+		FOREIGN KEY (id_post) REFERENCES posts(id_post) ON DELETE CASCADE,
+		FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE)
+		''')
+	if res:
+		print(res)
+	else:
+		print("comments ok")
+
+
+def create_likes_table():
+	res = db_connect('''
+		CREATE TABLE IF NOT EXISTS likes (
+		id_user INTEGER NOT NULL,
+		id_post INTEGER NOT NULL,
+		date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
+		FOREIGN KEY (id_post) REFERENCES posts(id_post) ON DELETE CASCADE,
+		FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE)
+		''')
+	if res:
+		print(res)
+	else:
+		print("likes ok")
+
+
+def create_dislikes_table():
+	res = db_connect('''
+		CREATE TABLE IF NOT EXISTS dislikes (
+		id_user INTEGER NOT NULL,
+		id_post INTEGER NOT NULL,
+		date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
+		FOREIGN KEY (id_post) REFERENCES posts(id_post) ON DELETE CASCADE,
+		FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE)
+		''')
+	if res:
+		print(res)
+	else:
+		print("dislikes ok")
 
 
 if __name__ == '__main__':
@@ -153,4 +230,9 @@ if __name__ == '__main__':
 	create_chat_table()
 	create_friends_table()
 	create_posts_table()
+	create_about_table()
+	create_comments_table()
+	create_likes_table()
+	create_dislikes_table()
 	create_messages_table()
+

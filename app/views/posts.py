@@ -23,9 +23,16 @@ def ajax_create_post():
 	user_first_name = user['first_name']
 	user_last_name = user['last_name']
 	user_avatar = user['avatar']
-	if not res:
-		data = {'user_avatar': user_avatar, 'user_first_name': user_first_name, 'user_last_name': user_last_name, 'auth_id': auth_id, 'type': "text", 'content': content}
-		res_j = jsonify(data)
-		return res_j
+	if res:
+		data = {
+			'user_avatar': user_avatar,
+			'user_first_name': user_first_name,
+			'user_last_name': user_last_name,
+			'auth_id': auth_id,
+			'type': "text",
+			'content': content,
+			'id_post': res
+		}
+		return jsonify(data)
 	return "Fail"
 
