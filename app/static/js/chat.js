@@ -7,15 +7,34 @@ $('#mesage_submit').on('click', function(){
 
     var message = $("#message_input").val();
     if (!message){return;}
-    var data =  {'login': 'login', 'message': message};
-	chat_socket.emit('message', message);
+    var data =  {'user_id': $("#user_id").text(),'user_to_id': $("#user_to_id").text(), 'message': message};
+	chat_socket.emit('message', data);
 	$("#message_input").val("");
 });
 
-chat_socket.on('message_from_server', function(msg)
+chat_socket.on('message_from_server', function(data)
 {
-	$("#chat_body").append('<li class="left"><img src="http://placehold.it/300x300" alt=""class="profile-photo-sm pull-left"><div class="chat-item"><div class="chat-item-header"><h5>Linda Lohan</h5><small class="text-muted">3 days ago</small></div><p>' +
-	msg + '</p></div></li>');
+    var msg = data['message'];
+    var id_user_from = data['user_id'];
+    var user_data = data['user_data'];
+    console.log(user_data);
+
+    new_msg = document.createElement('li');
+    if (id_user_from == $("#user_id").text()){
+        $(new_msg).addClass('right');
+        $(new_msg).html('<img src="'+ user_data['avatar'] +'" alt=""class="profile-photo-sm pull-right"><div class="chat-item"><div class="chat-item-header"><h5>'+ user_data['first_name'] +' '+ user_data['last_name'] +'</h5></div><p>' +
+	    msg + '</p></div>');
+    }
+    else{
+        $(new_msg).addClass('left');
+        $(new_msg).html('<img src="'+ user_data['avatar'] +'" alt=""class="profile-photo-sm pull-left"><div class="chat-item"><div class="chat-item-header"><h5>'+ user_data['first_name'] +' '+ user_data['last_name'] +'</h5></div><p>' +
+	    msg + '</p></div>');
+    }
+
+	$(new_msg).appendTo($("#chat_body"));
+
+    topPos = new_msg.offsetTop;
+    document.getElementById('scrollbar_wrapper').scrollTop = topPos;
 });
 
 chat_socket.on('connect', function()

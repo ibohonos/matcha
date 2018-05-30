@@ -55,16 +55,18 @@
 						<div class="post-content">
 							<!--Post Date-->
 							<div class="post-date hidden-xs hidden-sm">
-								<h5>{{ data.get_by_id(post.id_user_from).first_name }}</h5>
-								<p class="text-grey">{{ post.date_creation.split(" ")[0] }}</p>
+
+								<h5>{{ data.get_user_by_id(post.id_user_from).first_name }}</h5>
+								<p class="text-grey">{{ post.date_creation }}</p>
+
 							</div><!--Post Date End-->
 	{#						<img src="http://placehold.it/1920x1280" alt="post-image" class="img-responsive post-image" />#}
 							<div class="post-container">
-								<img src="{{ data.get_by_id(post.id_user_from).avatar }}" alt="user" class="profile-photo-md pull-left" />
+								<img src="{{ data.get_user_by_id(post.id_user_from).avatar }}" alt="user" class="profile-photo-md pull-left" />
 								<div class="post-detail">
 									<div class="user-info">
-										<h5><a href="{{ url_for('profile', id_user=data.get_by_id(post.id_user_from).id_user) }}" class="profile-link">{{ data.get_by_id(post.id_user_from).first_name }} {{ data.get_by_id(post.id_user_from).last_name }}</a> <span class="following">following</span></h5>
-										<p class="text-muted">Published a {{ post.type }} on a {{ post.date_creation.split(" ")[1] }}</p>
+										<h5><a href="{{ url_for('profile', id_user=data.get_user_by_id(post.id_user_from).id_user) }}" class="profile-link">{{ data.get_user_by_id(post.id_user_from).first_name }} {{ data.get_user_by_id(post.id_user_from).last_name }}</a> <span class="following">following</span></h5>
+										<p class="text-muted">Published a {{ post.type }} on a {{ post.date_creation }}</p>
 									</div>
 									<div class="reaction">
 										{% if session.get('id_user_logged') and data.liked(session.get('id_user_logged'), post.id_post) %}

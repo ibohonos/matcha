@@ -43,4 +43,3 @@ def all_friends_request(id_user):
 	sql = "SELECT * FROM friendships WHERE status=0 AND (id_requester=? OR id_user_requested=?)"
 	res = db_connect(sql, arguments)
 	return res
-

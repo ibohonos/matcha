@@ -43,7 +43,7 @@ def user_new_pwd(id_user, pwd):
 	return res
 
 
-def get_by_id(id_user):
+def get_user_by_id(id_user):
 	arguments = [id_user]
 	sql = "SELECT * FROM users WHERE id_user = ?"
 	res = db_connect(sql, arguments)

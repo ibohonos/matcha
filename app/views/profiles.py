@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template, session, redirect, request
-from app.models.users import get_by_id, get_about
+from app.models.users import get_user_by_id, get_about
 from app.models.friendship import *
 from app.models.posts import all_user_post
 from app.models.comments import all_post_comments
@@ -13,7 +13,7 @@ def profile(id_user=None):
 	if not session.get('user_data') and not id_user:
 		return redirect('/')
 	if id_user:
-		user = get_by_id(id_user)
+		user = get_user_by_id(id_user)
 		posts = all_user_post(id_user)
 	else:
 		user = session.get('user_data')
@@ -27,7 +27,7 @@ def profile(id_user=None):
 		'user': user,
 		'user_cur': user_cur,
 		'posts': posts,
-		'get_by_id': get_by_id,
+		'get_user_by_id': get_user_by_id,
 		'all_post_comments': all_post_comments,
 		'len_post_likes': len_post_likes,
 		'len_post_dislikes': len_post_dislikes,

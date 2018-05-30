@@ -2,6 +2,7 @@
 {% block title %}Newsfeed{% endblock %}
 	<!--Header End-->
 {% block main %}
+
 	<div id="page-contents">
 		<div class="container">
 			<div class="row">
@@ -26,10 +27,11 @@
 				<div id="chat-block">
 				  <div class="title">Chat online</div>
 				  <ul class="online-users list-inline">
-					<li><a href="#" title="Linda Lohan"><img src="http://placehold.it/300x300" alt="user" class="img-responsive profile-photo" onclick="chat_start()"/><span class="online-dot"></span><div class="none">Antei</div></a></li>
-					<li><a href="#" title="Sophia Lee"><img src="http://placehold.it/300x300" alt="user" class="img-responsive profile-photo" onclick="chat_start()"/><span class="online-dot"></span><div class="none">ibohonos</div></a></li>
-					<li><a href="#" title="John Doe"><img src="http://placehold.it/300x300" alt="user" class="img-responsive profile-photo" onclick="chat_start()"/><span class="online-dot"></span><div class="none">test1</div></a></li>
-					<li><a href="#" title="Alexis Clark"><img src="http://placehold.it/300x300" alt="user" class="img-responsive profile-photo" onclick="chat_start()"/><span class="online-dot"></span><div class="none">test2</div></a></li>
+                  {% if session.friendlist %}
+                    {% for friend in session.friendlist %}
+                    <li><a href="#" title="{{friend.first_name}} {{friend.last_name}}"><img src="{{friend.avatar}}" alt="user" class="img-responsive profile-photo" onclick="chat_start()"/><span class="online-dot"></span><div class="none">{{friend.login}}</div></a></li>
+                    {% endfor %}
+                  {% endif %}
 				  </ul>
 				</div><!--chat block ends-->
 			</div>
@@ -316,9 +318,10 @@
 		</div>
 	</div>
 
-<div class="none" id="user_login">{{session.login_user_logged}}</div>
+<div class="none" id="user_login">{{session.user_data.login}}</div>
+
 {% endblock %}
 
 {% block scripts %}
-<script src="{{ url_for('static', filename='js/newsfeed.js') }}"></script>
+<script src="{{ url_for('static', filename='js/make_chat.js') }}"></script>
 {% endblock %}

@@ -7,6 +7,23 @@ from datetime import datetime
 from flask_mail import Message
 from app.models.users import *
 from random import randint
+from app.models.friendship import get_friends_of_id
+
+
+def get_friendlist(id_user):
+	req = get_friends_of_id(id_user)
+	if not req:
+		return None
+	friends_ids = []
+	for i in req:
+		if i['id_requester'] == id_user:
+			friends_ids.append(i['id_user_requested'])
+		if i['id_user_requested'] == id_user:
+			friends_ids.append(i['id_requester'])
+	frends_data = []
+	for i in friends_ids:
+		frends_data.append(get_user_by_id(i))
+	return frends_data
 
 
 @app.route('/ajax_registration', methods=['POST'])
@@ -19,7 +36,7 @@ def ajax_registration():
 	r_gender = request.form['gender']
 	num = randint(1, 12)
 
-	if num > 0 and num <= 6:
+	if 0 < num <= 6:
 		cover = str(num) + ".jpg"
 	else:
 		cover = str(num) + ".jpeg"
@@ -113,6 +130,7 @@ def ajax_login():
 			return "not_active"
 		pwd_hash = hashlib.sha512(pwd.encode('utf-8')).hexdigest()
 		if res['password'] == pwd_hash:
+			session['friendlist'] = get_friendlist(res['id_user'])
 			session['id_user_logged'] = res['id_user']
 			session['user_data'] = res
 			return "logged_in"

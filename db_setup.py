@@ -87,21 +87,6 @@ def create_chat_table():
 	else:
 		print("chat_room_con ok")
 
-	res = db_connect('''
-		CREATE TABLE IF NOT EXISTS chat_message (
-		id_message INTEGER PRIMARY KEY AUTOINCREMENT,
-		id_user INTEGER NOT NULL,
-		id_chat_room INTEGER NOT NULL,
-		m_text TEXT,
-		red BOOLEAN DEFAULT 0 NOT NULL,
-		FOREIGN KEY (id_chat_room) REFERENCES chat_room(id_chat_room) ON DELETE CASCADE,
-		FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE)
-		''')
-	if res:
-		print(res)
-	else:
-		print("chat_message ok")
-
 
 def create_friends_table():
 	res = db_connect('''
@@ -166,11 +151,29 @@ def create_about_table():
 		others TEXT DEFAULT NULL,
 		date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
 		FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE)
+    if res:
+      print(res)
+    else:
+      print("about ok")
+
+
+def create_messages_table():
+	res = db_connect('''
+		CREATE TABLE IF NOT EXISTS messages (
+		id_message INTEGER PRIMARY KEY AUTOINCREMENT,
+		id_chat_room INTEGER NOT NULL,
+		id_user_from INTEGER NOT NULL,
+		id_user_to INTEGER NOT NULL,
+		message TEXT NOT NULL,
+		read_status BOOLEAN DEFAULT 0,
+		FOREIGN KEY (id_user_from) REFERENCES users(id_user) ON DELETE CASCADE,
+		FOREIGN KEY (id_user_to) REFERENCES users(id_user) ON DELETE CASCADE,
+		FOREIGN KEY (id_chat_room) REFERENCES chat_room(id_chat_room) ON DELETE CASCADE)
 		''')
 	if res:
 		print(res)
 	else:
-		print("about ok")
+    print("messages ok")
 
 
 def create_comments_table():
@@ -231,4 +234,5 @@ if __name__ == '__main__':
 	create_comments_table()
 	create_likes_table()
 	create_dislikes_table()
+	create_messages_table()
 
