@@ -2,6 +2,12 @@ var socket = io.connect('http://' + document.domain + ':' + location.port);
 var chat_socket = io('http://' + document.domain + ':' + location.port + '/chat');
 var room = $("#chat_room").text();
 
+window.onload = function () {
+    var chat_body = document.getElementById('chat_body');
+    var last_msg = chat_body.lastChild.previousSibling;
+    topPos = last_msg.offsetTop;
+    document.getElementById('scrollbar_wrapper').scrollTop = topPos;
+}
 
 $('#mesage_submit').on('click', function(){
 
@@ -22,12 +28,12 @@ chat_socket.on('message_from_server', function(data)
     new_msg = document.createElement('li');
     if (id_user_from == $("#user_id").text()){
         $(new_msg).addClass('right');
-        $(new_msg).html('<img src="'+ user_data['avatar'] +'" alt=""class="profile-photo-sm pull-right"><div class="chat-item"><div class="chat-item-header"><h5>'+ user_data['first_name'] +' '+ user_data['last_name'] +'</h5></div><p>' +
+        $(new_msg).html('<img src="'+ user_data['avatar'] +'" alt=""class="profile-photo-sm pull-right"><div class="chat-item"><div class="chat-item-header"><h5>'+ user_data['first_name'] +' '+ user_data['last_name'] +'</h5><small class="text-muted">'+ data['date_time'] +'</small></div><p>' +
 	    msg + '</p></div>');
     }
     else{
         $(new_msg).addClass('left');
-        $(new_msg).html('<img src="'+ user_data['avatar'] +'" alt=""class="profile-photo-sm pull-left"><div class="chat-item"><div class="chat-item-header"><h5>'+ user_data['first_name'] +' '+ user_data['last_name'] +'</h5></div><p>' +
+        $(new_msg).html('<img src="'+ user_data['avatar'] +'" alt=""class="profile-photo-sm pull-left"><div class="chat-item"><div class="chat-item-header"><h5>'+ user_data['first_name'] +' '+ user_data['last_name'] +'</h5><small class="text-muted">'+ data['date_time'] +'</small></div><p>' +
 	    msg + '</p></div>');
     }
 
@@ -39,5 +45,5 @@ chat_socket.on('message_from_server', function(data)
 
 chat_socket.on('connect', function()
 {
-	chat_socket.emit('join_room', {'room': room});
+	chat_socket.emit('join_room', {'room': room, 'user_id': $("#user_id").text(), 'user_to_id': $("#user_to_id").text()});
 });

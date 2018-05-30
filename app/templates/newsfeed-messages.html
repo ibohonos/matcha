@@ -3,6 +3,7 @@
     <!--Header End-->
 {% block main %}
 
+
 <div class="none" id="chat_room">{{ context.chat_room }}</div>
     <div id="page-contents" class="rx_chat_content">
     	<div class="container">
@@ -57,25 +58,25 @@
                       			        <div class="chat-item">
                                         <div class="chat-item-header">
                               	        <h5>{{session.user_data.first_name}} {{session.user_data.last_name}}</h5>
+                                        <small class="text-muted">{{message.date_creation}}</small>
                                         </div>
                                         <p>{{message.message}}</p>
                                         </div>
                                     </li>
                                     {% else %}
                                     <li class="left">
-                      			        <img src="context.chat_to[0].avatar" alt="" class="profile-photo-sm pull-left">
+                      			        <img src="{{context.chat_to[0].avatar}}" alt="" class="profile-photo-sm pull-left">
                       			        <div class="chat-item">
                                         <div class="chat-item-header">
                                     	<h5>{{context.chat_to[0].first_name}} {{context.chat_to[0].last_name}}</h5>
+                                        <small class="text-muted">{{message.date_creation}}</small>
                                         </div>
                                         <p>{{message.message}}</p>
                                         </div>
                       		        </li>
                                     {% endif %}
-
                                 {% endfor %}
                             {% endif %}
-
                       	</ul>
                       </div>
                     </div>

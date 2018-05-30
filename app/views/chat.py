@@ -5,8 +5,27 @@ from app.models.chat import *
 from app.models.users import *
 from app.models.messages import *
 from collections import Counter
-import hashlib
-from random import randint
+from datetime import datetime
+from app.views.notifications import add_notification
+
+
+chat_users_sid_to_id = {}
+chat_users_sid_to_room = {}
+
+
+def create_room(user_from, user_to):
+	room_name = str(user_from + user_to)
+	create_chat_room_in_db(room_name)
+	add_user_to_chat_room(room_name, user_from)
+	add_user_to_chat_room(room_name, user_to)
+	return room_name
+
+
+def check_user_online(user_id):
+	for key, value in chat_users_sid_to_id.items():
+		if str(value) == user_id:
+			return 1
+	return 0
 
 
 @app.route('/chat', methods=['POST'])
@@ -14,7 +33,6 @@ def chat():
 	if not session.get('id_user_logged'):
 		return redirect(url_for('index'))
 	context = {'chat_room': 'room_for_all'}
-	print(request.form)
 
 	try:
 		room_data = get_chat_room_by_name(request.form['room_name'])
@@ -34,14 +52,6 @@ def chat():
 		return redirect(url_for('index'))
 
 	return render_template('newsfeed-messages.html', context=context)
-
-
-def create_room(user_from, user_to):
-	room_name = str(user_from + user_to)
-	create_chat_room_in_db(room_name)
-	add_user_to_chat_room(room_name, user_from)
-	add_user_to_chat_room(room_name, user_to)
-	return room_name
 
 
 @app.route('/ajax_create_chat', methods=['POST'])
@@ -65,31 +75,28 @@ def ajax_create_chat():
 	return room_name
 
 
-chat_users_sid_to_id = {}
-chat_users_sid_to_room = {}
-
-
-@socketio.on('test_print', namespace='/chat')
+@socketio.on("test_print", namespace='/chat')
 def test_print(msg):
 	print(msg['room'])
 
 
 @socketio.on('message', namespace='/chat')
 def message(data):
-	print(data)
-
 	room = chat_users_sid_to_room[request.sid]
 	user_data = get_user_by_id(data['user_id'])
 	data['user_data'] = user_data
+	data['date_time'] = "{:%Y-%m-%d %H:%M:%S}".format(datetime.now())
 	room_data = get_chat_room_by_name(room)
-	save_message(room_data[0]['id_chat_room'], data['user_id'], data['user_to_id'], data['message'], 0)
+	user_to_online = check_user_online(data['user_to_id'])
+	save_message(room_data[0]['id_chat_room'], data['user_id'], data['user_to_id'], data['message'], user_to_online)
 	emit('message_from_server', data, room=room)
+	if not user_to_online:
+		add_notification(data['user_to_id'], "new message from " + user_data['first_name'] + " " + user_data['last_name'])
 
 
 @socketio.on('connect', namespace='/chat')
 def connect():
 	chat_users_sid_to_id[request.sid] = session.get('id_user_logged')
-	print("connected")
 
 
 @socketio.on('disconnect', namespace='/chat')
@@ -104,7 +111,9 @@ def disconnect():
 def test_print(data):
 	join_room(data['room'])
 	chat_users_sid_to_room[request.sid] = data['room']
+	mark_as_read(data['user_id'], data['user_to_id'])
 
-	print("sid:" + request.sid + " joined room " + data['room'])
-	print(chat_users_sid_to_id)
-	print(chat_users_sid_to_room)
+
+# print("sid:" + request.sid + " joined room " + data['room'])
+# print(chat_users_sid_to_id)
+# print(chat_users_sid_to_room)
