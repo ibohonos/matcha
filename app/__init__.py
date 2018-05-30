@@ -22,9 +22,8 @@ mail = Mail(app)
 
 
 
+from app.views import newsfeed, login, chat, profiles, posts, friends
 
-
-from app.views import newsfeed, login, chat, profiles, posts
 
 
 @app.route('/')

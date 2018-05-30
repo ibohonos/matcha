@@ -6,7 +6,7 @@ from app.models.posts import all_user_post
 
 
 @app.route('/profile/')
-@app.route('/user/id<int:id_user>')
+@app.route('/user/id<int:id_user>/')
 def profile(id_user=None):
 	if id_user:
 		user = get_user_by_id(id_user)
