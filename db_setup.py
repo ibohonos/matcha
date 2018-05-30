@@ -151,10 +151,11 @@ def create_about_table():
 		others TEXT DEFAULT NULL,
 		date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
 		FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE)
-    if res:
-      print(res)
-    else:
-      print("about ok")
+		''')
+	if res:
+		print(res)
+	else:
+		print("about ok")
 
 
 def create_messages_table():
@@ -173,7 +174,7 @@ def create_messages_table():
 	if res:
 		print(res)
 	else:
-    print("messages ok")
+		print("messages ok")
 
 
 def create_comments_table():
@@ -235,4 +236,3 @@ if __name__ == '__main__':
 	create_likes_table()
 	create_dislikes_table()
 	create_messages_table()
-
