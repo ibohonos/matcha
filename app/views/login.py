@@ -7,11 +7,11 @@ from datetime import datetime
 from flask_mail import Message
 from app.models.users import *
 from random import randint
-from app.models.friendship import get_friends_of_id
+from app.models.friendship import all_friends
 
 
 def get_friendlist(id_user):
-	req = get_friends_of_id(id_user)
+	req = all_friends(id_user)
 	if not req:
 		return None
 	friends_ids = []

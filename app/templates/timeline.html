@@ -88,8 +88,8 @@
 									<div id="all_comments{{ post.id_post }}">
 										{% for comment in data.all_post_comments(post.id_post) %}
 											<div class="post-comment">
-												<img src="{{ data.get_by_id(comment.id_user).avatar }}" alt="" class="profile-photo-sm" />
-												<a href="{{ url_for('profile', id_user=data.get_by_id(comment.id_user).id_user) }}" class="profile-link">{{ data.get_by_id(comment.id_user).first_name }}</a>
+												<img src="{{ data.get_user_by_id(comment.id_user).avatar }}" alt="" class="profile-photo-sm" />
+												<a href="{{ url_for('profile', id_user=comment.id_user) }}" class="profile-link">{{ data.get_user_by_id(comment.id_user).first_name }}</a>
 												<p>&nbsp;&nbsp;{{ comment.text }}</p>
 											</div>
 										{% endfor %}

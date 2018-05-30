@@ -1,7 +1,7 @@
 from app import app
 from flask import session, redirect, request, jsonify
 from app.models.comments import add_comment
-from app.models.users import get_by_id
+from app.models.users import get_user_by_id
 
 
 @app.route('/ajax_add_comment/', methods=['POST'])
@@ -11,7 +11,7 @@ def ajax_add_comment():
 	text = request.form.get('text')
 
 	res = add_comment(id_user, id_post, text)
-	user = get_by_id(id_user)
+	user = get_user_by_id(id_user)
 	if res:
 		data = {
 			'user_avatar': user['avatar'],
