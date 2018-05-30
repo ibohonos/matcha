@@ -1,10 +1,10 @@
-from app.config.databse import db_connect
+from app.config.databse import db_connect, db_insert
 
 
 def create_post(id_user, id_user_from, type_p, status, content, img, video):
 	arguments = [id_user, id_user_from, type_p, status, content, img, video]
 	sql = "INSERT INTO posts (id_user, id_user_from, type, status, content, img, video) VALUES (?,?,?,?,?,?,?)"
-	res = db_connect(sql, arguments)
+	res = db_insert(sql, arguments)
 	return res
 
 
