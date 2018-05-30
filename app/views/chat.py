@@ -3,6 +3,7 @@ from flask_socketio import SocketIO, join_room, leave_room, emit
 from flask import Flask, render_template, request, session, redirect, url_for
 from app.models.chat import *
 from app.models.users import *
+from app.models.messages import *
 from collections import Counter
 import hashlib
 from random import randint
@@ -11,13 +12,26 @@ from random import randint
 @app.route('/chat', methods=['POST'])
 def chat():
 	if not session.get('id_user_logged'):
-		return render_template('index-register.html')
-
+		return redirect(url_for('index'))
 	context = {'chat_room': 'room_for_all'}
+	print(request.form)
+
+	try:
+		room_data = get_chat_room_by_name(request.form['room_name'])
+		messages = get_messages_by_room_id(room_data[0]['id_chat_room'])
+		if messages:
+			context['messages'] = messages
+		else:
+			context['messages'] = None
+	except:
+		return redirect(url_for('index'))
+
 	try:
 		context['chat_room'] = request.form['room_name']
+		context['chat_to'] = check_user(request.form['chat_to'], request.form['chat_to'])
+		context['chat_from'] = check_user(request.form['chat_from'], request.form['chat_from'])
 	except:
-		return render_template('index-register.html')
+		return redirect(url_for('index'))
 
 	return render_template('newsfeed-messages.html', context=context)
 
@@ -61,10 +75,15 @@ def test_print(msg):
 
 
 @socketio.on('message', namespace='/chat')
-def message(msg):
-	print(msg)
+def message(data):
+	print(data)
+
 	room = chat_users_sid_to_room[request.sid]
-	emit('message_from_server', msg, room=room)
+	user_data = get_user_by_id(data['user_id'])
+	data['user_data'] = user_data
+	room_data = get_chat_room_by_name(room)
+	save_message(room_data[0]['id_chat_room'], data['user_id'], data['user_to_id'], data['message'], 0)
+	emit('message_from_server', data, room=room)
 
 
 @socketio.on('connect', namespace='/chat')
