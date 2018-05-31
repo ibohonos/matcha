@@ -49,9 +49,24 @@
 {#								<li><a href="index-register.html">Landing Page 2</a></li>#}
 {#							</ul>#}
 {#						</li>#}
+
+
 						<li class="dropdown">
 							{% if session.get('user_data') %}
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Notifications<span><img src="images/down-arrow.png" alt=""></span></a>
+                                     <ul class="dropdown-menu newsfeed-home" id="notifications">
+                                         {% if context.notifications %}
+                                         {% for notif in context.notifications %}
+                                         <li><a>{{notif.notification}}</a></li>
+                                         {% endfor %}
+                                         <li><a href="" id="notification_red">Mark all as red</a></li>
+                                         {% endif %}
+                                     </ul>
+                                </li>
+                                <li class="dropdown">
 								<a href="{{ url_for('index') }}">Newsfeed</a>
+                                </li>
 							{% else %}
 								<a href="{{ url_for('index') }}">Login / Register</a>
 							{% endif %}

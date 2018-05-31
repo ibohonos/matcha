@@ -4,7 +4,6 @@ from flask_mail import Mail, Message
 from flask_socketio import SocketIO
 from app.models.users import get_user_by_id
 
-
 app = Flask(__name__)
 
 app.secret_key = os.urandom(16)
@@ -21,12 +20,15 @@ app.config.update(dict(
 mail = Mail(app)
 
 from app.views import newsfeed, login, chat, profiles, posts, friends, comments, likes, notifications
+from app.models.notifications import get_notifications_by_user_id
 
 
 @app.route('/')
 def index():
 	if session.get('id_user_logged'):
-		return render_template('newsfeed.html', user=session.get('user_data'))
+		context = {'notifications': get_notifications_by_user_id(session.get('id_user_logged'))}
+		print(context)
+		return render_template('newsfeed.html', context=context)
 	return render_template('index-register.html')
 
 # app.add_url_rule("/test2", "test2", test2, methods=['GET', 'POST'])

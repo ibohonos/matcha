@@ -52,3 +52,7 @@
 	outline: none;
 	border-radius: 30px;
 }
+
+#notification_red{
+   color: #dcb5b5f5;
+}

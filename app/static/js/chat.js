@@ -23,7 +23,7 @@ chat_socket.on('message_from_server', function(data)
     var msg = data['message'];
     var id_user_from = data['user_id'];
     var user_data = data['user_data'];
-    console.log(user_data);
+    // console.log(user_data);
 
     new_msg = document.createElement('li');
     if (id_user_from == $("#user_id").text()){

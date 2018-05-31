@@ -13,3 +13,10 @@ def check_notification_in_db(id_user, notification):
 	sql = "SELECT id_notif FROM notifications WHERE id_user = ? AND notification = ? "
 	res = db_connect(sql, agruments)
 	return res
+
+
+def get_notifications_by_user_id(id_user):
+	agruments = [id_user]
+	sql = "SELECT notification FROM notifications WHERE id_user = ?"
+	res = db_connect(sql, agruments)
+	return res

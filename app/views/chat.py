@@ -1,5 +1,5 @@
 from app import app, socketio
-from flask_socketio import SocketIO, join_room, leave_room, emit
+from flask_socketio import SocketIO, join_room, leave_room, emit, send
 from flask import Flask, render_template, request, session, redirect, url_for
 from app.models.chat import *
 from app.models.users import *
@@ -7,7 +7,6 @@ from app.models.messages import *
 from collections import Counter
 from datetime import datetime
 from app.views.notifications import add_notification
-
 
 chat_users_sid_to_id = {}
 chat_users_sid_to_room = {}
@@ -33,6 +32,8 @@ def chat():
 	if not session.get('id_user_logged'):
 		return redirect(url_for('index'))
 	context = {'chat_room': 'room_for_all'}
+
+	print(session.get('notifications'))
 
 	try:
 		room_data = get_chat_room_by_name(request.form['room_name'])
@@ -112,7 +113,6 @@ def test_print(data):
 	join_room(data['room'])
 	chat_users_sid_to_room[request.sid] = data['room']
 	mark_as_read(data['user_id'], data['user_to_id'])
-
 
 # print("sid:" + request.sid + " joined room " + data['room'])
 # print(chat_users_sid_to_id)
