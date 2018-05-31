@@ -73,3 +73,16 @@ def len_post_dislikes(id_post):
 	return count
 
 
+def dell_post_likes(post_id):
+	arguments = [post_id]
+	sql = "DELETE FROM likes WHERE id_post=?"
+	res = db_connect(sql, arguments)
+	return res
+
+
+def dell_post_dislikes(post_id):
+	arguments = [post_id]
+	sql = "DELETE FROM dislikes WHERE id_post=?"
+	res = db_connect(sql, arguments)
+	return res
+

@@ -4,7 +4,7 @@ from app.models.users import get_user_by_id, get_about
 from app.models.friendship import *
 from app.models.posts import all_user_post
 from app.models.comments import all_post_comments
-from app.models.likes import like, liked, dislike, disliked, undislike, unlike, len_post_dislikes, len_post_likes
+from app.models.likes import liked, disliked, len_post_dislikes, len_post_likes
 
 
 @app.route('/profile/')
@@ -31,12 +31,8 @@ def profile(id_user=None):
 		'all_post_comments': all_post_comments,
 		'len_post_likes': len_post_likes,
 		'len_post_dislikes': len_post_dislikes,
-		'like': like,
-		'dislike': dislike,
 		'liked': liked,
 		'disliked': disliked,
-		'unlike': unlike,
-		'undislike': undislike
 	}
 	return render_template('timeline.html', data=data)
 

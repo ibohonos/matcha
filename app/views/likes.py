@@ -8,19 +8,31 @@ def ajax_like():
 	id_user = request.form.get('auth_id')
 	id_post = request.form.get('post_id')
 
-	res = like(id_user, id_post)
+	if liked(id_user, id_post):
+		res = unlike(id_user, id_post)
+		if not res:
+			return "unliked"
+		return "Fail"
+	else:
+		res = like(id_user, id_post)
 	if not res:
-		return "Success"
+		return "liked"
 	return "Fail"
 
 
-@app.route('/ajax_unlike/', methods=['POST'])
-def ajax_unlike():
+@app.route('/ajax_dislike/', methods=['POST'])
+def ajax_dislike():
 	id_user = request.form.get('auth_id')
 	id_post = request.form.get('post_id')
 
-	res = unlike(id_user, id_post)
+	if disliked(id_user, id_post):
+		res = undislike(id_user, id_post)
+		if not res:
+			return "undisliked"
+		return "Fail"
+	else:
+		res = dislike(id_user, id_post)
 	if not res:
-		return "Success"
+		return "disliked"
 	return "Fail"
 
