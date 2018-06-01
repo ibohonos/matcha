@@ -11,9 +11,9 @@
 		  ================================================= -->
 			<div class="col-md-3 static">
 				<div class="profile-card">
-					<img src="{{ user.avatar }}" alt="user" class="profile-photo" />
-					<h5><a href="{{ url_for('profile', id_user=user.id_user) }}" class="text-white">{{ user.first_name }} {{ user.last_name }}</a></h5>
-	{#				<h5><a href="timeline.html" class="text-white">{{ user.first_name }} {{ user.last_name }}</a></h5>#}
+					<img src="{{ session.get('user_data').avatar }}" alt="user" class="profile-photo" />
+					<h5><a href="{{ url_for('profile', id_user=session.get('user_data').id_user) }}" class="text-white">{{ session.get('user_data').first_name }} {{ session.get('user_data').last_name }}</a></h5>
+	{#				<h5><a href="timeline.html" class="text-white">{{ session.get('user_data').first_name }} {{ session.get('user_data').last_name }}</a></h5>#}
 					<a href="#" class="text-white"><i class="ion ion-android-person-add"></i> 1,299 followers</a>
 				</div><!--profile card ends-->
 				<ul class="nav-news-feed">
@@ -319,6 +319,7 @@
 	</div>
 
 <div class="none" id="user_login">{{session.user_data.login}}</div>
+<div class="none" id="user_id">{{session.id_user_logged}}</div>
 
 {% endblock %}
 

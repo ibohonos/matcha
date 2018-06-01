@@ -167,6 +167,7 @@ def create_messages_table():
 		id_user_to INTEGER NOT NULL,
 		message TEXT NOT NULL,
 		read_status BOOLEAN DEFAULT 0,
+		date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
 		FOREIGN KEY (id_user_from) REFERENCES users(id_user) ON DELETE CASCADE,
 		FOREIGN KEY (id_user_to) REFERENCES users(id_user) ON DELETE CASCADE,
 		FOREIGN KEY (id_chat_room) REFERENCES chat_room(id_chat_room) ON DELETE CASCADE)
@@ -224,6 +225,21 @@ def create_dislikes_table():
 		print("dislikes ok")
 
 
+def create_notifications_table():
+	res = db_connect('''
+		CREATE TABLE IF NOT EXISTS notifications (
+		id_notif INTEGER PRIMARY KEY AUTOINCREMENT,
+		id_user INTEGER NOT NULL,
+		notification TEXT NOT NULL,
+		date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
+		FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE)
+		''')
+	if res:
+		print(res)
+	else:
+		print("notifications ok")
+
+
 if __name__ == '__main__':
 	create_users_table()
 	create_tags_table()
@@ -236,3 +252,4 @@ if __name__ == '__main__':
 	create_likes_table()
 	create_dislikes_table()
 	create_messages_table()
+	create_notifications_table()
