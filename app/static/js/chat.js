@@ -9,14 +9,15 @@ window.onload = function () {
     document.getElementById('scrollbar_wrapper').scrollTop = topPos;
 }
 
-$('#mesage_submit').on('click', function(){
 
+
+function send_message(){
     var message = $("#message_input").val();
     if (!message){return;}
     var data =  {'user_id': $("#user_id").text(),'user_to_id': $("#user_to_id").text(), 'message': message};
 	chat_socket.emit('message', data);
 	$("#message_input").val("");
-});
+}
 
 chat_socket.on('message_from_server', function(data)
 {
@@ -46,4 +47,16 @@ chat_socket.on('message_from_server', function(data)
 chat_socket.on('connect', function()
 {
 	chat_socket.emit('join_room', {'room': room, 'user_id': $("#user_id").text(), 'user_to_id': $("#user_to_id").text()});
+});
+
+$(document).keypress(function(e) {
+    var keycode = (e.keyCode ? e.keyCode : e.which);
+    var input = document.getElementById("message_input");
+    if (keycode == '13' && $('#message_input').is(':focus')) {
+        send_message();
+    }
+});
+
+$('#mesage_submit').on('click', function() {
+    send_message();
 });

@@ -24,13 +24,11 @@ def add_notification(id_user, notif_text):
 @socketio.on('connect', namespace='/notifications')
 def connect():
 	notif_users_sid_to_id[request.sid] = session.get('id_user_logged')
-	print("connect to notifications")
 
 
 @socketio.on('disconnect', namespace='/notifications')
 def disconnect():
 	notif_users_sid_to_id.pop(request.sid)
-	print("disconect from notifications")
 
 
 @app.route('/ajax_clear_notifications', methods=['POST'])
