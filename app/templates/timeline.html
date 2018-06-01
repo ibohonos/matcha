@@ -52,30 +52,37 @@
 					<!-- Post Content
 					================================================= -->
 					{% for post in data.posts %}
-						<div class="post-content">
+						<div class="post-content" id="post{{ post.id_post }}">
 							<!--Post Date-->
 							<div class="post-date hidden-xs hidden-sm">
 
 								<h5>{{ data.get_user_by_id(post.id_user_from).first_name }}</h5>
-								<p class="text-grey">{{ post.date_creation }}</p>
+								<p class="text-grey">{{ post.date_creation.split(' ')[0] }}</p>
 
 							</div><!--Post Date End-->
-	{#						<img src="http://placehold.it/1920x1280" alt="post-image" class="img-responsive post-image" />#}
+{#							<img src="http://placehold.it/1920x1280" alt="post-image" class="img-responsive post-image" />#}
 							<div class="post-container">
+								{% if session.get('id_user_logged') and (post.id_user_from == session.get('id_user_logged') or post.id_user == session.get('id_user_logged')) %}
+									<div class="btn text-red dell" onclick="dell_post({{ post.id_post }})">X</div>
+								{% endif %}
 								<img src="{{ data.get_user_by_id(post.id_user_from).avatar }}" alt="user" class="profile-photo-md pull-left" />
 								<div class="post-detail">
 									<div class="user-info">
 										<h5><a href="{{ url_for('profile', id_user=data.get_user_by_id(post.id_user_from).id_user) }}" class="profile-link">{{ data.get_user_by_id(post.id_user_from).first_name }} {{ data.get_user_by_id(post.id_user_from).last_name }}</a> <span class="following">following</span></h5>
-										<p class="text-muted">Published a {{ post.type }} on a {{ post.date_creation }}</p>
+										<p class="text-muted">Published a {{ post.type }} on a {{ post.date_creation.split(' ')[1] }}</p>
 									</div>
 									<div class="reaction">
 										{% if session.get('id_user_logged') and data.liked(session.get('id_user_logged'), post.id_post) %}
-											<a class="btn" id="like{{ post.id_post }}" onclick="unlike({{ session.get('id_user_logged') }}, {{ post.id_post }}); return false;"><i class="icon ion-thumbsup"></i> <span>{{ data.len_post_likes(post.id_post) }}</span></a>
+											<a class="btn" id="like{{ post.id_post }}" onclick="like({{ session.get('id_user_logged') }}, {{ post.id_post }}); return false;"><i class="icon ion-thumbsup"></i> <span>{{ data.len_post_likes(post.id_post) }}</span></a>
+										{% elif not session.get('id_user_logged') %}
+											<a class="btn text-green" id="like{{ post.id_post }}" onclick="return false;"><i class="icon ion-thumbsup"></i> <span>{{ data.len_post_likes(post.id_post) }}</span></a>
 										{% else %}
 											<a class="btn text-green" id="like{{ post.id_post }}" onclick="like({{ session.get('id_user_logged') }} , {{post.id_post }}); return false;"><i class="icon ion-thumbsup"></i> <span>{{ data.len_post_likes(post.id_post) }}</span></a>
 										{% endif %}
 										{% if session.get('id_user_logged') and data.disliked(session.get('id_user_logged'), post.id_post) %}
-											<a class="btn" id="dislike{{ post.id_post }}" onclick="undislike({{ session.get('id_user_logged') }}, {{ post.id_post }}); return false;"><i class="fa fa-thumbs-down"></i> <span>{{ data.len_post_dislikes(post.id_post) }}</span></a>
+											<a class="btn" id="dislike{{ post.id_post }}" onclick="dislike({{ session.get('id_user_logged') }}, {{ post.id_post }}); return false;"><i class="fa fa-thumbs-down"></i> <span>{{ data.len_post_dislikes(post.id_post) }}</span></a>
+										{% elif not session.get('id_user_logged') %}
+											<a class="btn text-red" id="dislike{{ post.id_post }}" onclick="return false;"><i class="fa fa-thumbs-down"></i> <span>{{ data.len_post_dislikes(post.id_post) }}</span></a>
 										{% else %}
 											<a class="btn text-red" id="dislike{{ post.id_post }}" onclick="dislike({{ session.get('id_user_logged') }}, {{ post.id_post }}); return false;"><i class="fa fa-thumbs-down"></i> <span>{{ data.len_post_dislikes(post.id_post) }}</span></a>
 										{% endif %}
@@ -85,13 +92,17 @@
 										<p>{{ post.content }}</p>
 									</div>
 									<div class="line-divider"></div>
-									<div id="all_comments{{ post.id_post }}">
+									<div id="all_comments{{ post.id_post }}" class="all_comments">
 										{% for comment in data.all_post_comments(post.id_post) %}
-											<div class="post-comment">
+											<div class="post-comment" id="comment{{ comment.id_comment }}">
 												<img src="{{ data.get_user_by_id(comment.id_user).avatar }}" alt="" class="profile-photo-sm" />
 												<a href="{{ url_for('profile', id_user=comment.id_user) }}" class="profile-link">{{ data.get_user_by_id(comment.id_user).first_name }}</a>
 												<p>&nbsp;&nbsp;{{ comment.text }}</p>
+												{% if session.get('id_user_logged') and comment.id_user == session.get('id_user_logged') %}
+													<div class="btn text-red dell" onclick="dell_comment({{ comment.id_comment }})">X</div>
+												{% endif %}
 											</div>
+											<div class="line-divider" id="divider{{ comment.id_comment }}"></div>
 										{% endfor %}
 									</div>
 									{% if session.get('user_data') %}

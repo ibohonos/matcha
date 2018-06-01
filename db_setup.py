@@ -151,7 +151,7 @@ def create_about_table():
 		others TEXT DEFAULT NULL,
 		date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
 		FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE)
-		''')
+ 		''')
 	if res:
 		print(res)
 	else:

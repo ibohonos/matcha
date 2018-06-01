@@ -14,3 +14,26 @@ def all_post_comments(id_post):
 	res = db_connect(sql, arguments)
 	return res
 
+
+def dell_comment(id_comment):
+	arguments = [id_comment]
+	sql = "DELETE FROM comments WHERE id_comment=?"
+	res = db_connect(sql, arguments)
+	return res
+
+
+def get_by_comment_id(id_comment):
+	arguments = [id_comment]
+	sql = "SELECT * FROM comments WHERE id_comment=?"
+	res = db_connect(sql, arguments)
+	if res:
+		return res[0]
+	return res
+
+
+def dell_post_comments(post_id):
+	arguments = [post_id]
+	sql = "DELETE FROM comments WHERE id_post=?"
+	res = db_connect(sql, arguments)
+	return res
+

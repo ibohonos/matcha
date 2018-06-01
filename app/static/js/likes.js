@@ -5,28 +5,30 @@ function like(auth_id, post_id) {
 	}).done(function (resp) {
 		let like = $('#like' + post_id);
 		let c_like = $('#like' + post_id + ' span');
-		like.removeClass('text-green');
-		like[0].removeEventListener("click", like);
-		like[0].addEventListener("click", unlike);
-		let value_like = parseInt(c_like[0].innerText) + 1;
-		c_like[0].innerText = value_like;
-		console.log(value_like);
-		console.log(resp);
+		if (resp === "liked") {
+			like.removeClass('text-green');
+			c_like[0].innerText = parseInt(c_like[0].innerText) + 1;
+		} else if (resp === "unliked") {
+			like.addClass('text-green');
+			c_like[0].innerText = parseInt(c_like[0].innerText) - 1;
+		}
 	});
 }
 
-function unlike(auth_id, post_id) {
-	$.post('/ajax_unlike/', {
+function dislike(auth_id, post_id) {
+	$.post('/ajax_dislike/', {
 		'auth_id': auth_id,
 		'post_id': post_id
 	}).done(function (resp) {
-		let like = $('#like' + post_id);
-		let c_like = $('#like' + post_id + ' span');
-		like.addClass('text-green');
-		let value_like = c_like[0].innerText - 1;
-		c_like[0].innerText = value_like;
-		console.log(value_like);
-		console.log(resp);
+		let dislike = $('#dislike' + post_id);
+		let c_dislike = $('#dislike' + post_id + ' span');
+		if (resp === "disliked") {
+			dislike.removeClass('text-red');
+			c_dislike[0].innerText = parseInt(c_dislike[0].innerText) + 1;
+		} else if (resp === "undisliked") {
+			dislike.addClass('text-red');
+			c_dislike[0].innerText = parseInt(c_dislike[0].innerText) - 1;
+		}
 	});
 }
 
