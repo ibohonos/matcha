@@ -26,9 +26,7 @@ from app.models.notifications import get_notifications_by_user_id
 @app.route('/')
 def index():
 	if session.get('id_user_logged'):
-		context = {'notifications': get_notifications_by_user_id(session.get('id_user_logged'))}
-		print(context)
-		return render_template('newsfeed.html', context=context)
+		return render_template('newsfeed.html')
 	return render_template('index-register.html')
 
 # app.add_url_rule("/test2", "test2", test2, methods=['GET', 'POST'])
