@@ -66,3 +66,12 @@
 	top: 0;
 	right: 0;
 }
+#notification_red{
+   color: #dcb5b5f5;
+}
+
+#notif_horn
+{
+    margin-right: 5px;
+    color: red;
+}

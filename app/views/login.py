@@ -8,6 +8,7 @@ from flask_mail import Message
 from app.models.users import *
 from random import randint
 from app.models.friendship import all_friends
+from app.models.notifications import get_notifications_by_user_id
 
 
 def get_friendlist(id_user):
@@ -133,6 +134,8 @@ def ajax_login():
 			session['friendlist'] = get_friendlist(res['id_user'])
 			session['id_user_logged'] = res['id_user']
 			session['user_data'] = res
+			session['notifications'] = get_notifications_by_user_id(res['id_user'])
+			print(session['notifications'])
 			return "logged_in"
 		else:
 			return "wrong_pwd"
@@ -145,6 +148,8 @@ def ajax_login():
 def ajax_logout():
 	session.pop('id_user_logged', None)
 	session.pop('user_data', None)
+	session.pop('friendlist', None)
+	session.pop('notifications', None)
 	return redirect(request.referrer)
 
 

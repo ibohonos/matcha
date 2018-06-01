@@ -99,8 +99,8 @@ function login(view_url)
 {
 	event.preventDefault();
 	var error = 0;
-	const login = $("#my-email").val();
-	const pwd = $("#my-password").val();
+	var login = $("#my-email").val();
+	var pwd = $("#my-password").val();
 
 	$("#my-email").removeClass("unvalid");
 	$("#my-password").removeClass("unvalid");
