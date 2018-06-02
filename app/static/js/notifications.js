@@ -32,7 +32,7 @@ notif_socket.on('update_notifications', function(data)
 		data: {'id_user': data},
 		type: 'POST',
 		success: function(response){
-		    var win = new Audio('static/sounds/notification.mp3');
+		    var win = new Audio('http://' + document.domain + ':' + location.port + '/static/sounds/notification.mp3');
 		    win.play();
         },
 		error: function(error)
