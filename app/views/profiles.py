@@ -3,6 +3,7 @@ from flask import render_template, session, redirect, request
 from app.models.users import get_user_by_id, get_about
 from app.models.friendship import *
 from app.models.posts import all_user_post
+from app.models.tags import get_tags_by_id_user
 from app.models.comments import all_post_comments
 from app.models.likes import liked, disliked, len_post_dislikes, len_post_likes
 
@@ -56,7 +57,8 @@ def edit_profile_work():
 @app.route('/profile/edit/interests/')
 def edit_profile_interests():
 	if session.get('id_user_logged'):
-		data = {'user': session.get('user_data'), 'about': get_about(session.get('id_user_logged'))}
+		tags = get_tags_by_id_user(session.get('id_user_logged'))
+		data = {'user': session.get('user_data'), 'about': get_about(session.get('id_user_logged')), 'tags': tags}
 		return render_template('edit-profile-interests.html', data=data)
 	return redirect('/')
 

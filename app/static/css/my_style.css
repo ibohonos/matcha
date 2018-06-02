@@ -11,6 +11,14 @@
   min-height: calc(100vh - 102px);
 }
 
+.rx_edit_interests_content{
+  min-height: calc(100vh - 462px);
+}
+
+.rx_cursor_default{
+    cursor: default;
+}
+
 #rx_activation_response{
 	display:flex;
 	align-items:center;

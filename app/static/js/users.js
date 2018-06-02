@@ -111,3 +111,53 @@ function delete_user_friend() {
 		friends_status(response);
 	});
 }
+
+function delete_tag(tag) {
+    event.preventDefault();
+    $.ajax({
+		url: "/ajax_remove_tag",
+		data: {'id_user': $("#user_id").text(), 'tag_name': tag.innerText},
+		type: 'POST',
+		success: function(response)
+		{
+            console.log(response);
+            tag.remove();
+		},
+		error: function(error)
+		{
+			console.log(error);
+		}
+	});
+}
+
+
+$("#add_tag_form").submit(function () {
+    event.preventDefault();
+    const tag = $("#add-interest").val();
+    if (tag.length < 2){return};
+    const list = document.getElementById('tags_edit_list');
+
+    $.ajax({
+		url: "/ajax_add_tag",
+		data: {'id_user': $("#user_id").text(), 'tag_name': tag},
+		type: 'POST',
+		success: function(response)
+		{
+            if (response !== "error"){
+                var node = document.createElement("li");
+                node.setAttribute("onclick", "delete_tag(this)");
+                node.innerHTML = '<a><i class="'+ response +'"></i> '+ tag + '</a>';
+                list.appendChild(node);
+                $("#add-interest").val('');
+            }
+		},
+		error: function(error)
+		{
+			console.log(error);
+		}
+	});
+});
+
+
+
+
