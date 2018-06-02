@@ -1,5 +1,6 @@
 from app import app
 from flask import render_template, session, redirect, request
+from datetime import datetime
 from app.models.users import get_user_by_id, get_about
 from app.models.friendship import *
 from app.models.posts import all_user_post
@@ -40,7 +41,11 @@ def profile(id_user=None):
 @app.route('/profile/edit/basic/')
 def edit_profile():
 	if session.get('id_user_logged'):
-		data = {'user': session.get('user_data'), 'about': get_about(session.get('id_user_logged'))}
+		data = {
+			'user': session.get('user_data'),
+			'about': get_about(session.get('id_user_logged')),
+			'date': datetime
+		}
 		return render_template('edit-profile-basic.html', data=data)
 	return redirect('/')
 
@@ -48,7 +53,10 @@ def edit_profile():
 @app.route('/profile/edit/work/')
 def edit_profile_work():
 	if session.get('id_user_logged'):
-		data = {'user': session.get('user_data'), 'about': get_about(session.get('id_user_logged'))}
+		data = {
+			'user': session.get('user_data'),
+			'about': get_about(session.get('id_user_logged'))
+		}
 		return render_template('edit-profile-work-edu.html', data=data)
 	return redirect('/')
 
@@ -56,7 +64,10 @@ def edit_profile_work():
 @app.route('/profile/edit/interests/')
 def edit_profile_interests():
 	if session.get('id_user_logged'):
-		data = {'user': session.get('user_data'), 'about': get_about(session.get('id_user_logged'))}
+		data = {
+			'user': session.get('user_data'),
+			'about': get_about(session.get('id_user_logged'))
+		}
 		return render_template('edit-profile-interests.html', data=data)
 	return redirect('/')
 
@@ -64,7 +75,10 @@ def edit_profile_interests():
 @app.route('/profile/edit/settings/')
 def edit_profile_settings():
 	if session.get('id_user_logged'):
-		data = {'user': session.get('user_data'), 'about': get_about(session.get('id_user_logged'))}
+		data = {
+			'user': session.get('user_data'),
+			'about': get_about(session.get('id_user_logged'))
+		}
 		return render_template('edit-profile-settings.html', data=data)
 	return redirect('/')
 
@@ -72,7 +86,10 @@ def edit_profile_settings():
 @app.route('/profile/edit/password/')
 def edit_profile_password():
 	if session.get('id_user_logged'):
-		data = {'user': session.get('user_data'), 'about': get_about(session.get('id_user_logged'))}
+		data = {
+			'user': session.get('user_data'),
+			'about': get_about(session.get('id_user_logged'))
+		}
 		return render_template('edit-profile-password.html', data=data)
 	return redirect('/')
 
@@ -86,63 +103,88 @@ def is_friends_with(auth_id, user_id):
 
 @app.route('/ajax_check_friends/')
 def ajax_check_friends():
-	auth_id = request.args.get('auth_id')
+	auth_id = session.get('id_user_logged')
 	user_id = request.args.get('user_id')
 	user1 = is_friends_with(auth_id, user_id)
 	user2 = is_friends_with(user_id, auth_id)
 
-	if auth_id == user_id:
-		return "same user"
-	if user1 == "0":
-		if user2 == "0":
-			return "0"
+	if auth_id:
+		print(auth_id)
+		print(user_id)
+		if str(auth_id) == str(user_id):
+			return "same user"
+		if user1 == "0":
+			if user2 == "0":
+				return "0"
+			else:
+				if user2['status'] == 0:
+					return "pending"
+				else:
+					return "1"
 		else:
-			if user2['status'] == 0:
-				return "pending"
+			if user1['status'] == 0:
+				return "waiting"
 			else:
 				return "1"
-	else:
-		if user1['status'] == 0:
-			return "waiting"
-		else:
-			return "1"
+	return "false"
 
 
 @app.route('/ajax_delete_user_request/')
 def ajax_delete_user_request():
-	auth_id = request.args.get('auth_id')
+	auth_id = session.get('id_user_logged')
 	user_id = request.args.get('user_id')
 
-	delete_user_request(auth_id, user_id)
-	return ajax_check_friends()
+	if auth_id:
+		if auth_id == user_id:
+			return "same user"
+		del_fr = delete_user_request(auth_id, user_id)
+		if not del_fr:
+			return "0"
+	return "false"
 
 
 @app.route('/ajax_add_user_request/')
 def ajax_add_user_request():
-	auth_id = request.args.get('auth_id')
+	auth_id = session.get('id_user_logged')
 	user_id = request.args.get('user_id')
 
-	add_friend(auth_id, user_id)
-	return ajax_check_friends()
+	if auth_id:
+		if auth_id == user_id:
+			return "same user"
+		add_fr = add_friend(auth_id, user_id)
+		if not add_fr:
+			return "waiting"
+	return "false"
 
 
 @app.route('/ajax_confirm_user_request/')
 def ajax_confirm_user_request():
-	auth_id = request.args.get('auth_id')
+	auth_id = session.get('id_user_logged')
 	user_id = request.args.get('user_id')
 
-	confirm_user_request(user_id, auth_id)
-	return ajax_check_friends()
+	if auth_id:
+		if auth_id == user_id:
+			return "same user"
+		conf_fr = confirm_user_request(user_id, auth_id)
+		if not conf_fr:
+			return "1"
+	return "false"
 
 
 @app.route('/ajax_delete_user_friend/')
 def ajax_delete_user_friend():
-	auth_id = request.args.get('auth_id')
+	auth_id = session.get('id_user_logged')
 	user_id = request.args.get('user_id')
 
-	delete_user_request(auth_id, user_id)
-	delete_user_request(user_id, auth_id)
-	return ajax_check_friends()
+	if auth_id:
+		if auth_id == user_id:
+			return "same user"
+		res1 = delete_user_request(auth_id, user_id)
+		if not res1:
+			res2 = delete_user_request(user_id, auth_id)
+			if not res2:
+				return "0"
+	return "false"
 
 
 @app.route('/profile/about/')

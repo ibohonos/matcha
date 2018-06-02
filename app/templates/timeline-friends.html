@@ -22,28 +22,30 @@
 				<div class="row">
 					{% for friend in data.friends %}
 						{% if friend.id_requester == data.user.id_user %}
+							{% set friend_user = data.get_by_id(friend.id_user_requested) %}
 							<div class="col-md-6 col-sm-6">
 								<div class="friend-card">
-									<img src="{{ data.get_by_id(friend.id_user_requested).cover }}" alt="profile-cover" class="img-responsive cover" />
+									<img src="{{ friend_user.cover }}" alt="profile-cover" class="img-responsive cover" />
 									<div class="card-info">
-										<img src="{{ data.get_by_id(friend.id_user_requested).avatar }}" alt="user" class="profile-photo-lg" />
+										<img src="{{ friend_user.avatar }}" alt="user" class="profile-photo-lg" />
 										<div class="friend-info">
 											<a href="#" class="pull-right text-green">My Friend</a>
-											<h5><a href="{{ url_for('profile', id_user=data.get_by_id(friend.id_user_requested).id_user) }}" class="profile-link">{{ data.get_by_id(friend.id_user_requested).first_name }} {{ data.get_by_id(friend.id_user_requested).last_name }}</a></h5>
+											<h5><a href="{{ url_for('profile', id_user=friend_user.id_user) }}" class="profile-link">{{ friend_user.first_name }} {{ friend_user.last_name }}</a></h5>
 											<p>Student at Harvard</p>
 										</div>
 									</div>
 								</div>
 							</div>
 						{% elif friend.id_user_requested == data.user.id_user %}
+							{% set friend_user_req = data.get_by_id(friend.id_requester) %}
 							<div class="col-md-6 col-sm-6">
 								<div class="friend-card">
-									<img src="{{ data.get_by_id(friend.id_requester).cover }}" alt="profile-cover" class="img-responsive cover" />
+									<img src="{{ friend_user_req.cover }}" alt="profile-cover" class="img-responsive cover" />
 									<div class="card-info">
-										<img src="{{ data.get_by_id(friend.id_requester).avatar }}" alt="user" class="profile-photo-lg" />
+										<img src="{{ friend_user_req.avatar }}" alt="user" class="profile-photo-lg" />
 										<div class="friend-info">
 											<a href="#" class="pull-right text-green">My Friend</a>
-											<h5><a href="{{ url_for('profile', id_user=data.get_by_id(friend.id_requester).id_user) }}" class="profile-link">{{ data.get_by_id(friend.id_requester).first_name }} {{ data.get_by_id(friend.id_requester).last_name }}</a></h5>
+											<h5><a href="{{ url_for('profile', id_user=friend_user_req.id_user) }}" class="profile-link">{{ friend_user_req.first_name }} {{ friend_user_req.last_name }}</a></h5>
 											<p>Student at Harvard</p>
 										</div>
 									</div>

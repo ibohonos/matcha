@@ -34,6 +34,10 @@
 				  <div class="line"></div>
 				  <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate</p>
 				  <div class="line"></div>
+					{{ data.date.strptime(data.user.date_birth, "%Y-%m-%d %H:%M:%S") }}<br>
+					{{ data.user.date_birth.split("-")[0] }}
+					{{ data.user.date_birth.split("-")[1] }}
+					{{ data.user.date_birth.split("-")[2].split(" ")[0] }}
 				</div>
 				<div class="edit-block">
 				  <form name="basic-info" id="basic-info" class="form-inline">
@@ -76,8 +80,8 @@
 						  <option>15</option>
 						  <option>16</option>
 						  <option>17</option>
-						  <option>18</option>
-						  <option selected>19</option>
+						  <option selected>18</option>
+						  <option>19</option>
 						  <option>20</option>
 						  <option>21</option>
 						  <option>22</option>
@@ -96,7 +100,7 @@
 						<label for="month" class="sr-only"></label>
 						<select class="form-control" id="month">
 						  <option value="month">Month</option>
-						  <option>Jan</option>
+						  <option selected>Jan</option>
 						  <option>Feb</option>
 						  <option>Mar</option>
 						  <option>Apr</option>
@@ -107,14 +111,44 @@
 						  <option>Sep</option>
 						  <option>Oct</option>
 						  <option>Nov</option>
-						  <option selected>Dec</option>
+						  <option>Dec</option>
 						</select>
 					  </div>
 					  <div class="form-group col-sm-6 col-xs-12">
 						<label for="year" class="sr-only"></label>
 						<select class="form-control" id="year">
 						  <option value="year">Year</option>
-						  <option selected>2000</option>
+						  <option>1970</option>
+						  <option>1971</option>
+						  <option>1972</option>
+						  <option>1973</option>
+						  <option>1974</option>
+						  <option>1975</option>
+						  <option>1976</option>
+						  <option>1977</option>
+						  <option>1978</option>
+						  <option>1979</option>
+						  <option>1980</option>
+						  <option>1981</option>
+						  <option>1982</option>
+						  <option>1983</option>
+						  <option>1984</option>
+						  <option>1985</option>
+						  <option>1986</option>
+						  <option>1987</option>
+						  <option>1988</option>
+						  <option>1989</option>
+						  <option>1990</option>
+						  <option>1991</option>
+						  <option>1992</option>
+						  <option selected>1993</option>
+						  <option>1994</option>
+						  <option>1995</option>
+						  <option>1996</option>
+						  <option>1997</option>
+						  <option>1998</option>
+						  <option>1999</option>
+						  <option>2000</option>
 						  <option>2001</option>
 						  <option>2002</option>
 						  <option>2004</option>
@@ -126,22 +160,28 @@
 						  <option>2010</option>
 						  <option>2011</option>
 						  <option>2012</option>
+						  <option>2013</option>
+						  <option>2014</option>
+						  <option>2015</option>
 						</select>
 					  </div>
 					</div>
 					<div class="form-group gender">
-					  <span class="custom-label"><strong>I am a: </strong></span>
-					  <label class="radio-inline">
-						<input type="radio" name="optradio" checked>Male
-					  </label>
-					  <label class="radio-inline">
-						<input type="radio" name="optradio">Female
-					  </label>
+						<span class="custom-label"><strong>I am a: </strong></span>
+						<label class="radio-inline">
+							<input type="radio" name="optradio" checked>Unknown
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="optradio">Male
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="optradio">Female
+						</label>
 					</div>
 					<div class="row">
 					  <div class="form-group col-xs-6">
 						<label for="city"> My city</label>
-						<input id="city" class="form-control input-group-lg" type="text" name="city" title="Enter city" placeholder="Your city" value="New York"/>
+						<input id="city" class="form-control input-group-lg" type="text" name="city" title="Enter city" placeholder="Your city" value="Kiev"/>
 					  </div>
 					  <div class="form-group col-xs-6">
 						<label for="country">My country</label>
@@ -379,10 +419,10 @@
 						  <option value="TCA">Turks and Caicos Islands</option>
 						  <option value="TUV">Tuvalu</option>
 						  <option value="UGA">Uganda</option>
-						  <option value="UKR">Ukraine</option>
+						  <option value="UKR" selected>Ukraine</option>
 						  <option value="ARE">United Arab Emirates</option>
 						  <option value="GBR">United Kingdom</option>
-						  <option value="USA" selected>United States</option>
+						  <option value="USA">United States</option>
 						  <option value="UMI">United States Minor Outlying Islands</option>
 						  <option value="URY">Uruguay</option>
 						  <option value="UZB">Uzbekistan</option>
@@ -402,7 +442,7 @@
 					<div class="row">
 					  <div class="form-group col-xs-12">
 						<label for="my-info">About me</label>
-						<textarea id="my-info" name="information" class="form-control" placeholder="Some texts about me" rows="4" cols="400">{{ data.user.biography }}</textarea>
+						<textarea id="my-info" name="information" class="form-control" placeholder="Some texts about me" rows="4" cols="400">{% if data.about.biography == 'None' %}{{ data.about.biography }}{% endif %}</textarea>
 					  </div>
 					</div>
 					<button class="btn btn-primary">Save Changes</button>
