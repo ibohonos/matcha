@@ -1,4 +1,5 @@
-body {
+body,
+#spinner-wrapper {
 	background: #23232d;
 }
 

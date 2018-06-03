@@ -145,3 +145,23 @@ function delete_user_friend() {
 		}
 	});
 }
+
+function edit_basic(form) {
+	$.post("/ajax_edit_basic/", {
+		"first_name": form.firstname.value,
+		"last_name": form.lastname.value,
+		"email": form.email.value,
+		"optradio": form.optradio.value,
+		"city": form.city.value,
+		"country": form.country.value,
+		"information": form.information.value,
+		"theme": form.theme.value
+	}).done(function (res) {
+		if (res === "success") {
+			location.reload(true);
+		} else {
+			let error = $("#error")[0];
+			error.innerText = res;
+		}
+	});
+}

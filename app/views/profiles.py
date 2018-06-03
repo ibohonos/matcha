@@ -1,11 +1,12 @@
 from app import app
 from flask import render_template, session, redirect, request
 from datetime import datetime
-from app.models.users import get_user_by_id, get_about
+from app.models.users import get_user_by_id, get_about, update_basic_user, update_basic_about
 from app.models.friendship import *
 from app.models.posts import all_user_post
 from app.models.comments import all_post_comments
 from app.models.likes import liked, disliked, len_post_dislikes, len_post_likes
+import html
 
 
 @app.route('/profile/')
@@ -48,6 +49,36 @@ def edit_profile():
 		}
 		return render_template('edit-profile-basic.html', data=data)
 	return redirect('/')
+
+
+@app.route('/ajax_edit_basic/', methods=['POST'])
+def ajax_edit_basic():
+	first_name = html.escape(request.form.get('first_name').strip())
+	last_name = html.escape(request.form.get('last_name').strip())
+	email = html.escape(request.form.get('email').strip())
+	optradio = html.escape(request.form.get('optradio').strip())
+	city = html.escape(request.form.get('city').strip())
+	country = html.escape(request.form.get('country').strip())
+	information = html.escape(request.form.get('information').strip())
+	theme = html.escape(request.form.get('theme').strip())
+	id_user = session.get('id_user_logged')
+	location = str(city) + " " + str(country)
+
+	if not first_name:
+		return "Enter first name"
+	if not last_name:
+		return "Enter last name"
+	if not email:
+		return "Enter email"
+	res1 = update_basic_user(first_name, last_name, email, optradio, theme, id_user)
+	if not res1:
+		res2 = update_basic_about(location, information, id_user)
+		if not res2:
+			user = get_user_by_id(id_user)
+			session['user_data'] = user
+			return "success"
+		return "Wrong save location or about"
+	return "Wrong save user data"
 
 
 @app.route('/profile/edit/work/')
@@ -109,8 +140,6 @@ def ajax_check_friends():
 	user2 = is_friends_with(user_id, auth_id)
 
 	if auth_id:
-		print(auth_id)
-		print(user_id)
 		if str(auth_id) == str(user_id):
 			return "same user"
 		if user1 == "0":

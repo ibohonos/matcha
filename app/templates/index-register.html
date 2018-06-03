@@ -269,12 +269,15 @@
 					  </div>
 					</div>
 					<div class="form-group gender">
-					  <label class="radio-inline">
-						<input type="radio" name="optradio" id="male" checked>Male
-					  </label>
-					  <label class="radio-inline">
-						<input type="radio" name="optradio" id="female">Female
-					  </label>
+						<label class="radio-inline">
+							<input type="radio" name="optradio" id="unknown" checked>Unknown
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="optradio" id="male">Male
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="optradio" id="female">Female
+						</label>
 					</div>
 				  </form><!--Register Now Form Ends-->
 				  <button class="btn btn-primary" onclick="register('{{ url_for('ajax_registration') }}')" style="outline:none;">Register Now</button>
