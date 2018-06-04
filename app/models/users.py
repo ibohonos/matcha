@@ -81,3 +81,9 @@ def update_basic_about(location, biography, id_user):
 	res = db_connect(sql, arguments)
 	return res
 
+def update_advanced_about(phone, language, status, political, fb, tw, inst, site, hobbies, tv_shows, movies, games, music, books, writers, others, id_user):
+	arguments = [phone, language, status, political, fb, tw, inst, site, hobbies, tv_shows, movies, games, music, books, writers, others, id_user]
+	sql = "UPDATE about SET phone=?, language=?, status=?, political=?, fb=?, tw=?, inst=?, site=?, hobbies=?, tv_shows=?, movies=?, games=?, music=?, books=?, writers=?, others=? WHERE id_user=?"
+	res = db_connect(sql, arguments)
+	return res
+

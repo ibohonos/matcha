@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% block title %}Edit profile {{ data.user.first_name }} {{ data.user.last_name }} | Advanced - Matcha 40k{% endblock %}
+{% block scripts %}
+	<script src="{{ url_for('static', filename='js/users.js') }}"></script>
+{% endblock %}
+{% block main %}
+
+	<div class="container">
+
+	  <!-- Timeline
+	  ================================================= -->
+	  <div class="timeline">
+		{% include('parts/header_bottom.html') %}
+		<div id="page-contents">
+		  <div class="row">
+			<div class="col-md-3">
+
+			  <!--Edit Profile Menu-->
+			  <ul class="edit-menu">
+				<li><i class="icon ion-ios-information-outline"></i><a href="{{ url_for('edit_profile') }}">Basic Information</a></li>
+				<li class="active"><i class="icon ion-ios-briefcase-outline"></i><a href="{{ url_for('edit_profile_advanced') }}">Advanced Information</a></li>
+				<li><i class="icon ion-ios-heart-outline"></i><a href="{{ url_for('edit_profile_interests') }}">My Interests</a></li>
+				<li><i class="icon ion-ios-settings"></i><a href="{{ url_for('edit_profile_settings') }}">Account Settings</a></li>
+				<li><i class="icon ion-ios-locked-outline"></i><a href="{{ url_for('edit_profile_password') }}">Change Password</a></li>
+			  </ul>
+			</div>
+			<div class="col-md-7">
+
+			  <!-- Basic Information
+			  ================================================= -->
+			  <div class="edit-profile-container">
+				<div class="block-title">
+				  <h4 class="grey"><i class="icon ion-android-checkmark-circle"></i>Edit basic information</h4>
+				  <div class="line"></div>
+				  <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate</p>
+				  <div class="line"></div>
+				</div>
+				<div class="edit-block">
+					<div class="text-red" id="error"></div>
+				  <form name="advanced-info" id="advanced-info" class="form-inline" onsubmit="edit_advanced(this); return false;">
+					<div class="row">
+					  <div class="form-group col-xs-6">
+						<label for="phone">Phone</label>
+						<input id="phone" class="form-control input-group-lg" type="text" name="phone" title="Enter phone number" placeholder="Phone number" value="{% if data.about.phone %}{{ data.about.phone }}{% endif %}" />
+					  </div>
+					  <div class="form-group col-xs-6">
+						<label for="language" class="">Language</label>
+						<input id="language" class="form-control input-group-lg" type="text" name="language" title="Enter language" placeholder="Language" value="{% if data.about.language %}{{ data.about.language }}{% endif %}" />
+					  </div>
+					</div>
+					<div class="row">
+					  <div class="form-group col-xs-6">
+						<label for="status">Status</label>
+						<select id="status" name="status" class="form-control">
+							<option value="" selected>Select your status</option>
+							<option value="married" {% if data.about.status == 'married' %}selected{% endif %}>Married</option>
+							<option value="single" {% if data.about.status == 'single' %}selected{% endif %}>Single</option>
+							<option value="relationship" {% if data.about.status == 'relationship' %}selected{% endif %}>In a relationship</option>
+							<option value="engaged" {% if data.about.status == 'engaged' %}selected{% endif %}>Engaged</option>
+							<option value="civil" {% if data.about.status == 'civil' %}selected{% endif %}>In a civil union</option>
+							<option value="domestic" {% if data.about.status == 'domestic' %}selected{% endif %}>In a domestic partnership</option>
+							<option value="open" {% if data.about.status == 'open' %}selected{% endif %}>In an open relationship</option>
+							<option value="complicated" {% if data.about.status == 'complicated' %}selected{% endif %}>It's complicated</option>
+							<option value="separated" {% if data.about.status == 'separated' %}selected{% endif %}>Separated</option>
+							<option value="divorced" {% if data.about.status == 'divorced' %}selected{% endif %}>Divorced</option>
+							<option value="widowed" {% if data.about.status == 'widowed' %}selected{% endif %}>Widowed</option>
+						</select>
+						<!--<input id="email" class="form-control input-group-lg" type="text" name="email" title="Enter Email" placeholder="My Email" value="{{ data.user.email }}" />-->
+					  </div>
+					  <div class="form-group col-xs-6">
+						<label for="political">Political</label>
+						<input id="political" class="form-control input-group-lg" type="text" name="political" title="Enter political" placeholder="My political" value="{% if data.about.political %}{{ data.about.political }}{% endif %}" />
+					  </div>
+					</div>
+					<div class="row">
+						<div class="form-group col-xs-12">
+							<label for="fb">Facebook</label>
+							<input id="fb" type="text" name="fb" class="form-control input-group-lg" title="Facebook" placeholder="Facebook" value="{% if data.about.fb %}{{ data.about.fb }}{% endif %}">
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-xs-12">
+							<label for="tw">Twitter</label>
+							<input id="tw" type="text" name="tw" class="form-control input-group-lg" title="Twitter" placeholder="Twitter" value="{% if data.about.tw %}{{ data.about.tw }}{% endif %}">
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-xs-12">
+							<label for="inst">Instagram</label>
+							<input id="inst" type="text" name="inst" class="form-control input-group-lg" title="Instagram" placeholder="Instagram" value="{% if data.about.inst %}{{ data.about.inst }}{% endif %}">
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-xs-12">
+							<label for="site">Site</label>
+							<input id="site" type="text" name="site" class="form-control input-group-lg" title="Site" placeholder="Site" value="{% if data.about.site %}{{ data.about.site }}{% endif %}">
+						</div>
+					</div>
+					<div class="row">
+					  <div class="form-group col-xs-12">
+						<label for="hobbies">Hobbies</label>
+						<textarea id="hobbies" name="hobbies" class="form-control" placeholder="Your hobbies" rows="4" cols="400">{% if data.about.hobbies %}{{ data.about.hobbies }}{% endif %}</textarea>
+					  </div>
+					</div>
+					<div class="row">
+					  <div class="form-group col-xs-12">
+						<label for="tv_shows">TV Shows</label>
+						<textarea id="tv_shows" name="tv_shows" class="form-control" placeholder="Your TV Shows" rows="4" cols="400">{% if data.about.tv_shows %}{{ data.about.tv_shows }}{% endif %}</textarea>
+					  </div>
+					</div>
+					<div class="row">
+					  <div class="form-group col-xs-12">
+						<label for="movies">Movies</label>
+						<textarea id="movies" name="movies" class="form-control" placeholder="Your movies" rows="4" cols="400">{% if data.about.movies %}{{ data.about.movies }}{% endif %}</textarea>
+					  </div>
+					</div>
+					<div class="row">
+					  <div class="form-group col-xs-12">
+						<label for="games">Games</label>
+						<textarea id="games" name="games" class="form-control" placeholder="Your games" rows="4" cols="400">{% if data.about.games %}{{ data.about.games }}{% endif %}</textarea>
+					  </div>
+					</div>
+					<div class="row">
+					  <div class="form-group col-xs-12">
+						<label for="music">Music</label>
+						<textarea id="music" name="music" class="form-control" placeholder="Your music" rows="4" cols="400">{% if data.about.music %}{{ data.about.music }}{% endif %}</textarea>
+					  </div>
+					</div>
+					<div class="row">
+					  <div class="form-group col-xs-12">
+						<label for="books">Books</label>
+						<textarea id="books" name="books" class="form-control" placeholder="Your books" rows="4" cols="400">{% if data.about.books %}{{ data.about.books }}{% endif %}</textarea>
+					  </div>
+					</div>
+					<div class="row">
+					  <div class="form-group col-xs-12">
+						<label for="writers">Writers</label>
+						<textarea id="writers" name="writers" class="form-control" placeholder="Your writers" rows="4" cols="400">{% if data.about.writers %}{{ data.about.writers }}{% endif %}</textarea>
+					  </div>
+					</div>
+					<div class="row">
+					  <div class="form-group col-xs-12">
+						<label for="others">Others</label>
+						<textarea id="others" name="others" class="form-control" placeholder="Your others" rows="4" cols="400">{% if data.about.others %}{{ data.about.others }}{% endif %}</textarea>
+					  </div>
+					</div>
+					<button type="submit" class="btn btn-primary">Save Changes</button>
+				  </form>
+				</div>
+			  </div>
+			</div>
+			<div class="col-md-2 static">
+
+			  <!--Sticky Timeline Activity Sidebar-->
+			  <div id="sticky-sidebar">
+				<h4 class="grey">Sarah's activity</h4>
+				<div class="feed-item">
+				  <div class="live-activity">
+					<p><a href="#" class="profile-link">Sarah</a> Commended on a Photo</p>
+					<p class="text-muted">5 mins ago</p>
+				  </div>
+				</div>
+				<div class="feed-item">
+				  <div class="live-activity">
+					<p><a href="#" class="profile-link">Sarah</a> Has posted a photo</p>
+					<p class="text-muted">an hour ago</p>
+				  </div>
+				</div>
+				<div class="feed-item">
+				  <div class="live-activity">
+					<p><a href="#" class="profile-link">Sarah</a> Liked her friend's post</p>
+					<p class="text-muted">4 hours ago</p>
+				  </div>
+				</div>
+				<div class="feed-item">
+				  <div class="live-activity">
+					<p><a href="#" class="profile-link">Sarah</a> has shared an album</p>
+					<p class="text-muted">a day ago</p>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+{% endblock %}

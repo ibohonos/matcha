@@ -165,3 +165,31 @@ function edit_basic(form) {
 		}
 	});
 }
+
+function edit_advanced(form) {
+	$.post("/ajax_edit_advanced/", {
+		"phone": form.phone.value,
+		"language": form.language.value,
+		"status": form.status.value,
+		"political": form.political.value,
+		"fb": form.fb.value,
+		"tw": form.tw.value,
+		"inst": form.inst.value,
+		"site": form.site.value,
+		"hobbies": form.hobbies.value,
+		"tv_shows": form.tv_shows.value,
+		"movies": form.movies.value,
+		"games": form.games.value,
+		"music": form.music.value,
+		"books": form.books.value,
+		"writers": form.writers.value,
+		"others": form.others.value
+	}).done(function (res) {
+		if (res === "Success") {
+			location.reload(true);
+		} else {
+			let error = $("#error")[0];
+			error.innerText = res;
+		}
+	});
+}

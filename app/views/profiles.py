@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template, session, redirect, request
 from datetime import datetime
-from app.models.users import get_user_by_id, get_about, update_basic_user, update_basic_about
+from app.models.users import get_user_by_id, get_about, update_basic_user, update_basic_about, update_advanced_about
 from app.models.friendship import *
 from app.models.posts import all_user_post
 from app.models.comments import all_post_comments
@@ -53,42 +53,71 @@ def edit_profile():
 
 @app.route('/ajax_edit_basic/', methods=['POST'])
 def ajax_edit_basic():
-	first_name = html.escape(request.form.get('first_name').strip())
-	last_name = html.escape(request.form.get('last_name').strip())
-	email = html.escape(request.form.get('email').strip())
-	optradio = html.escape(request.form.get('optradio').strip())
-	city = html.escape(request.form.get('city').strip())
-	country = html.escape(request.form.get('country').strip())
-	information = html.escape(request.form.get('information').strip())
-	theme = html.escape(request.form.get('theme').strip())
-	id_user = session.get('id_user_logged')
-	location = str(city) + " " + str(country)
+	if session.get('id_user_logged'):
+		first_name = html.escape(request.form.get('first_name').strip())
+		last_name = html.escape(request.form.get('last_name').strip())
+		email = html.escape(request.form.get('email').strip())
+		optradio = html.escape(request.form.get('optradio').strip())
+		city = html.escape(request.form.get('city').strip())
+		country = html.escape(request.form.get('country').strip())
+		information = html.escape(request.form.get('information').strip())
+		theme = html.escape(request.form.get('theme').strip())
+		id_user = session.get('id_user_logged')
+		location = str(city) + " " + str(country)
 
-	if not first_name:
-		return "Enter first name"
-	if not last_name:
-		return "Enter last name"
-	if not email:
-		return "Enter email"
-	res1 = update_basic_user(first_name, last_name, email, optradio, theme, id_user)
-	if not res1:
-		res2 = update_basic_about(location, information, id_user)
-		if not res2:
-			user = get_user_by_id(id_user)
-			session['user_data'] = user
-			return "success"
-		return "Wrong save location or about"
-	return "Wrong save user data"
+		if not first_name:
+			return "Enter first name"
+		if not last_name:
+			return "Enter last name"
+		if not email:
+			return "Enter email"
+		res1 = update_basic_user(first_name, last_name, email, optradio, theme, id_user)
+		if not res1:
+			res2 = update_basic_about(location, information, id_user)
+			if not res2:
+				user = get_user_by_id(id_user)
+				session['user_data'] = user
+				return "success"
+			return "Wrong save location or about"
+		return "Wrong save user data"
+	return redirect('/')
 
 
-@app.route('/profile/edit/work/')
-def edit_profile_work():
+@app.route('/profile/edit/advanced/')
+def edit_profile_advanced():
 	if session.get('id_user_logged'):
 		data = {
 			'user': session.get('user_data'),
 			'about': get_about(session.get('id_user_logged'))
 		}
-		return render_template('edit-profile-work-edu.html', data=data)
+		return render_template('edit-profile-advanced.html', data=data)
+	return redirect('/')
+
+
+@app.route('/ajax_edit_advanced/', methods=['POST'])
+def ajax_edit_advanced():
+	if session.get('id_user_logged'):
+		phone = request.form.get('phone')
+		language = request.form.get('language')
+		status = request.form.get('status')
+		political = request.form.get('political')
+		fb = request.form.get('fb')
+		tw = request.form.get('tw')
+		inst = request.form.get('inst')
+		site = request.form.get('site')
+		hobbies = request.form.get('hobbies')
+		tv_shows = request.form.get('tv_shows')
+		movies = request.form.get('movies')
+		games = request.form.get('games')
+		music = request.form.get('music')
+		books = request.form.get('books')
+		writers = request.form.get('writers')
+		others = request.form.get('others')
+		id_user = session.get('id_user_logged')
+		res = update_advanced_about(phone, language, status, political, fb, tw, inst, site, hobbies, tv_shows, movies, games, music, books, writers, others, id_user)
+		if not res:
+			return "Success"
+		return "Fail update profile"
 	return redirect('/')
 
 
