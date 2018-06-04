@@ -29,7 +29,8 @@ def create_tags_table():
 	res = db_connect('''
 		CREATE TABLE IF NOT EXISTS tags (
 		id_tag INTEGER PRIMARY KEY AUTOINCREMENT,
-		tag VARCHAR(255) NOT NULL UNIQUE)
+		tag VARCHAR(255) NOT NULL UNIQUE,
+		tag_sign VARCHAR(255))
 		''')
 	if res:
 		print(res)
