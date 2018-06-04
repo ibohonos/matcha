@@ -5,7 +5,7 @@ from app.models.tags import *
 tags_to_fa = {}
 tags_to_fa.update({'icon ion-ios-camera': ['camera', 'photo', 'model', 'photgraphy']})
 tags_to_fa.update({'icon ion-android-plane': ['travel', 'traveling', 'fly', 'flying']})
-tags_to_fa.update({'icon ion-android-restaurant': ['eating', 'restaurant', 'diner']})
+tags_to_fa.update({'icon ion-android-restaurant': ['eating', 'restaurant', 'dinner']})
 tags_to_fa.update({'fas fa-gamepad': ['game', 'games', 'gaming', 'dota', 'dota2']})
 tags_to_fa.update({'fas fa-fighter-jet': ['fighter', 'jet', 'fighters', 'aviation', 'interseptor']})
 tags_to_fa.update({'fas fa-female': ['girl', 'gitls']})
@@ -45,6 +45,9 @@ def ajax_add_tag():
 
 	res = add_tag_to_user(id_tag, id_user)
 	if not res:
+		for key, value in tags_to_fa.items():
+			if tag.lower() in value:
+				tag_sign = key
 		return tag_sign
 	else:
 		return "error"

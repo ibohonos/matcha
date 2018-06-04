@@ -116,7 +116,7 @@ function delete_tag(tag) {
     event.preventDefault();
     $.ajax({
 		url: "/ajax_remove_tag",
-		data: {'id_user': $("#user_id").text(), 'tag_name': tag.innerText},
+		data: {'id_user': $("#user_id").text(), 'tag_name': tag.innerText.trim()},
 		type: 'POST',
 		success: function(response)
 		{
@@ -143,6 +143,11 @@ $("#add_tag_form").submit(function () {
 		type: 'POST',
 		success: function(response)
 		{
+		    if (response === 'tag_exist'){
+		        $("#add-interest").val('');
+		        return;
+            }
+
             if (response !== "error"){
                 var node = document.createElement("li");
                 node.setAttribute("onclick", "delete_tag(this)");
