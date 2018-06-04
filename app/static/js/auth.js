@@ -10,8 +10,6 @@ function register(view_url)
 	pasword = $("#password").val();
 	var gender;
 
-	if ($('input[id=unknown]:checked').val() == 'on')
-	{gender = 0;}
 	if ($('input[id=male]:checked').val() == 'on')
 	{gender = 1;}
 	else

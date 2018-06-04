@@ -75,3 +75,7 @@
     margin-right: 5px;
     color: red;
 }
+
+.img-responsive {
+	height: 95px;
+}

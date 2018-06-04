@@ -28,13 +28,11 @@ def check_user_online(user_id):
 	return 0
 
 
-@app.route('/chat', methods=['POST'])
+@app.route('/chat', methods=['POST', 'GET'])
 def chat():
 	if not session.get('id_user_logged'):
 		return redirect(url_for('index'))
 	context = {'chat_room': 'room_for_all'}
-
-	print(session.get('notifications'))
 
 	try:
 		room_data = get_chat_room_by_name(request.form['room_name'])
