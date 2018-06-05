@@ -3,6 +3,10 @@ body,
 	background: #23232d;
 }
 
+.line-divider {
+	border-color: #3b3b4b;
+}
+
 .post-content,
 .chat-room .chat-body ul.chat-message li.right .chat-item,
 .chat-room .send-message {
