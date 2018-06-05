@@ -3,6 +3,10 @@ from flask import Flask, render_template, request, session, redirect, url_for
 from flask_mail import Mail, Message
 from flask_socketio import SocketIO
 from app.models.users import get_user_by_id
+from app.models.posts import all_user_post
+from app.models.friendship import all_friends
+from app.models.comments import all_post_comments
+from app.models.likes import liked, disliked, len_post_likes, len_post_dislikes
 
 app = Flask(__name__)
 
@@ -26,7 +30,17 @@ from app.models.notifications import get_notifications_by_user_id
 @app.route('/')
 def index():
 	if session.get('id_user_logged'):
-		return render_template('newsfeed.html')
+		data = {
+			'all_posts': all_user_post,
+			'all_friends': all_friends(session.get('id_user_logged')),
+			"get_user_by_id": get_user_by_id,
+			"all_post_comments": all_post_comments,
+			"liked": liked,
+			"disliked": disliked,
+			"len_post_likes": len_post_likes,
+			"len_post_dislikes": len_post_dislikes
+		}
+		return render_template('newsfeed.html', data=data)
 	return render_template('index-register.html')
 
 # app.add_url_rule("/test2", "test2", test2, methods=['GET', 'POST'])

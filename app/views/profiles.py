@@ -35,6 +35,7 @@ def profile(id_user=None):
 		'len_post_dislikes': len_post_dislikes,
 		'liked': liked,
 		'disliked': disliked,
+		'all_friends': all_friends(user['id_user'])
 	}
 	return render_template('timeline.html', data=data)
 
@@ -45,7 +46,8 @@ def edit_profile():
 		data = {
 			'user': session.get('user_data'),
 			'about': get_about(session.get('id_user_logged')),
-			'date': datetime
+			'date': datetime,
+			'all_friends': all_friends(session.get('id_user_logged'))
 		}
 		return render_template('edit-profile-basic.html', data=data)
 	return redirect('/')
@@ -88,7 +90,8 @@ def edit_profile_advanced():
 	if session.get('id_user_logged'):
 		data = {
 			'user': session.get('user_data'),
-			'about': get_about(session.get('id_user_logged'))
+			'about': get_about(session.get('id_user_logged')),
+			'all_friends': all_friends(session.get('id_user_logged'))
 		}
 		return render_template('edit-profile-advanced.html', data=data)
 	return redirect('/')
@@ -126,7 +129,8 @@ def edit_profile_interests():
 	if session.get('id_user_logged'):
 		data = {
 			'user': session.get('user_data'),
-			'about': get_about(session.get('id_user_logged'))
+			'about': get_about(session.get('id_user_logged')),
+			'all_friends': all_friends(session.get('id_user_logged'))
 		}
 		return render_template('edit-profile-interests.html', data=data)
 	return redirect('/')
@@ -137,7 +141,8 @@ def edit_profile_settings():
 	if session.get('id_user_logged'):
 		data = {
 			'user': session.get('user_data'),
-			'about': get_about(session.get('id_user_logged'))
+			'about': get_about(session.get('id_user_logged')),
+			'all_friends': all_friends(session.get('id_user_logged'))
 		}
 		return render_template('edit-profile-settings.html', data=data)
 	return redirect('/')
@@ -148,7 +153,8 @@ def edit_profile_password():
 	if session.get('id_user_logged'):
 		data = {
 			'user': session.get('user_data'),
-			'about': get_about(session.get('id_user_logged'))
+			'about': get_about(session.get('id_user_logged')),
+			'all_friends': all_friends(session.get('id_user_logged'))
 		}
 		return render_template('edit-profile-password.html', data=data)
 	return redirect('/')
@@ -256,7 +262,11 @@ def about(id_user=None):
 	else:
 		user = session.get('user_data')
 		about = get_about(session.get('id_user_logged'))
-	data = {'user': user, 'about': about}
+	data = {
+		'user': user,
+		'about': about,
+		'all_friends': all_friends(user['id_user'])
+	}
 	return render_template("timeline-about.html", data=data)
 
 

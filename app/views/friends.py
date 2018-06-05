@@ -14,6 +14,11 @@ def user_friends(id_user=None):
 	else:
 		user = session.get('user_data')
 	friends = all_friends(user['id_user'])
-	data = {'user': user, 'get_by_id': get_user_by_id, 'friends': friends}
+	data = {
+		'user': user,
+		'get_by_id': get_user_by_id,
+		'friends': friends,
+		'all_friends': friends
+	}
 	return render_template("timeline-friends.html", data=data)
 
