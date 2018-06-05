@@ -319,10 +319,16 @@
 	</div>
 
 <!--<div class="none" id="user_login">{{session.user_data.login}}</div>-->
-<!--<div class="none" id="user_id">{{session.id_user_logged}}</div>-->
+
+<div class="none" id="location">{{session.id_user_logged}}</div>
 
 {% endblock %}
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/make_chat.js') }}"></script>
+
+{% if not session.location %}
+<script src="{{ url_for('static', filename='js/get_location.js') }}"></script>
+{% endif %}
+
 {% endblock %}

@@ -79,6 +79,14 @@ def edit_profile_password():
 	return redirect('/')
 
 
+@app.route('/profile/edit/location/')
+def edit_profile_location():
+	if session.get('id_user_logged'):
+		data = {'user': session.get('user_data'), 'about': get_about(session.get('id_user_logged'))}
+		return render_template('edit-profile-location.html', data=data)
+	return redirect('/')
+
+
 def is_friends_with(auth_id, user_id):
 	user = check_friends(auth_id, user_id)
 	if user:
@@ -158,5 +166,3 @@ def about(id_user=None):
 		user = session.get('user_data')
 	data = {'user': user}
 	return render_template("timeline-about.html", data=data)
-
-

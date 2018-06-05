@@ -241,6 +241,19 @@ def create_notifications_table():
 		print("notifications ok")
 
 
+def create_location_table():
+	res = db_connect('''
+		CREATE TABLE IF NOT EXISTS location (
+		id_user INTEGER NOT NULL UNIQUE,
+		longitude VARCHAR(255) DEFAULT NULL,
+		latitude VARCHAR(255) DEFAULT NULL)
+		''')
+	if res:
+		print(res)
+	else:
+		print("location ok")
+
+
 if __name__ == '__main__':
 	create_users_table()
 	create_tags_table()
@@ -254,3 +267,4 @@ if __name__ == '__main__':
 	create_dislikes_table()
 	create_messages_table()
 	create_notifications_table()
+	create_location_table()
