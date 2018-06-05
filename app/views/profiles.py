@@ -60,7 +60,7 @@ def ajax_edit_basic():
 		optradio = html.escape(request.form.get('optradio').strip())
 		city = html.escape(request.form.get('city').strip())
 		country = html.escape(request.form.get('country').strip())
-		information = html.escape(request.form.get('information').strip()).replace('\n', '<br>\n')
+		information = html.escape(request.form.get('information').strip())
 		theme = html.escape(request.form.get('theme').strip())
 		id_user = session.get('id_user_logged')
 		location = str(city) + " " + str(country)
