@@ -36,7 +36,7 @@
 					</li>
 				</ul>
 				<ul class="follow-me list-inline">
-					<li>1,299 people following her</li>
+					<li>{{ data.all_friends.__len__() }} followers</li>
 					<li id="friends_request">
 						<button class="btn-primary">Add Friend</button>
 					</li>
@@ -60,11 +60,14 @@
 					>Timeline</a>
 				</li>
 				<li>
-					<a href="timeline-about.html">About</a>
+					<a
+						href="{{ url_for('about', id_user=data.user.id_user) }}"
+						{%- if request.path == url_for('about', id_user=data.user.id_user) %} class="active"{% endif %}
+					>About</a>
 				</li>
-				<li>
-					<a href="timeline-album.html">Album</a>
-				</li>
+{#				<li>#}
+{#					<a href="timeline-album.html">Album</a>#}
+{#				</li>#}
 				<li>
 					<a
 						href="{{ url_for('user_friends', id_user=data.user.id_user) }}"
@@ -72,7 +75,12 @@
 					>Friends</a>
 				</li>
 			</ul>
-			<button class="btn-primary">Add Friend</button>
+			<ul class="follow-me list-inline">
+				<li>{{ data.all_friends.__len__() }} followers</li>
+				<li id="friends_request_sm">
+					<button class="btn-primary">Add Friend</button>
+				</li>
+			</ul>
 		</div>
 	</div><!--Timeline Menu for Small Screens End-->
 
