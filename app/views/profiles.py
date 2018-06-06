@@ -1,13 +1,19 @@
 from app import app
 from flask import render_template, session, redirect, request
+from flask_uploads import configure_uploads, IMAGES, UploadSet
 from datetime import datetime
-from app.models.users import get_user_by_id, get_about, update_basic_user, update_basic_about, update_advanced_about
+from app.models.users import get_user_by_id, get_about, update_basic_user, update_basic_about, update_advanced_about, update_avatar
 from app.models.friendship import *
 from app.models.posts import all_user_post
 from app.models.tags import get_tags_by_id_user
 from app.models.comments import all_post_comments
 from app.models.likes import liked, disliked, len_post_dislikes, len_post_likes
 import html
+
+
+photos = UploadSet('photos', IMAGES)
+app.config['UPLOADED_PHOTOS_DEST'] = "app/static/uploads/avatars"
+configure_uploads(app, photos)
 
 
 @app.route('/profile/')
@@ -133,7 +139,7 @@ def edit_profile_interests():
 			'user': session.get('user_data'),
 			'about': get_about(session.get('id_user_logged')),
 			'all_friends': all_friends(session.get('id_user_logged')),
-      'tags': tags
+			'tags': tags
 		}
 		return render_template('edit-profile-interests.html', data=data)
 	return redirect('/')
@@ -148,6 +154,29 @@ def edit_profile_settings():
 			'all_friends': all_friends(session.get('id_user_logged'))
 		}
 		return render_template('edit-profile-settings.html', data=data)
+	return redirect('/')
+
+
+@app.route('/profile/edit/avatar/')
+def edit_profile_avatar():
+	if session.get('id_user_logged'):
+		data = {
+			'user': session.get('user_data'),
+			'all_friends': all_friends(session.get('id_user_logged'))
+		}
+		return render_template('edit-profile-ava.html', data=data)
+	return redirect('/')
+
+
+@app.route('/ajax_save_ava/', methods=['POST'])
+def ajax_save_ava():
+	if session.get('id_user_logged'):
+		ava = request.files['ava']
+		filename = str(datetime.now().timestamp()).replace(".", "") + "-" + session.get('user_data')['first_name'] + "-" + session.get('user_data')['last_name'] + ".jpg"
+		photos.save(ava, "", filename)
+		update_avatar("/static/uploads/avatars/" + filename, session.get('id_user_logged'))
+		session['user_data'] = get_user_by_id(session.get('id_user_logged'))
+		return redirect(request.referrer)
 	return redirect('/')
 
 
@@ -283,3 +312,20 @@ def about(id_user=None):
 		'all_friends': all_friends(user['id_user'])
 	}
 	return render_template("timeline-about.html", data=data)
+
+
+@app.route('/profile/album/')
+@app.route('/user/id<int:id_user>/album/')
+def album(id_user=None):
+	if not session.get('id_user_logged') and not id_user:
+		return redirect('/')
+	if id_user:
+		user = get_user_by_id(id_user)
+	else:
+		user = get_user_by_id(session.get('id_user_logged'))
+	data = {
+		'user': user,
+		'all_friends': all_friends(user['id_user'])
+	}
+	return render_template("timeline-album.html", data=data)
+

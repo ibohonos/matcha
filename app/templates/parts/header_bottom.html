@@ -25,9 +25,12 @@
 							{%- if request.path == url_for('about', id_user=data.user.id_user) %} class="active"{% endif %}
 						>About</a>
 					</li>
-{#					<li>#}
-{#						<a href="timeline-album.html">Album</a>#}
-{#					</li>#}
+					<li>
+						<a
+							href="{{ url_for('album', id_user=data.user.id_user) }}"
+							{%- if request.path == url_for('album', id_user=data.user.id_user) %} class="active"{% endif %}
+						>Album</a>
+					</li>
 					<li>
 						<a
 							href="{{ url_for('user_friends', id_user=data.user.id_user) }}"
@@ -65,9 +68,12 @@
 						{%- if request.path == url_for('about', id_user=data.user.id_user) %} class="active"{% endif %}
 					>About</a>
 				</li>
-{#				<li>#}
-{#					<a href="timeline-album.html">Album</a>#}
-{#				</li>#}
+				<li>
+					<a
+						href="{{ url_for('album', id_user=data.user.id_user) }}"
+						{%- if request.path == url_for('album', id_user=data.user.id_user) %} class="active"{% endif %}
+					>Album</a>
+				</li>
 				<li>
 					<a
 						href="{{ url_for('user_friends', id_user=data.user.id_user) }}"

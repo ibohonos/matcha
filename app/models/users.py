@@ -87,3 +87,10 @@ def update_advanced_about(phone, language, status, political, fb, tw, inst, site
 	res = db_connect(sql, arguments)
 	return res
 
+
+def update_avatar(avatar, id_user):
+	arguments = [avatar, id_user]
+	sql = "UPDATE users SET avatar=? WHERE id_user=?"
+	res = db_connect(sql, arguments)
+	return res
+

@@ -101,8 +101,8 @@
 		<div class="spinner"></div>
 	</div>
 
-    <div class="none" id="user_login">{{session.user_data.login}}</div>
-    <div class="none" id="user_id">{{session.id_user_logged}}</div>
+    <div class="none" id="user_login">{{session.get('user_data').login}}</div>
+    <div class="none" id="user_id">{{session.get('id_user_logged')}}</div>
 
 	<!-- Scripts
 	================================================= -->

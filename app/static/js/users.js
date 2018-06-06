@@ -166,6 +166,14 @@ function edit_basic(form) {
 	});
 }
 
+function edit_avatar(form) {
+	$.post("/ajax_save_ava/", {
+		"ava": form.ava.value
+	}).done(function (res) {
+		console.log(res);
+	});
+}
+
 function edit_advanced(form) {
 	$.post("/ajax_edit_advanced/", {
 		"phone": form.phone.value,

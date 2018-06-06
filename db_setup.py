@@ -18,6 +18,8 @@ def create_users_table():
 		token VARCHAR(255),
 		gender INT NOT NULL DEFAULT 1,
 		sex_pref INT,
+		rating INTEGER NOT NULL DEFAULT 0,
+		report INTEGER NOT NULL DEFAULT 0,
 		date_creation DATETIME DEFAULT CURRENT_TIMESTAMP)
 		''')
 	if res:
