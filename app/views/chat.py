@@ -8,6 +8,7 @@ from collections import Counter
 from datetime import datetime
 import html
 from app.views.notifications import add_notification
+from app.models.friendship import all_friends, all_friends_request
 
 chat_users_sid_to_id = {}
 chat_users_sid_to_room = {}
@@ -33,6 +34,10 @@ def chat():
 	if not session.get('id_user_logged'):
 		return redirect(url_for('index'))
 	context = {'chat_room': 'room_for_all'}
+	data = {
+		'friends': all_friends_request(session.get('id_user_logged')),
+		"all_friends": all_friends(session.get("id_user_logged"))
+	}
 
 	try:
 		room_data = get_chat_room_by_name(request.form['room_name'])
@@ -51,7 +56,7 @@ def chat():
 	except:
 		return redirect(url_for('index'))
 
-	return render_template('newsfeed-messages.html', context=context)
+	return render_template('newsfeed-messages.html', context=context, data=data)
 
 
 @app.route('/ajax_create_chat', methods=['POST'])
