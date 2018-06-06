@@ -12,6 +12,7 @@ def create_users_table():
 		login VARCHAR(255) NOT NULL UNIQUE,
 		avatar VARCHAR(255) NOT NULL DEFAULT "/static/uploads/avatars/default.png",
 		cover VARCHAR(255) NOT NULL DEFAULT "/static/uploads/covers/1.jpg",
+		theme VARCHAR(255) NOT NULL DEFAULT "light",
 		date_birth DATE,
 		active BOOLEAN DEFAULT 0,
 		token VARCHAR(255),

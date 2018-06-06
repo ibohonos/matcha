@@ -13,7 +13,10 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}" />
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/emoji.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/my_style.css') }}" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	{% if session.get('id_user_logged') and session.get('user_data').theme == "dark" %}
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/dark_theme.css') }}" />
+	{% endif %}
 
 	<!--Google Font-->
 	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,700i" rel="stylesheet">

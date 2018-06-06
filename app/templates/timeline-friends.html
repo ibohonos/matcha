@@ -14,7 +14,11 @@
 		<div id="page-contents">
 		  <div class="row">
 			<div class="col-md-3"></div>
-			<div class="col-md-7">
+			{% if session.get("id_user_logged") %}
+				<div class="col-md-7">
+			{% else %}
+				<div class="col-md-9">
+			{% endif %}
 
 			  <!-- Friend List
 			  ================================================= -->
@@ -22,28 +26,30 @@
 				<div class="row">
 					{% for friend in data.friends %}
 						{% if friend.id_requester == data.user.id_user %}
+							{% set friend_user = data.get_by_id(friend.id_user_requested) %}
 							<div class="col-md-6 col-sm-6">
 								<div class="friend-card">
-									<img src="{{ data.get_by_id(friend.id_user_requested).cover }}" alt="profile-cover" class="img-responsive cover" />
-									<div class="card-info">
-										<img src="{{ data.get_by_id(friend.id_user_requested).avatar }}" alt="user" class="profile-photo-lg" />
+									<img src="{{ friend_user.cover }}" alt="profile-cover" class="img-responsive cover" />
+									<div class="card-info text-center">
+										<img src="{{ friend_user.avatar }}" alt="user" class="profile-photo-lg" />
 										<div class="friend-info">
-											<a href="#" class="pull-right text-green">My Friend</a>
-											<h5><a href="{{ url_for('profile', id_user=data.get_by_id(friend.id_user_requested).id_user) }}" class="profile-link">{{ data.get_by_id(friend.id_user_requested).first_name }} {{ data.get_by_id(friend.id_user_requested).last_name }}</a></h5>
+{#											<a href="#" class="pull-right text-green">My Friend</a>#}
+											<h5><a href="{{ url_for('profile', id_user=friend_user.id_user) }}" class="profile-link">{{ friend_user.first_name }} {{ friend_user.last_name }}</a></h5>
 											<p>Student at Harvard</p>
 										</div>
 									</div>
 								</div>
 							</div>
 						{% elif friend.id_user_requested == data.user.id_user %}
+							{% set friend_user_req = data.get_by_id(friend.id_requester) %}
 							<div class="col-md-6 col-sm-6">
 								<div class="friend-card">
-									<img src="{{ data.get_by_id(friend.id_requester).cover }}" alt="profile-cover" class="img-responsive cover" />
-									<div class="card-info">
-										<img src="{{ data.get_by_id(friend.id_requester).avatar }}" alt="user" class="profile-photo-lg" />
+									<img src="{{ friend_user_req.cover }}" alt="profile-cover" class="img-responsive cover" />
+									<div class="card-info text-center">
+										<img src="{{ friend_user_req.avatar }}" alt="user" class="profile-photo-lg" />
 										<div class="friend-info">
-											<a href="#" class="pull-right text-green">My Friend</a>
-											<h5><a href="{{ url_for('profile', id_user=data.get_by_id(friend.id_requester).id_user) }}" class="profile-link">{{ data.get_by_id(friend.id_requester).first_name }} {{ data.get_by_id(friend.id_requester).last_name }}</a></h5>
+{#											<a href="#" class="pull-right text-green">My Friend</a>#}
+											<h5><a href="{{ url_for('profile', id_user=friend_user_req.id_user) }}" class="profile-link">{{ friend_user_req.first_name }} {{ friend_user_req.last_name }}</a></h5>
 											<p>Student at Harvard</p>
 										</div>
 									</div>
@@ -53,9 +59,9 @@
 					{% else %}
 						<div class="col-12">
 							<div class="friend-card">
-								<div class="card-info">
+								<div class="card-info text-center">
 									<div class="friend-info">
-										<p style="text-align: center">No friends</p>
+										<p>No friends</p>
 									</div>
 								</div>
 							</div>
@@ -64,35 +70,9 @@
 				</div>
 			  </div>
 			</div>
-			<div class="col-md-2 static">
-			  <div id="sticky-sidebar">
-				<h4 class="grey">Sarah's activity</h4>
-				<div class="feed-item">
-				  <div class="live-activity">
-					<p><a href="#" class="profile-link">Sarah</a> Commended on a Photo</p>
-					<p class="text-muted">5 mins ago</p>
-				  </div>
-				</div>
-				<div class="feed-item">
-				  <div class="live-activity">
-					<p><a href="#" class="profile-link">Sarah</a> Has posted a photo</p>
-					<p class="text-muted">an hour ago</p>
-				  </div>
-				</div>
-				<div class="feed-item">
-				  <div class="live-activity">
-					<p><a href="#" class="profile-link">Sarah</a> Liked her friend's post</p>
-					<p class="text-muted">4 hours ago</p>
-				  </div>
-				</div>
-				<div class="feed-item">
-				  <div class="live-activity">
-					<p><a href="#" class="profile-link">Sarah</a> has shared an album</p>
-					<p class="text-muted">a day ago</p>
-				  </div>
-				</div>
-			  </div>
-			</div>
+			{% if session.get("id_user_logged") %}
+				{% include "parts/suggestions.html" %}
+			{% endif %}
 		  </div>
 		</div>
 	  </div>

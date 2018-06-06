@@ -13,7 +13,11 @@
 		<div id="page-contents">
 		  <div class="row">
 			<div class="col-md-3"></div>
-			<div class="col-md-7">
+			{% if session.get("id_user_logged") %}
+				<div class="col-md-7">
+			{% else %}
+				<div class="col-md-9">
+			{% endif %}
 
 				<!-- About
 				================================================= -->
@@ -23,7 +27,70 @@
 					{% endif %}
 					<div class="about-content-block">
 						<h4 class="grey"><i class="ion-ios-information-outline icon-in-title"></i>Personal Information</h4>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur</p>
+						<div class="row">
+							<div class="col-md-3">About Me:</div>
+							<div class="col-md-9">{{ data.about.biography }}</div>
+						</div>
+						<div class="line-divider"></div>
+						<div class="row">
+							<div class="col-md-3">Phone:</div>
+							<div class="col-md-9">{{ data.about.phone }}</div>
+						</div>
+						<div class="line-divider"></div>
+						<div class="row">
+							<div class="col-md-3">Location:</div>
+							<div class="col-md-9">{{ data.about.location }}</div>
+						</div>
+						<div class="line-divider"></div>
+						<div class="row">
+							<div class="col-md-3">Status:</div>
+							<div class="col-md-9">{{ data.about.status }}</div>
+						</div>
+						<div class="line-divider"></div>
+						<div class="row">
+							<div class="col-md-3">Political:</div>
+							<div class="col-md-9">{{ data.about.political }}</div>
+						</div>
+						<div class="line-divider"></div>
+						<div class="row">
+							<div class="col-md-3">Hobbies:</div>
+							<div class="col-md-9">{{ data.about.hobbies }}</div>
+						</div>
+						<div class="line-divider"></div>
+						<div class="row">
+							<div class="col-md-3">TV Shows:</div>
+							<div class="col-md-9">{{ data.about.tv_shows }}</div>
+						</div>
+						<div class="line-divider"></div>
+						<div class="row">
+							<div class="col-md-3">Movies:</div>
+							<div class="col-md-9">{{ data.about.movies }}</div>
+						</div>
+						<div class="line-divider"></div>
+						<div class="row">
+							<div class="col-md-3">Games:</div>
+							<div class="col-md-9">{{ data.about.games }}</div>
+						</div>
+						<div class="line-divider"></div>
+						<div class="row">
+							<div class="col-md-3">Music:</div>
+							<div class="col-md-9">{{ data.about.music }}</div>
+						</div>
+						<div class="line-divider"></div>
+						<div class="row">
+							<div class="col-md-3">Books:</div>
+							<div class="col-md-9">{{ data.about.books }}</div>
+						</div>
+						<div class="line-divider"></div>
+						<div class="row">
+							<div class="col-md-3">Writers:</div>
+							<div class="col-md-9">{{ data.about.writers }}</div>
+						</div>
+						<div class="line-divider"></div>
+						<div class="row">
+							<div class="col-md-3">Other:</div>
+							<div class="col-md-9">{{ data.about.others }}</div>
+						</div>
 					</div>
 					<div class="about-content-block">
 						<h4 class="grey"><i class="ion-ios-briefcase-outline icon-in-title"></i>Work Experiences</h4>
@@ -75,35 +142,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-2 static">
-			  <div id="sticky-sidebar">
-				<h4 class="grey">Sarah's activity</h4>
-				<div class="feed-item">
-				  <div class="live-activity">
-					<p><a href="#" class="profile-link">Sarah</a> Commended on a Photo</p>
-					<p class="text-muted">5 mins ago</p>
-				  </div>
-				</div>
-				<div class="feed-item">
-				  <div class="live-activity">
-					<p><a href="#" class="profile-link">Sarah</a> Has posted a photo</p>
-					<p class="text-muted">an hour ago</p>
-				  </div>
-				</div>
-				<div class="feed-item">
-				  <div class="live-activity">
-					<p><a href="#" class="profile-link">Sarah</a> Liked her friend's post</p>
-					<p class="text-muted">4 hours ago</p>
-				  </div>
-				</div>
-				<div class="feed-item">
-				  <div class="live-activity">
-					<p><a href="#" class="profile-link">Sarah</a> has shared an album</p>
-					<p class="text-muted">a day ago</p>
-				  </div>
-				</div>
-			  </div>
-			</div>
+			{% if session.get("id_user_logged") %}
+				{% include "parts/suggestions.html" %}
+			{% endif %}
 		  </div>
 		</div>
 	  </div>

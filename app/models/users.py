@@ -1,10 +1,10 @@
-from app.config.databse import db_connect
+from app.config.databse import db_connect, db_insert
 
 
 def user_to_db(login, email, pwd, token, first_name, last_name, gender, birthday, cover):
 	agruments = [login, email, pwd, token, first_name, last_name, gender, birthday, cover]
 	sql = "INSERT INTO users (login, email, password, token, first_name, last_name, gender, date_birth, cover) VALUES (?,?,?,?,?,?,?,?,?)"
-	res = db_connect(sql, agruments)
+	res = db_insert(sql, agruments)
 	return res
 
 
@@ -47,7 +47,9 @@ def get_user_by_id(id_user):
 	arguments = [id_user]
 	sql = "SELECT * FROM users WHERE id_user = ?"
 	res = db_connect(sql, arguments)
-	return res[0]
+	if res:
+		return res[0]
+	return res
 
 
 def get_about(id_user):
@@ -56,5 +58,32 @@ def get_about(id_user):
 	res = db_connect(sql, arguments)
 	if res:
 		return res[0]
+	return res
+
+
+def create_about(id_user):
+	arguments = [id_user]
+	sql = "INSERT INTO about (id_user) VALUES (?)"
+	res = db_connect(sql, arguments)
+	return res
+
+
+def update_basic_user(first_name, last_name, email, gender, theme, id_user):
+	arguments = [first_name, last_name, email, gender, theme, id_user]
+	sql = "UPDATE users SET first_name=?, last_name=?, email=?, gender=?, theme=? WHERE id_user=?"
+	res = db_connect(sql, arguments)
+	return res
+
+
+def update_basic_about(location, biography, id_user):
+	arguments = [location, biography, id_user]
+	sql = "UPDATE about SET location=?, biography=? WHERE id_user=?"
+	res = db_connect(sql, arguments)
+	return res
+
+def update_advanced_about(phone, language, status, political, fb, tw, inst, site, hobbies, tv_shows, movies, games, music, books, writers, others, id_user):
+	arguments = [phone, language, status, political, fb, tw, inst, site, hobbies, tv_shows, movies, games, music, books, writers, others, id_user]
+	sql = "UPDATE about SET phone=?, language=?, status=?, political=?, fb=?, tw=?, inst=?, site=?, hobbies=?, tv_shows=?, movies=?, games=?, music=?, books=?, writers=?, others=? WHERE id_user=?"
+	res = db_connect(sql, arguments)
 	return res
 

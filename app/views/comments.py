@@ -1,5 +1,6 @@
 from app import app
 from flask import session, redirect, request, jsonify
+import html
 from app.models.comments import add_comment, get_by_comment_id, dell_comment
 from app.models.users import get_user_by_id
 
@@ -8,20 +9,22 @@ from app.models.users import get_user_by_id
 def ajax_add_comment():
 	id_user = session.get('id_user_logged')
 	id_post = request.form.get('id_post')
-	text = request.form.get('text')
+	text = html.escape(request.form.get('text'))
 
-	res = add_comment(id_user, id_post, text)
-	user = get_user_by_id(id_user)
-	if res:
-		data = {
-			'user_avatar': user['avatar'],
-			'user_first_name': user['first_name'],
-			'id_user': id_user,
-			'id_post': id_post,
-			'id_comment': res,
-			'text': text
-		}
-		return jsonify(data)
+	if text:
+		user = get_user_by_id(id_user)
+		if user and user['active']:
+			res = add_comment(id_user, id_post, text)
+			if res:
+				data = {
+					'user_avatar': user['avatar'],
+					'user_first_name': user['first_name'],
+					'id_user': id_user,
+					'id_post': id_post,
+					'id_comment': res,
+					'text': text
+				}
+				return jsonify(data)
 	return "False"
 
 

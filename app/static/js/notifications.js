@@ -1,5 +1,5 @@
-io.connect('http://' + document.domain + ':' + location.port);
-var notif_socket = io('http://' + document.domain + ':' + location.port + '/notifications');
+io.connect(location.protocol +'//' + document.domain + ':' + location.port);
+var notif_socket = io(location.protocol + '//' + document.domain + ':' + location.port + '/notifications');
 
 
 notif_socket.on('check_notifications', function(data)

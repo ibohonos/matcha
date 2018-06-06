@@ -84,6 +84,12 @@
     color: red;
 }
 
+.img-responsive {
+	width: 100%;
+	height: 95px;
+}
+
 .edit-map {
     height: 400px;
 }
+

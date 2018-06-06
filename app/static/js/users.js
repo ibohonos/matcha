@@ -5,18 +5,12 @@ var friends_button = $("#friends_request button");
 $(document).ready(function () {
 	if (auth_id !== "None") {
 		$.get("/ajax_check_friends/", {
-			'auth_id': auth_id,
 			'user_id': user_id
 		})
 		.done(function(response)
 		{
 			friends_status(response);
 		});
-		// .fail(function(error)
-		// {
-		// 	console.log(error.responseText);
-		// });
-		// console.log("auth id: " + auth_id);
 	}
 	else {
 		$("#friends_request").addClass("hidden");
@@ -25,9 +19,9 @@ $(document).ready(function () {
 
 function friends_status(response) {
 	let friends_button_class = friends_button[0].classList.toString();
-	let test = friends_button_class.split(" ");
+	var test = friends_button_class.split(" ");
 
-	if (response == "waiting") {
+	if (response === "waiting") {
 		for (let i = 0; i < test.length; i++) {
 			friends_button[0].classList.remove(test[i]);
 		}
@@ -36,7 +30,7 @@ function friends_status(response) {
 		friends_button.on('click', delete_user_request);
 		friends_button[0].innerText = "Delete request";
 	}
-	else if (response == "pending") {
+	else if (response === "pending") {
 		for (let i = 0; i < test.length; i++) {
 			friends_button[0].classList.remove(test[i]);
 		}
@@ -45,7 +39,7 @@ function friends_status(response) {
 		friends_button.on('click', confirm_user_request);
 		friends_button[0].innerText = "Confirm request";
 	}
-	else if (response == "0") {
+	else if (response === "0") {
 		for (let i = 0; i < test.length; i++) {
 			friends_button[0].classList.remove(test[i]);
 		}
@@ -54,7 +48,7 @@ function friends_status(response) {
 		friends_button.on('click', add_user_request);
 		friends_button[0].innerText = "Add friend";
 	}
-	else if (response == "1") {
+	else if (response === "1") {
 		for (let i = 0; i < test.length; i++) {
 			friends_button[0].classList.remove(test[i]);
 		}
@@ -63,52 +57,140 @@ function friends_status(response) {
 		friends_button.on('click', delete_user_friend);
 		friends_button[0].innerText = "You are friends";
 	}
-	else if (response == "same user") {
+	else if (response === "same user") {
 		$("#friends_request").addClass("hidden");
 	}
 }
 
 function delete_user_request() {
 	$.get("/ajax_delete_user_request", {
-		'auth_id': auth_id,
 		'user_id': user_id
 	})
 	.done(function(response)
 	{
-		friends_status(response);
+		let friends_button_class = friends_button[0].classList.toString();
+		let test = friends_button_class.split(" ");
+
+		if (response === "0") {
+			for (let i = 0; i < test.length; i++) {
+				friends_button[0].classList.remove(test[i]);
+			}
+			friends_button.addClass("btn-my");
+			friends_button.addClass("btn-primary");
+			friends_button.on('click', add_user_request);
+			friends_button[0].innerText = "Add friend";
+		}
 	});
 }
 
 function confirm_user_request() {
 	$.get("/ajax_confirm_user_request", {
-		'auth_id': auth_id,
 		'user_id': user_id
 	})
 	.done(function(response)
 	{
-		friends_status(response);
+		let friends_button_class = friends_button[0].classList.toString();
+		let test = friends_button_class.split(" ");
+
+		if (response === "1") {
+			for (let i = 0; i < test.length; i++) {
+				friends_button[0].classList.remove(test[i]);
+			}
+			friends_button.addClass("btn-my");
+			friends_button.addClass("btn-default");
+			friends_button.on('click', delete_user_friend);
+			friends_button[0].innerText = "You are friends";
+		}
 	});
 }
 
 function add_user_request() {
 	$.get("/ajax_add_user_request", {
-		'auth_id': auth_id,
 		'user_id': user_id
 	})
 	.done(function(response)
 	{
-		friends_status(response);
+		let friends_button_class = friends_button[0].classList.toString();
+		let test = friends_button_class.split(" ");
+
+		if (response === "waiting") {
+			for (let i = 0; i < test.length; i++) {
+				friends_button[0].classList.remove(test[i]);
+			}
+			friends_button.addClass("btn-my");
+			friends_button.addClass("btn-warning");
+			friends_button.on('click', delete_user_request);
+			friends_button[0].innerText = "Delete request";
+		}
 	});
 }
 
 function delete_user_friend() {
 	$.get("/ajax_delete_user_friend", {
-		'auth_id': auth_id,
 		'user_id': user_id
 	})
 	.done(function(response)
 	{
-		friends_status(response);
+		let friends_button_class = friends_button[0].classList.toString();
+		let test = friends_button_class.split(" ");
+
+		if (response === "0") {
+			for (let i = 0; i < test.length; i++) {
+				friends_button[0].classList.remove(test[i]);
+			}
+			friends_button.addClass("btn-my");
+			friends_button.addClass("btn-primary");
+			friends_button.on('click', add_user_request);
+			friends_button[0].innerText = "Add friend";
+		}
+	});
+}
+
+function edit_basic(form) {
+	$.post("/ajax_edit_basic/", {
+		"first_name": form.firstname.value,
+		"last_name": form.lastname.value,
+		"email": form.email.value,
+		"optradio": form.optradio.value,
+		"city": form.city.value,
+		"country": form.country.value,
+		"information": form.information.value,
+		"theme": form.theme.value
+	}).done(function (res) {
+		if (res === "success") {
+			location.reload(true);
+		} else {
+			let error = $("#error")[0];
+			error.innerText = res;
+		}
+	});
+}
+
+function edit_advanced(form) {
+	$.post("/ajax_edit_advanced/", {
+		"phone": form.phone.value,
+		"language": form.language.value,
+		"status": form.status.value,
+		"political": form.political.value,
+		"fb": form.fb.value,
+		"tw": form.tw.value,
+		"inst": form.inst.value,
+		"site": form.site.value,
+		"hobbies": form.hobbies.value,
+		"tv_shows": form.tv_shows.value,
+		"movies": form.movies.value,
+		"games": form.games.value,
+		"music": form.music.value,
+		"books": form.books.value,
+		"writers": form.writers.value,
+		"others": form.others.value
+	}).done(function (res) {
+		if (res === "Success") {
+			location.reload(true);
+		} else {
+			let error = $("#error")[0];
+			error.innerText = res;
+		}
 	});
 }
 

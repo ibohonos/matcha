@@ -1,6 +1,5 @@
 function like(auth_id, post_id) {
 	$.post('/ajax_like/', {
-		'auth_id': auth_id,
 		'post_id': post_id
 	}).done(function (resp) {
 		let like = $('#like' + post_id);
@@ -17,7 +16,6 @@ function like(auth_id, post_id) {
 
 function dislike(auth_id, post_id) {
 	$.post('/ajax_dislike/', {
-		'auth_id': auth_id,
 		'post_id': post_id
 	}).done(function (resp) {
 		let dislike = $('#dislike' + post_id);

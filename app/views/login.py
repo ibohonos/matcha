@@ -79,14 +79,15 @@ def ajax_registration():
 	cover_img = "/static/uploads/covers/" + cover
 	req = user_to_db(r_login, r_email, pwd_hash, token_hash, r_first, r_last, r_gender, r_birthday, cover_img)
 
-	if not req:
-		msg = Message('matcha registration', sender="rkhilenksmtp@gmail.com", recipients=[r_email])
-		msg.body = "To activate account goto " + request.url_root + "activate?email=" + r_email + "&token=" + token_hash
-		msg.html = "<p>To activate account goto <a href='" + request.url_root + "activate?email=" + r_email + "&token=" + token_hash + "'>this link</a></p>"
-		mail.send(msg)
-		return "registered"
-	else:
-		return "error"
+	if req:
+		about = create_about(req)
+		if not about:
+			msg = Message('matcha registration', sender="rkhilenksmtp@gmail.com", recipients=[r_email])
+			msg.body = "To activate account goto " + request.url_root + "activate?email=" + r_email + "&token=" + token_hash
+			msg.html = "<p>To activate account goto <a href='" + request.url_root + "activate?email=" + r_email + "&token=" + token_hash + "'>this link</a></p>"
+			mail.send(msg)
+			return "registered"
+	return "error"
 
 
 @app.route('/activate')
