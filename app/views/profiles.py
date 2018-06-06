@@ -166,7 +166,11 @@ def edit_profile_password():
 @app.route('/profile/edit/location/')
 def edit_profile_location():
 	if session.get('id_user_logged'):
-		data = {'user': session.get('user_data'), 'about': get_about(session.get('id_user_logged'))}
+		data = {
+			'user': session.get('user_data'),
+			'about': get_about(session.get('id_user_logged')),
+			'all_friends': all_friends(session.get('id_user_logged'))
+		}
 		return render_template('edit-profile-location.html', data=data)
 	return redirect('/')
 
