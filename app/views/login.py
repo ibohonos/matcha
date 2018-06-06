@@ -9,6 +9,7 @@ from app.models.users import *
 from random import randint
 from app.models.friendship import all_friends
 from app.models.notifications import get_notifications_by_user_id
+from app.models.location import *
 
 
 def get_friendlist(id_user):
@@ -136,7 +137,7 @@ def ajax_login():
 			session['id_user_logged'] = res['id_user']
 			session['user_data'] = res
 			session['notifications'] = get_notifications_by_user_id(res['id_user'])
-			print(session['notifications'])
+			session['location'] = get_location_by_id(res['id_user'])
 			return "logged_in"
 		else:
 			return "wrong_pwd"

@@ -217,12 +217,12 @@ $("#forg_pwd_btn").click(function(){
 	event.preventDefault();
 	$("#login").toggleClass("active");
 	$("#forgot_pwd").toggleClass("active");
-})
+});
 
 $("#rem_pwd_btn").click(function(){
 	event.preventDefault();
 	$("#login").toggleClass("active");
 	$("#forgot_pwd").toggleClass("active");
-})
+});
 
-$("#register_btm").click()
+$("#register_btm").click();
