@@ -93,3 +93,14 @@
     height: 400px;
 }
 
+ul.album-photos .post-content:before {
+	content: none;
+}
+
+ul.album-photos .post-content .post-detail {
+	margin: 0;
+}
+
+ul.album-photos p {
+	font-size: 15px;
+}
