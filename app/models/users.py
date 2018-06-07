@@ -94,3 +94,35 @@ def update_avatar(avatar, id_user):
 	res = db_connect(sql, arguments)
 	return res
 
+
+def report_user(id_from, id_to):
+	arguments = [id_from, id_to]
+	sql = "INSERT INTO report (id_reporter, id_user) VALUES (?, ?)"
+	res = db_connect(sql, arguments)
+	return res
+
+
+def if_user_reported(id_from, id_to):
+	arguments = [id_from, id_to]
+	sql = "SELECT * FROM report WHERE id_reporter=? AND id_user=?"
+	res = db_connect(sql, arguments)
+	if res:
+		return True
+	return False
+
+
+def block_user(id_from, id_to):
+	arguments = [id_from, id_to]
+	sql = "INSERT INTO blocked (id_who_block, id_user) VALUES (?, ?)"
+	res = db_connect(sql, arguments)
+	return res
+
+
+def if_user_blocked(id_from, id_to):
+	arguments = [id_from, id_to]
+	sql = "SELECT * FROM blocked WHERE id_who_block=? AND id_user=?"
+	res = db_connect(sql, arguments)
+	if res:
+		return True
+	return False
+

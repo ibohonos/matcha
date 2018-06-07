@@ -2,7 +2,7 @@ from app import app
 from flask import render_template, session, redirect, request
 from flask_uploads import configure_uploads, IMAGES, UploadSet
 from datetime import datetime
-from app.models.users import get_user_by_id, get_about, update_basic_user, update_basic_about, update_advanced_about, update_avatar
+from app.models.users import *
 from app.models.friendship import *
 from app.models.posts import all_user_post
 from app.models.tags import get_tags_by_id_user
@@ -328,4 +328,24 @@ def album(id_user=None):
 		'all_friends': all_friends(user['id_user'])
 	}
 	return render_template("timeline-album.html", data=data)
+
+
+@app.route('/user/id<int:id_user>/report/')
+def report(id_user):
+	if not session.get('id_user_logged') or not id_user:
+		return redirect('/')
+	if if_user_reported(session.get('id_user_logged'), id_user) or session.get('id_user_logged') == id_user:
+		return redirect(request.referrer)
+	report_user(session.get('id_user_logged'), id_user)
+	return redirect(request.referrer)
+
+
+@app.route('/user/id<int:id_user>/block/')
+def block(id_user):
+	if not session.get('id_user_logged') or not id_user:
+		return redirect('/')
+	if if_user_blocked(session.get('id_user_logged'), id_user) or session.get('id_user_logged') == id_user:
+		return redirect(request.referrer)
+	block_user(session.get('id_user_logged'), id_user)
+	return redirect(request.referrer)
 

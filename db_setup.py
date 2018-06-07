@@ -257,6 +257,36 @@ def create_location_table():
 		print("location ok")
 
 
+def create_report_table():
+	res = db_connect('''
+		CREATE TABLE IF NOT EXISTS report (
+		id_report INTEGER PRIMARY KEY AUTOINCREMENT,
+		id_user INTEGER NOT NULL,
+		id_reporter INTEGER NOT NULL,
+		FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE,
+		FOREIGN KEY (id_reporter) REFERENCES users(id_user) ON DELETE CASCADE)
+		''')
+	if res:
+		print(res)
+	else:
+		print("report ok")
+
+
+def create_blocked_table():
+	res = db_connect('''
+		CREATE TABLE IF NOT EXISTS blocked (
+		id_blocked INTEGER PRIMARY KEY AUTOINCREMENT,
+		id_user INTEGER NOT NULL,
+		id_who_block INTEGER NOT NULL,
+		FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE,
+		FOREIGN KEY (id_who_block) REFERENCES users(id_user) ON DELETE CASCADE)
+		''')
+	if res:
+		print(res)
+	else:
+		print("blocked ok")
+
+
 if __name__ == '__main__':
 	create_users_table()
 	create_tags_table()
@@ -271,3 +301,5 @@ if __name__ == '__main__':
 	create_messages_table()
 	create_notifications_table()
 	create_location_table()
+	create_report_table()
+	create_blocked_table()
