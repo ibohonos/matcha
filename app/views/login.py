@@ -152,6 +152,7 @@ def ajax_logout():
 	session.pop('user_data', None)
 	session.pop('friendlist', None)
 	session.pop('notifications', None)
+	session.pop('location', None)
 	return redirect(request.referrer)
 
 

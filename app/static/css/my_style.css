@@ -93,3 +93,12 @@
     height: 400px;
 }
 
+#map_people_nearby
+{
+    height: 500px;
+}
+
+#markerLayer img {
+        border: 1px solid black !important;
+        border-radius: 50%;
+}
