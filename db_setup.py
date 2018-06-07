@@ -287,6 +287,20 @@ def create_blocked_table():
 		print("blocked ok")
 
 
+def create_album_table():
+	res = db_connect('''
+		CREATE TABLE IF NOT EXISTS album (
+		id_album INTEGER PRIMARY KEY AUTOINCREMENT,
+		id_user INTEGER NOT NULL,
+		img VARCHAR(255) NOT NULL,
+		FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE)
+		''')
+	if res:
+		print(res)
+	else:
+		print("album ok")
+
+
 if __name__ == '__main__':
 	create_users_table()
 	create_tags_table()
@@ -303,3 +317,4 @@ if __name__ == '__main__':
 	create_location_table()
 	create_report_table()
 	create_blocked_table()
+	create_album_table()

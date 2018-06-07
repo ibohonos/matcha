@@ -27,19 +27,14 @@
 					{% if session.get('user_data') %}
 						<form id="create_post" name="create_post" method="post" onsubmit="create_post_action(this);return false;">
 							<div class="row">
-							  <div class="col-md-7 col-sm-7">
+							  <div class="col-md-9 col-sm-9">
 								<div class="form-group">
 									<img src="{{ data.user_cur.avatar }}" alt="" class="profile-photo-md" />
 									<textarea name="content" id="content" cols="50" rows="2" class="form-control" placeholder="Write what you wish"></textarea>
 								</div>
 							  </div>
-							  <div class="col-md-5 col-sm-5">
+							  <div class="col-md-3 col-sm-3">
 								<div class="tools">
-								  <ul class="publishing-tools list-inline">
-									<li><a href="#"><i class="ion-compose"></i></a></li>
-									<li><a href="#"><i class="ion-images"></i></a></li>
-									<li><a href="#"><i class="ion-ios-videocam"></i></a></li>
-								  </ul>
 								  <button type="submit" class="btn btn-primary pull-right">Publish</button>
 								</div>
 							  </div>

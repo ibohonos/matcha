@@ -12,7 +12,7 @@ import html
 
 
 photos = UploadSet('photos', IMAGES)
-app.config['UPLOADED_PHOTOS_DEST'] = "app/static/uploads/avatars"
+app.config['UPLOADED_PHOTOS_DEST'] = "app/static/uploads"
 configure_uploads(app, photos)
 
 
@@ -173,7 +173,7 @@ def ajax_save_ava():
 	if session.get('id_user_logged'):
 		ava = request.files['ava']
 		filename = str(datetime.now().timestamp()).replace(".", "") + "-" + session.get('user_data')['first_name'] + "-" + session.get('user_data')['last_name'] + ".jpg"
-		photos.save(ava, "", filename)
+		photos.save(ava, "avatars", filename)
 		update_avatar("/static/uploads/avatars/" + filename, session.get('id_user_logged'))
 		session['user_data'] = get_user_by_id(session.get('id_user_logged'))
 		return redirect(request.referrer)
@@ -321,13 +321,41 @@ def album(id_user=None):
 		return redirect('/')
 	if id_user:
 		user = get_user_by_id(id_user)
+		album = user_images(id_user)
 	else:
 		user = get_user_by_id(session.get('id_user_logged'))
+		album = user_images(session.get('id_user_logged'))
 	data = {
 		'user': user,
-		'all_friends': all_friends(user['id_user'])
+		'all_friends': all_friends(user['id_user']),
+		'album': album
 	}
 	return render_template("timeline-album.html", data=data)
+
+
+@app.route('/profile/album/create/')
+def create_album():
+	if session.get('id_user_logged'):
+		data = {
+			'user': get_user_by_id(session.get('id_user_logged')),
+			'all_friends': all_friends(session.get('id_user_logged'))
+		}
+		return render_template("edit-profile-album.html", data=data)
+	return redirect('/')
+
+
+@app.route('/ajax_save_album/', methods=['POST'])
+def ajax_save_album():
+	if session.get('id_user_logged'):
+		images = request.files.getlist('images[]')
+		i = 0
+		for image in images:
+			filename = str(datetime.now().timestamp()).replace(".", "") + "-" + session.get('user_data')['first_name'] + "-" + session.get('user_data')['last_name'] + "-" + str(i) + ".jpg"
+			photos.save(image, "img", filename)
+			add_image(session.get('id_user_logged'), "/static/uploads/img/" + filename)
+			i = i + 1
+		return redirect(request.referrer)
+	return redirect('/')
 
 
 @app.route('/user/id<int:id_user>/report/')

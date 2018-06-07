@@ -95,6 +95,20 @@ def update_avatar(avatar, id_user):
 	return res
 
 
+def add_image(id_user, img):
+	arguments = [id_user, img]
+	sql = "INSERT INTO images (id_user, img_src) VALUES (?, ?)"
+	res = db_connect(sql, arguments)
+	return res
+
+
+def user_images(id_user):
+	arguments = [id_user]
+	sql = "SELECT * FROM images WHERE id_user=?"
+	res = db_connect(sql, arguments)
+	return res
+
+
 def report_user(id_from, id_to):
 	arguments = [id_from, id_to]
 	sql = "INSERT INTO report (id_reporter, id_user) VALUES (?, ?)"
