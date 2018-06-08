@@ -251,7 +251,7 @@ def ajax_delete_user_request():
 			return "same user"
 		del_fr = delete_user_request(auth_id, user_id)
 		if not del_fr:
-			msg = "User: " + session.get('useer_data')['first_name'] + " " + session.get('useer_data')['last_name'] + " delete request to friends."
+			msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " delete request to friends."
 			add_notification(user_id, msg)
 			return "0"
 	return "false"
@@ -267,7 +267,7 @@ def ajax_add_user_request():
 			return "same user"
 		add_fr = add_friend(auth_id, user_id)
 		if not add_fr:
-			msg = "User: " + session.get('useer_data')['first_name'] + " " + session.get('useer_data')['last_name'] + " add you request to friends."
+			msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " add you request to friends."
 			add_notification(user_id, msg)
 			return "waiting"
 	return "false"
@@ -283,7 +283,7 @@ def ajax_confirm_user_request():
 			return "same user"
 		conf_fr = confirm_user_request(user_id, auth_id)
 		if not conf_fr:
-			msg = "User: " + session.get('useer_data')['first_name'] + " " + session.get('useer_data')['last_name'] + " confirm you request to friends."
+			msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " confirm you request to friends."
 			add_notification(user_id, msg)
 			return "1"
 	return "false"
@@ -301,7 +301,7 @@ def ajax_delete_user_friend():
 		if not res1:
 			res2 = delete_user_request(user_id, auth_id)
 			if not res2:
-				msg = "User: " + session.get('useer_data')['first_name'] + " " + session.get('useer_data')['last_name'] + " delete friendsip."
+				msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " delete friendsip."
 				add_notification(user_id, msg)
 				return "0"
 	return "false"
