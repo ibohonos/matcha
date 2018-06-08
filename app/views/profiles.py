@@ -8,6 +8,7 @@ from app.models.posts import all_user_post
 from app.models.tags import get_tags_by_id_user
 from app.models.comments import all_post_comments
 from app.models.likes import liked, disliked, len_post_dislikes, len_post_likes
+from app.views.notifications import add_notification
 import html
 
 
@@ -32,6 +33,9 @@ def profile(id_user=None):
 	else:
 		user_cur = None
 
+	if session.get('id_user_logged') and not user['id_user'] == session.get('id_user_logged'):
+		msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " view your profile"
+		add_notification(user['id_user'], msg)
 	data = {
 		'user': user,
 		'user_cur': user_cur,
@@ -247,6 +251,8 @@ def ajax_delete_user_request():
 			return "same user"
 		del_fr = delete_user_request(auth_id, user_id)
 		if not del_fr:
+			msg = "User: " + session.get('useer_data')['first_name'] + " " + session.get('useer_data')['last_name'] + " delete request to friends."
+			add_notification(user_id, msg)
 			return "0"
 	return "false"
 
@@ -261,6 +267,8 @@ def ajax_add_user_request():
 			return "same user"
 		add_fr = add_friend(auth_id, user_id)
 		if not add_fr:
+			msg = "User: " + session.get('useer_data')['first_name'] + " " + session.get('useer_data')['last_name'] + " add you request to friends."
+			add_notification(user_id, msg)
 			return "waiting"
 	return "false"
 
@@ -275,6 +283,8 @@ def ajax_confirm_user_request():
 			return "same user"
 		conf_fr = confirm_user_request(user_id, auth_id)
 		if not conf_fr:
+			msg = "User: " + session.get('useer_data')['first_name'] + " " + session.get('useer_data')['last_name'] + " confirm you request to friends."
+			add_notification(user_id, msg)
 			return "1"
 	return "false"
 
@@ -291,6 +301,8 @@ def ajax_delete_user_friend():
 		if not res1:
 			res2 = delete_user_request(user_id, auth_id)
 			if not res2:
+				msg = "User: " + session.get('useer_data')['first_name'] + " " + session.get('useer_data')['last_name'] + " delete friendsip."
+				add_notification(user_id, msg)
 				return "0"
 	return "false"
 
@@ -306,6 +318,9 @@ def about(id_user=None):
 	else:
 		user = session.get('user_data')
 		about = get_about(session.get('id_user_logged'))
+	if session.get('id_user_logged') and not user['id_user'] == session.get('id_user_logged'):
+		msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " view your profile"
+		add_notification(user['id_user'], msg)
 	data = {
 		'user': user,
 		'about': about,
@@ -325,6 +340,9 @@ def album(id_user=None):
 	else:
 		user = get_user_by_id(session.get('id_user_logged'))
 		album = user_images(session.get('id_user_logged'))
+	if session.get('id_user_logged') and not user['id_user'] == session.get('id_user_logged'):
+		msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " view your profile"
+		add_notification(user['id_user'], msg)
 	data = {
 		'user': user,
 		'all_friends': all_friends(user['id_user']),
@@ -365,6 +383,9 @@ def report(id_user):
 	if if_user_reported(session.get('id_user_logged'), id_user) or session.get('id_user_logged') == id_user:
 		return redirect(request.referrer)
 	report_user(session.get('id_user_logged'), id_user)
+	if session.get('id_user_logged') and not id_user == session.get('id_user_logged'):
+		msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " send report to you."
+		add_notification(id_user, msg)
 	return redirect(request.referrer)
 
 
@@ -375,5 +396,8 @@ def block(id_user):
 	if if_user_blocked(session.get('id_user_logged'), id_user) or session.get('id_user_logged') == id_user:
 		return redirect(request.referrer)
 	block_user(session.get('id_user_logged'), id_user)
+	if session.get('id_user_logged') and not id_user == session.get('id_user_logged'):
+		msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " block you."
+		add_notification(id_user, msg)
 	return redirect(request.referrer)
 

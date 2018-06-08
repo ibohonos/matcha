@@ -5,6 +5,7 @@ from app.models.posts import create_post, get_post_by_id, dell_post
 from app.models.users import get_user_by_id
 from app.models.likes import dell_post_likes, dell_post_dislikes
 from app.models.comments import dell_post_comments
+from app.views.notifications import add_notification
 
 
 @app.route('/ajax_create_post', methods=['POST'])
@@ -23,6 +24,9 @@ def ajax_create_post():
 				user_avatar = user['avatar']
 				post = get_post_by_id(res)
 				if post:
+					if session.get('id_user_logged') and not user_id == session.get('id_user_logged'):
+						msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " send you post"
+						add_notification(user_id, msg)
 					data = {
 						'user_avatar': user_avatar,
 						'user_first_name': user_first_name,
