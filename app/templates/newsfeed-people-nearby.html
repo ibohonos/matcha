@@ -9,8 +9,6 @@
 			{% include "parts/left_sidebar.html" %}
 
                 <div class="col-md-9">
-
-
                     <!-- Nearby People List
             ================================================= -->
             <div class="people-nearby">
@@ -36,24 +34,14 @@
                    <div class="none latitude" >{{user.latitude}}</div>
               </div>
               {% endfor %}
-
-
-
-
             </div>
           </div>
-
-
-
-    		</div>
+    	</div>
     	</div>
     </div>
 
 
-		  </div>
-          </div>
-		</div>
-	</div>
+
     <div class="none" id="avatar">{{session.get('user_data').avatar}}</div>
     <div class="none" id="self_latitude">{{session.get('location')[0].latitude}}</div>
     <div class="none" id="self_longitude">{{session.get('location')[0].longitude}}</div>

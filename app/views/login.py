@@ -230,3 +230,26 @@ def ajax_new_pwd():
 			return "changed"
 	else:
 		return "error"
+
+
+@app.route('/ajax_change_pwd', methods=['POST'])
+def ajax_change_pwd():
+	old_pwd = request.form.get('old_pwd')
+	new_pwd = request.form.get('new_pwd')
+	conf_pwd = request.form.get('conf_pwd')
+
+	if new_pwd != conf_pwd:
+		return "wrong_confirm"
+	if len(new_pwd) < 6:
+		return "short_pwd"
+	if len(new_pwd) > 100:
+		return "long_pwd"
+	if re.search("[a-zA-Z]+", new_pwd.lower()) is None or re.search("[0-9]+", new_pwd) is None:
+		return "week_pwd"
+
+	user = get_user_by_id(request.form.get('id_user'))
+	if user.get('password') != hashlib.sha512(old_pwd.encode('utf-8')).hexdigest():
+		return "wrong_old_pwd"
+	else:
+		user_new_pwd(request.form.get('id_user'), hashlib.sha512(new_pwd.encode('utf-8')).hexdigest())
+		return "sucsess"
