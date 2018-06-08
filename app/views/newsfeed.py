@@ -2,6 +2,7 @@ from app import app
 from flask import session, render_template, redirect
 from app.models.friendship import all_friends_request, all_friends
 from app.models.users import get_user_by_id, get_users_and_locations
+from app.views.geolocation import calculate_distanse
 
 
 @app.route('/friends/')
@@ -36,6 +37,9 @@ def people_nearby():
 	id_user = session.get('id_user_logged')
 	user = get_user_by_id(id_user)
 
+	lon1 = session.get('location')[0].get('longitude')
+	lat1 = session.get('location')[0].get('latitude')
+
 	users_list = get_users_and_locations(id_user)
 	friends_list = all_friends(id_user)
 
@@ -49,7 +53,11 @@ def people_nearby():
 	not_friends = []
 	for user in users_list:
 		if user['id_user'] not in friends_id:
-			not_friends.append(user)
+			lon2 = user.get('longitude')
+			lat2 = user.get('latitude')
+			user['distance'] = round(calculate_distanse(lat1, lon1, lat2, lon2), 2)
+			if user['distance'] < 100:
+				not_friends.append(user)
 
 	data = {
 		'user': user,

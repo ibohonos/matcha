@@ -17,7 +17,6 @@
               <div class="google-maps">
                 <div id="map_people_nearby" class="map"></div>
               </div>
-
                 {% for user in data.not_friends %}
               <div class="nearby-user">
                 <div class="row">
@@ -27,7 +26,7 @@
                   <div class="col-md-7 col-sm-7">
                     <h5><a href="#" class="profile-link">{{user.first_name}} {{user.last_name}}</a></h5>
                     <!--<p>Software Engineer</p>-->
-                    <p class="text-muted">500m away</p>
+                    <p class="text-muted">{{ user.distance }}km away</p>
                   </div>
                   <div class="col-md-3 col-sm-3">
                     <button class="btn btn-primary pull-right">Add Friend</button>
