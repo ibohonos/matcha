@@ -35,7 +35,7 @@
 										<div class="friend-info">
 {#											<a href="#" class="pull-right text-green">My Friend</a>#}
 											<h5><a href="{{ url_for('profile', id_user=friend_user.id_user) }}" class="profile-link">{{ friend_user.first_name }} {{ friend_user.last_name }}</a></h5>
-											<p>Student at Harvard</p>
+											<p>Rating: {{ friend_user.rating }}</p>
 										</div>
 									</div>
 								</div>
@@ -50,7 +50,7 @@
 										<div class="friend-info">
 {#											<a href="#" class="pull-right text-green">My Friend</a>#}
 											<h5><a href="{{ url_for('profile', id_user=friend_user_req.id_user) }}" class="profile-link">{{ friend_user_req.first_name }} {{ friend_user_req.last_name }}</a></h5>
-											<p>Student at Harvard</p>
+											<p>Rating: {{ friend_user_req.rating }}</p>
 										</div>
 									</div>
 								</div>

@@ -2,9 +2,10 @@ from app import app
 from flask import session, request, jsonify
 import html
 from app.models.posts import create_post, get_post_by_id, dell_post
-from app.models.users import get_user_by_id
+from app.models.users import get_user_by_id, update_rating
 from app.models.likes import dell_post_likes, dell_post_dislikes
 from app.models.comments import dell_post_comments
+from app.views.notifications import add_notification
 
 
 @app.route('/ajax_create_post', methods=['POST'])
@@ -23,6 +24,12 @@ def ajax_create_post():
 				user_avatar = user['avatar']
 				post = get_post_by_id(res)
 				if post:
+					if session.get('id_user_logged') and not user_id == session.get('id_user_logged'):
+						msg = "User: " + user_first_name + " " + user_last_name + " send you post"
+						add_notification(user_id, msg)
+						user2 = get_user_by_id(user_id)
+						rating = user2['rating'] + 10
+						update_rating(rating, user_id)
 					data = {
 						'user_avatar': user_avatar,
 						'user_first_name': user_first_name,
@@ -45,8 +52,13 @@ def ajax_dell_post():
 		auth_id = session.get('id_user_logged')
 
 		res = get_post_by_id(post_id)
+		user_id = res['id_user']
 		if res and (res['id_user'] == auth_id or res['id_user_from'] == auth_id):
 			dell = dell_post(post_id)
+			if not user_id == res['id_user_from']:
+				user = get_user_by_id(user_id)
+				rating = user['rating'] - 10
+				update_rating(rating, user_id)
 			if not dell:
 				likes = dell_post_likes(post_id)
 				if not likes:

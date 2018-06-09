@@ -96,6 +96,59 @@ def update_avatar(avatar, id_user):
 	return res
 
 
+def add_image(id_user, img):
+	arguments = [id_user, img]
+	sql = "INSERT INTO images (id_user, img_src) VALUES (?, ?)"
+	res = db_connect(sql, arguments)
+	return res
+
+
+def user_images(id_user):
+	arguments = [id_user]
+	sql = "SELECT * FROM images WHERE id_user=?"
+	res = db_connect(sql, arguments)
+	return res
+
+
+def report_user(id_from, id_to):
+	arguments = [id_from, id_to]
+	sql = "INSERT INTO report (id_reporter, id_user) VALUES (?, ?)"
+	res = db_connect(sql, arguments)
+	return res
+
+
+def if_user_reported(id_from, id_to):
+	arguments = [id_from, id_to]
+	sql = "SELECT * FROM report WHERE id_reporter=? AND id_user=?"
+	res = db_connect(sql, arguments)
+	if res:
+		return True
+	return False
+
+
+def block_user(id_from, id_to):
+	arguments = [id_from, id_to]
+	sql = "INSERT INTO blocked (id_who_block, id_user) VALUES (?, ?)"
+	res = db_connect(sql, arguments)
+	return res
+
+
+def if_user_blocked(id_from, id_to):
+	arguments = [id_from, id_to]
+	sql = "SELECT * FROM blocked WHERE id_who_block=? AND id_user=?"
+	res = db_connect(sql, arguments)
+	if res:
+		return True
+	return False
+
+
+def update_rating(rating, id_user):
+	arguments = [rating, id_user]
+	sql = "UPDATE users SET rating=? WHERE id_user=?"
+	res = db_connect(sql, arguments)
+	return res
+
+
 def get_users_and_locations(id_user):
 	arguments = [id_user]
 	sql = "SELECT * FROM users INNER JOIN location ON users.id_user = location.id_user WHERE users.id_user != ? AND users.active = 1"
