@@ -3,6 +3,7 @@ from flask import session, render_template, redirect
 from app.models.friendship import all_friends_request, all_friends
 from app.models.users import get_user_by_id, get_users_and_locations, if_user_blocked
 from app.views.geolocation import calculate_distanse
+from app.views.notifications import get_users_online_list
 
 
 def get_not_friends(id_user):
@@ -37,7 +38,8 @@ def friends():
 			'user': get_user_by_id(session.get('id_user_logged')),
 			'get_by_id': get_user_by_id,
 			'friends': all_friends_request(session.get('id_user_logged')),
-			"all_friends": all_friends(session.get("id_user_logged"))
+			"all_friends": all_friends(session.get("id_user_logged")),
+			'users_online': get_users_online_list()
 		}
 		return render_template("newsfeed-friends.html", data=data)
 	return redirect("/")
@@ -50,7 +52,8 @@ def images():
 	user = get_user_by_id(session.get('id_user_logged'))
 	data = {
 		'user': user,
-		'all_friends': all_friends(user['id_user'])
+		'all_friends': all_friends(user['id_user']),
+		'users_online': get_users_online_list()
 	}
 	return render_template("newsfeed-images.html", data=data)
 
@@ -68,6 +71,7 @@ def people_nearby():
 	data = {
 		'user': user,
 		'all_friends': all_friends(user['id_user']),
-		'not_friends': not_friends
+		'not_friends': not_friends,
+		'users_online': get_users_online_list()
 	}
 	return render_template("newsfeed-people-nearby.html", data=data)

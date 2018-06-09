@@ -20,7 +20,11 @@
 		<ul class="online-users list-inline">
 			{% if session.friendlist %}
 				{% for friend in session.friendlist %}
-					<li><a href="#" title="{{friend.first_name}} {{friend.last_name}}"><img src="{{friend.avatar}}" alt="user" class="img-responsive profile-photo" onclick="chat_start()"/><span class="online-dot"></span><div class="none">{{friend.login}}</div></a></li>
+					<li><a href="#" title="{{friend.first_name}} {{friend.last_name}}"><img src="{{friend.avatar}}" alt="user" class="img-responsive profile-photo" onclick="chat_start()"/>
+                        {% if friend.id_user in data.users_online %}
+                        <span class="online-dot"></span>
+                        {% endif %}
+                    <div class="none">{{friend.login}}</div></a></li>
 				{% endfor %}
 			{% endif %}
 		</ul>

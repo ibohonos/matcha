@@ -6,6 +6,13 @@ from flask_socketio import SocketIO, join_room, leave_room, emit, send
 notif_users_sid_to_id = {}
 
 
+def get_users_online_list():
+	users_online = []
+	for key, value in notif_users_sid_to_id.items():
+		users_online.append(value)
+	return users_online
+
+
 def add_notification(id_user, notif_text):
 	if not check_notification_in_db(id_user, notif_text):
 		add_notification_to_db(id_user, notif_text)
