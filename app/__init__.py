@@ -24,6 +24,7 @@ app.config.update(dict(
 mail = Mail(app)
 
 from app.views import newsfeed, login, chat, profiles, posts, friends, comments, likes, notifications, tags, geolocation
+from app.views.notifications import get_users_online_list
 
 
 @app.route('/')
@@ -37,7 +38,8 @@ def index():
 			"liked": liked,
 			"disliked": disliked,
 			"len_post_likes": len_post_likes,
-			"len_post_dislikes": len_post_dislikes
+			"len_post_dislikes": len_post_dislikes,
+			'users_online': get_users_online_list()
 		}
 		return render_template('newsfeed.html', data=data)
 	return render_template('index-register.html')
