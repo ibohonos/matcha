@@ -11,6 +11,7 @@ notif_socket.on('check_notifications', function(data)
         notif_horn.addClass("none");
     }
     else {
+        document.getElementById('notifications').innerHTML = "";
         data.forEach(function (item, i, data) {
             // console.log( i + ": " + item['notification'] + " (массив:" + data + ")" );
             var new_notif = document.createElement('li');
