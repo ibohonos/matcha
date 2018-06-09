@@ -9,6 +9,8 @@ from app.models.tags import get_tags_by_id_user
 from app.models.comments import all_post_comments
 from app.models.likes import liked, disliked, len_post_dislikes, len_post_likes
 from app.views.notifications import add_notification
+from app.views.login import get_friendlist
+from app.views.newsfeed import get_not_friends
 import html
 
 
@@ -291,6 +293,8 @@ def ajax_confirm_user_request():
 			user = get_user_by_id(user_id)
 			rating = user['rating'] + 10
 			update_rating(rating, user_id)
+			session['friendlist'] = get_friendlist(auth_id)
+			session['not_friends'] = get_not_friends(auth_id)
 			return "1"
 	return "false"
 
@@ -312,6 +316,8 @@ def ajax_delete_user_friend():
 				user = get_user_by_id(user_id)
 				rating = user['rating'] - 10
 				update_rating(rating, user_id)
+				session['friendlist'] = get_friendlist(auth_id)
+				session['not_friends'] = get_not_friends(auth_id)
 				return "0"
 	return "false"
 
