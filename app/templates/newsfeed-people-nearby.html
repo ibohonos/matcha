@@ -22,7 +22,7 @@
                     <img src="{{ user.avatar }}" alt="user" class="profile-photo-lg" />
                   </div>
                   <div class="col-md-7 col-sm-7">
-                    <h5><a href="#" class="profile-link">{{user.first_name}} {{user.last_name}}</a></h5>
+                    <h5><a href="{{ url_for('profile', id_user=user.id_user) }}" class="profile-link">{{user.first_name}} {{user.last_name}}</a></h5>
                     <!--<p>Software Engineer</p>-->
                     <p class="text-muted">{{ user.distance }}km away</p>
                   </div>

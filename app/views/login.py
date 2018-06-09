@@ -10,6 +10,7 @@ from random import randint
 from app.models.friendship import all_friends
 from app.models.notifications import get_notifications_by_user_id
 from app.models.location import *
+from app.views.newsfeed import get_not_friends
 
 
 def get_friendlist(id_user):
@@ -138,6 +139,7 @@ def ajax_login():
 			session['user_data'] = res
 			session['notifications'] = get_notifications_by_user_id(res['id_user'])
 			session['location'] = get_location_by_id(res['id_user'])
+			session['not_friends'] = get_not_friends(res['id_user'])
 			return "logged_in"
 		else:
 			return "wrong_pwd"
@@ -153,6 +155,7 @@ def ajax_logout():
 	session.pop('friendlist', None)
 	session.pop('notifications', None)
 	session.pop('location', None)
+	session.pop('not_friends', None)
 	return redirect(request.referrer)
 
 

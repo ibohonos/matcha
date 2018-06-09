@@ -1,8 +1,33 @@
 from app import app
 from flask import session, render_template, redirect
 from app.models.friendship import all_friends_request, all_friends
-from app.models.users import get_user_by_id, get_users_and_locations
+from app.models.users import get_user_by_id, get_users_and_locations, if_user_blocked
 from app.views.geolocation import calculate_distanse
+
+
+def get_not_friends(id_user):
+	lon1 = session.get('location')[0].get('longitude')
+	lat1 = session.get('location')[0].get('latitude')
+
+	users_list = get_users_and_locations(id_user)
+	friends_list = all_friends(id_user)
+
+	friends_id = []
+	for i in friends_list:
+		if i['id_requester'] != id_user:
+			friends_id.append(i['id_requester'])
+		if i['id_user_requested'] != id_user:
+			friends_id.append(i['id_user_requested'])
+
+	not_friends = []
+	for user in users_list:
+		if user['id_user'] not in friends_id and not if_user_blocked(id_user, user['id_user']):
+			lon2 = user.get('longitude')
+			lat2 = user.get('latitude')
+			user['distance'] = round(calculate_distanse(lat1, lon1, lat2, lon2), 2)
+			if user['distance'] < 100:
+				not_friends.append(user)
+	return not_friends
 
 
 @app.route('/friends/')
@@ -37,27 +62,8 @@ def people_nearby():
 	id_user = session.get('id_user_logged')
 	user = get_user_by_id(id_user)
 
-	lon1 = session.get('location')[0].get('longitude')
-	lat1 = session.get('location')[0].get('latitude')
-
-	users_list = get_users_and_locations(id_user)
-	friends_list = all_friends(id_user)
-
-	friends_id = []
-	for i in friends_list:
-		if i['id_requester'] != id_user:
-			friends_id.append(i['id_requester'])
-		if i['id_user_requested'] != id_user:
-			friends_id.append(i['id_user_requested'])
-
-	not_friends = []
-	for user in users_list:
-		if user['id_user'] not in friends_id:
-			lon2 = user.get('longitude')
-			lat2 = user.get('latitude')
-			user['distance'] = round(calculate_distanse(lat1, lon1, lat2, lon2), 2)
-			if user['distance'] < 100:
-				not_friends.append(user)
+	not_friends = get_not_friends(id_user)
+	session['not_friends'] = not_friends
 
 	data = {
 		'user': user,
