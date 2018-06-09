@@ -5,8 +5,9 @@ var room = $("#chat_room").text();
 window.onload = function () {
     var chat_body = document.getElementById('chat_body');
     var last_msg = chat_body.lastChild.previousSibling;
-    topPos = last_msg.offsetTop;
-    document.getElementById('scrollbar_wrapper').scrollTop = topPos;
+    if (last_msg){
+        var topPos = last_msg.offsetTop;
+        document.getElementById('scrollbar_wrapper').scrollTop = topPos;}
 }
 
 
