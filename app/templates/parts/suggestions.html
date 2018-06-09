@@ -3,40 +3,18 @@
 <div class="col-md-2 static">
 	<div class="suggestions" id="sticky-sidebar">
 		<h4 class="grey">Who to Follow</h4>
-		<div class="follow-user">
-			<img src="http://placehold.it/300x300" alt="" class="profile-photo-sm pull-left" />
-			<div>
-				<h5><a href="timeline.html">Diana Amber</a></h5>
-				<a href="#" class="text-green">Add friend</a>
-			</div>
-		</div>
-		<div class="follow-user">
-			<img src="http://placehold.it/300x300" alt="" class="profile-photo-sm pull-left" />
-			<div>
-				<h5><a href="timeline.html">Cris Haris</a></h5>
-				<a href="#" class="text-green">Add friend</a>
-			</div>
-		</div>
-		<div class="follow-user">
-			<img src="http://placehold.it/300x300" alt="" class="profile-photo-sm pull-left" />
-			<div>
-				<h5><a href="timeline.html">Brian Walton</a></h5>
-				<a href="#" class="text-green">Add friend</a>
-			</div>
-		</div>
-		<div class="follow-user">
-			<img src="http://placehold.it/300x300" alt="" class="profile-photo-sm pull-left" />
-			<div>
-				<h5><a href="timeline.html">Olivia Steward</a></h5>
-				<a href="#" class="text-green">Add friend</a>
-			</div>
-		</div>
-		<div class="follow-user">
-			<img src="http://placehold.it/300x300" alt="" class="profile-photo-sm pull-left" />
-			<div>
-				<h5><a href="timeline.html">Sophia Page</a></h5>
-				<a href="#" class="text-green">Add friend</a>
-			</div>
-		</div>
+		{% set i = 0 %}
+		{% for not_friend in session.get('not_friends') %}
+			{% if i < 10 %}
+				<div class="follow-user">
+					<img src="{{ not_friend.avatar }}" alt="" class="profile-photo-sm pull-left" />
+					<div>
+						<h5><a href="{{ url_for('profile', id_user=not_friend.id_user) }}">{{ not_friend.first_name }} {{ not_friend.last_name }}</a></h5>
+						<p class="text-green">{{ not_friend.distance }}km away</p>
+					</div>
+				</div>
+			{% endif %}
+			{% set i = i + 1 %}
+		{% endfor %}
 	</div>
 </div>
