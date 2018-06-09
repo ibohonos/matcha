@@ -140,3 +140,10 @@ def if_user_blocked(id_from, id_to):
 		return True
 	return False
 
+
+def update_rating(rating, id_user):
+	arguments = [rating, id_user]
+	sql = "UPDATE users SET rating=? WHERE id_user=?"
+	res = db_connect(sql, arguments)
+	return res
+

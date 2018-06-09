@@ -179,6 +179,9 @@ def ajax_save_ava():
 		filename = str(datetime.now().timestamp()).replace(".", "") + "-" + session.get('user_data')['first_name'] + "-" + session.get('user_data')['last_name'] + ".jpg"
 		photos.save(ava, "avatars", filename)
 		update_avatar("/static/uploads/avatars/" + filename, session.get('id_user_logged'))
+		user = get_user_by_id(session.get('id_user_logged'))
+		rating = user['rating'] + 5
+		update_rating(rating, session.get('id_user_logged'))
 		session['user_data'] = get_user_by_id(session.get('id_user_logged'))
 		return redirect(request.referrer)
 	return redirect('/')
@@ -285,6 +288,9 @@ def ajax_confirm_user_request():
 		if not conf_fr:
 			msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " confirm you request to friends."
 			add_notification(user_id, msg)
+			user = get_user_by_id(user_id)
+			rating = user['rating'] + 10
+			update_rating(rating, user_id)
 			return "1"
 	return "false"
 
@@ -303,6 +309,9 @@ def ajax_delete_user_friend():
 			if not res2:
 				msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " delete friendsip."
 				add_notification(user_id, msg)
+				user = get_user_by_id(user_id)
+				rating = user['rating'] - 10
+				update_rating(rating, user_id)
 				return "0"
 	return "false"
 
@@ -372,6 +381,9 @@ def ajax_save_album():
 			photos.save(image, "img", filename)
 			add_image(session.get('id_user_logged'), "/static/uploads/img/" + filename)
 			i = i + 1
+			user = get_user_by_id(session.get('id_user_logged'))
+			rating = user['rating'] + 5
+			update_rating(rating, session.get('id_user_logged'))
 		return redirect(request.referrer)
 	return redirect('/')
 
@@ -386,6 +398,9 @@ def report(id_user):
 	if session.get('id_user_logged') and not id_user == session.get('id_user_logged'):
 		msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " send report to you."
 		add_notification(id_user, msg)
+		user = get_user_by_id(id_user)
+		rating = user['rating'] - 10
+		update_rating(rating, id_user)
 	return redirect(request.referrer)
 
 
@@ -399,5 +414,8 @@ def block(id_user):
 	if session.get('id_user_logged') and not id_user == session.get('id_user_logged'):
 		msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " block you."
 		add_notification(id_user, msg)
+		user = get_user_by_id(id_user)
+		rating = user['rating'] - 10
+		update_rating(rating, id_user)
 	return redirect(request.referrer)
 

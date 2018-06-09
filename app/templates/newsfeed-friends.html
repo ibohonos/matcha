@@ -21,7 +21,7 @@
 										<img src="{{ friend_user.avatar }}" alt="user" class="profile-photo-lg" />
 										<div class="friend-info">
 											<h5><a href="{{ url_for('profile', id_user=friend_user.id_user) }}" class="profile-link">{{ friend_user.first_name }} {{ friend_user.last_name }}</a></h5>
-											<p>Student at Harvard</p>
+											<p>Rating: {{ friend_user.rating }}</p>
 										</div>
 									</div>
 								</div>
@@ -35,7 +35,7 @@
 										<img src="{{ friend_user_req.avatar }}" alt="user" class="profile-photo-lg" />
 										<div class="friend-info">
 											<h5><a href="{{ url_for('profile', id_user=friend_user_req.id_user) }}" class="profile-link">{{ friend_user_req.first_name }} {{ friend_user_req.last_name }}</a></h5>
-											<p>Student at Harvard</p>
+											<p>Rating: {{ friend_user_req.rating }}</p>
 										</div>
 									</div>
 								</div>
