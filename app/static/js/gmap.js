@@ -46,7 +46,7 @@ function init_UNIT_Map() {
   var uluru = {lat: 50.46883805910163, lng: 30.462166049957204};
   if (!document.getElementById('UNIT_Map')){return};
   var map = new google.maps.Map(document.getElementById('UNIT_Map'), {
-	zoom: 10,
+	zoom: 20,
 	center: uluru,
 	zoomControl: true,
 	scaleControl: false,
@@ -60,4 +60,59 @@ function init_UNIT_Map() {
     draggable:true,
     title:"Drag me!"
   });
+}
+
+
+function map_people_nearby() {
+  let latitude = parseFloat($('#self_latitude').text());
+  let longitude = parseFloat($('#self_longitude').text());
+
+
+  var uluru = {lat: latitude, lng: longitude};
+  if (!document.getElementById('map_people_nearby')){return};
+  var map = new google.maps.Map(document.getElementById('map_people_nearby'), {
+	zoom: 10,
+	center: uluru,
+	zoomControl: true,
+	scaleControl: false,
+	scrollwheel: false,
+	disableDoubleClickZoom: true
+  });
+
+  var marker = new google.maps.Marker({
+    position: uluru,
+	map: map,
+    icon: {
+		url: $('#avatar').text(),
+		scaledSize: new google.maps.Size(32, 32)
+	},
+    title:$("#user_login").text()
+  });
+
+  let users = document.getElementsByClassName("nearby-user");
+
+  for (var i = 0; i < users.length; i++) {
+      let user_photo = users[i].getElementsByClassName("profile-photo-lg")[0].src;
+      let longitude = parseFloat(users[i].getElementsByClassName("longitude")[0].innerHTML);
+      let latitude = parseFloat(users[i].getElementsByClassName("latitude")[0].innerHTML);
+      let name = users[i].getElementsByClassName("profile-link")[0].innerHTML;
+
+
+      let marker = new google.maps.Marker({
+        position: {lat: latitude, lng: longitude},
+	    map: map,
+        icon: {
+	    	url: user_photo,
+	    	scaledSize: new google.maps.Size(32, 32)
+	    },
+         title:name
+        });
+
+  }
+
+  var myoverlay = new google.maps.OverlayView();
+     myoverlay.draw = function () {
+         this.getPanes().markerLayer.id='markerLayer';
+     };
+  myoverlay.setMap(map);
 }

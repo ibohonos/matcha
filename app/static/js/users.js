@@ -254,5 +254,54 @@ $("#add_tag_form").submit(function () {
 });
 
 
+$("#edit_change_password").submit(function () {
+    event.preventDefault();
+
+    var old_pwd = $('#my-password');
+	var new_pwd = $('#edit_new_pwd');
+	var conf_pwd = $('#edit_conf_pwd');
+
+	old_pwd.removeClass("unvalid");
+	new_pwd.removeClass("unvalid");
+	conf_pwd.removeClass("unvalid");
+
+	if (!old_pwd.val())
+		old_pwd.addClass("unvalid");
+	if (!new_pwd.val())
+		new_pwd.addClass("unvalid");
+	if (!conf_pwd.val())
+		conf_pwd.addClass("unvalid");
+
+	if (!old_pwd.val() || !new_pwd.val() || !conf_pwd.val()){
+		return;}
+
+
+    $.ajax({
+		url: "/ajax_change_pwd",
+		data: {'old_pwd': old_pwd.val(), 'new_pwd': new_pwd.val(), 'conf_pwd': conf_pwd.val(), 'id_user': $('#user_id').text()},
+		type: 'POST',
+		success: function(response)
+		{
+		   if (response == 'wrong_confirm'){
+		   		conf_pwd.addClass("unvalid");
+		   }
+		   if (response == 'short_pwd' || response == 'long_pwd' || response == 'week_pwd'){
+		   		new_pwd.addClass("unvalid");
+		   }
+		   if (response == 'wrong_old_pwd'){
+		   		old_pwd.addClass("unvalid");
+		   }
+		   if (response == 'sucsess'){
+		   		old_pwd.val('');
+		   		new_pwd.val('');
+			   conf_pwd.val('');
+			   $("#edit_change_pwd_btn").text('Changed');
+			   $("#edit_change_pwd_btn").prop('disabled', true);
+		   }
+		}
+	});
+});
+
+
 
 
