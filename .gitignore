@@ -218,3 +218,6 @@ Temporary Items
 
 db_matcha.sqlite3
 db_matcha.sqlite3-journal
+
+/app/static/uploads/img/*
+/app/static/uploads/avatars/*
