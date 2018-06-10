@@ -221,3 +221,5 @@ db_matcha.sqlite3-journal
 
 /app/static/uploads/img/*
 /app/static/uploads/avatars/*
+!/app/static/uploads/avatars/default.png
+!/app/static/uploads/img/test
