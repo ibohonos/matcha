@@ -17,7 +17,7 @@ def create_users_table():
 		active BOOLEAN DEFAULT 0,
 		token VARCHAR(255),
 		gender INT NOT NULL DEFAULT 1,
-		sex_pref INT,
+		sex_pref INTEGER NOT NULL DEFAULT 0,
 		rating INTEGER NOT NULL DEFAULT 0,
 		report INTEGER NOT NULL DEFAULT 0,
 		date_creation DATETIME DEFAULT CURRENT_TIMESTAMP)

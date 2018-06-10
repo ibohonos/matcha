@@ -152,6 +152,7 @@ function edit_basic(form) {
 		"last_name": form.lastname.value,
 		"email": form.email.value,
 		"optradio": form.optradio.value,
+		"sex": form.sex.value,
 		"city": form.city.value,
 		"country": form.country.value,
 		"information": form.information.value,

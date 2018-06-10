@@ -114,3 +114,11 @@ ul.album-photos p {
         border: 1px solid black !important;
         border-radius: 50%;
 }
+
+.about-profile .about-content-block .organization .work-info {
+	margin-bottom: 15px;
+}
+
+.about-profile .about-content-block .organization .work-info .social-links h5 {
+	display: inline-block;
+}

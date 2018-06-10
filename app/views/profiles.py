@@ -73,6 +73,7 @@ def ajax_edit_basic():
 		last_name = html.escape(request.form.get('last_name').strip())
 		email = html.escape(request.form.get('email').strip())
 		optradio = html.escape(request.form.get('optradio').strip())
+		sex = html.escape(request.form.get('sex').strip())
 		city = html.escape(request.form.get('city').strip())
 		country = html.escape(request.form.get('country').strip())
 		information = html.escape(request.form.get('information').strip())
@@ -86,7 +87,7 @@ def ajax_edit_basic():
 			return "Enter last name"
 		if not email:
 			return "Enter email"
-		res1 = update_basic_user(first_name, last_name, email, optradio, theme, id_user)
+		res1 = update_basic_user(first_name, last_name, email, optradio, sex, theme, id_user)
 		if not res1:
 			res2 = update_basic_about(location, information, id_user)
 			if not res2:

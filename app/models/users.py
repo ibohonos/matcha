@@ -68,9 +68,9 @@ def create_about(id_user):
 	return res
 
 
-def update_basic_user(first_name, last_name, email, gender, theme, id_user):
-	arguments = [first_name, last_name, email, gender, theme, id_user]
-	sql = "UPDATE users SET first_name=?, last_name=?, email=?, gender=?, theme=? WHERE id_user=?"
+def update_basic_user(first_name, last_name, email, gender, sex_pref, theme, id_user):
+	arguments = [first_name, last_name, email, gender, sex_pref, theme, id_user]
+	sql = "UPDATE users SET first_name=?, last_name=?, email=?, gender=?, sex_pref=?, theme=? WHERE id_user=?"
 	res = db_connect(sql, arguments)
 	return res
 
