@@ -4,19 +4,19 @@
 }
 
 .rx_content{
-  min-height: calc(100vh - 352px);
+	min-height: calc(100vh - 352px);
 }
 
 .rx_chat_content{
-  min-height: calc(100vh - 102px);
+	min-height: calc(100vh - 102px);
 }
 
 .rx_edit_interests_content{
-  min-height: calc(100vh - 462px);
+	min-height: calc(100vh - 462px);
 }
 
 .rx_cursor_default{
-    cursor: default;
+	cursor: default;
 }
 
 #rx_activation_response{
@@ -39,7 +39,7 @@
 
 .btn
 {
-    outline:none !important;
+	outline:none !important;
 }
 
 .scrollbar-wrapper.tab-content {
@@ -75,13 +75,13 @@
 	right: 0;
 }
 #notification_red{
-   color: #dcb5b5f5;
+	color: #dcb5b5f5;
 }
 
 #notif_horn
 {
-    margin-right: 5px;
-    color: red;
+	margin-right: 5px;
+	color: red;
 }
 
 .img-responsive {
@@ -90,7 +90,7 @@
 }
 
 .edit-map {
-    height: 400px;
+	height: 400px;
 }
 
 ul.album-photos .post-content:before {
@@ -107,12 +107,12 @@ ul.album-photos p {
 
 #map_people_nearby
 {
-    height: 500px;
+	height: 500px;
 }
 
 #markerLayer img {
-        border: 1px solid black !important;
-        border-radius: 50%;
+	border: 1px solid black !important;
+	border-radius: 50%;
 }
 
 .about-profile .about-content-block .organization .work-info {
@@ -121,4 +121,14 @@ ul.album-photos p {
 
 .about-profile .about-content-block .organization .work-info .social-links h5 {
 	display: inline-block;
+}
+
+.post-content .post-container .post-detail .post-text p {
+	word-break: break-all;
+}
+
+.post-content .post-container .post-detail .post-comment p {
+	word-break: break-all;
+	padding-left: 10px;
+	padding-right: 30px;
 }
