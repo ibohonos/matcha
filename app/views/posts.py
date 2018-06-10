@@ -10,7 +10,7 @@ from app.views.notifications import add_notification
 
 @app.route('/ajax_create_post', methods=['POST'])
 def ajax_create_post():
-	content = html.escape(request.form.get('content'))
+	content = html.escape(request.form.get('content').strip())
 	auth_id = session.get('id_user_logged')
 	user_id = request.form.get('user_id')
 
@@ -24,7 +24,7 @@ def ajax_create_post():
 				user_avatar = user['avatar']
 				post = get_post_by_id(res)
 				if post:
-					if session.get('id_user_logged') and not user_id == session.get('id_user_logged'):
+					if not post['id_user'] == auth_id:
 						msg = "User: " + user_first_name + " " + user_last_name + " send you post"
 						add_notification(user_id, msg)
 						user2 = get_user_by_id(user_id)

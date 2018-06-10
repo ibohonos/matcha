@@ -9,7 +9,7 @@ from app.models.users import get_user_by_id
 def ajax_add_comment():
 	id_user = session.get('id_user_logged')
 	id_post = request.form.get('id_post')
-	text = html.escape(request.form.get('text'))
+	text = html.escape(request.form.get('text').strip())
 
 	if text:
 		user = get_user_by_id(id_user)

@@ -18,6 +18,22 @@ photos = UploadSet('photos', IMAGES)
 app.config['UPLOADED_PHOTOS_DEST'] = "app/static/uploads"
 configure_uploads(app, photos)
 
+ALLOWED_EXTENSIONS = [
+		'image/gif',
+		'image/jpeg',
+		'image/pjpeg',
+		'image/png',
+		'image/svg+xml',
+		'image/tiff',
+		'image/vnd.microsoft.icon',
+		'image/vnd.wap.wbmp',
+		'image/webp'
+	]
+
+
+def allowed_ex(mime):
+	return mime.lower() in ALLOWED_EXTENSIONS
+
 
 @app.route('/profile/')
 @app.route('/user/id<int:id_user>/')
@@ -36,7 +52,8 @@ def profile(id_user=None):
 		user_cur = None
 
 	if session.get('id_user_logged') and not user['id_user'] == session.get('id_user_logged'):
-		msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " view your profile"
+		msg = "User: " + session.get('user_data')['first_name'] + " " + \
+			session.get('user_data')['last_name'] + " view your profile"
 		add_notification(user['id_user'], msg)
 	data = {
 		'user': user,
@@ -114,22 +131,22 @@ def edit_profile_advanced():
 @app.route('/ajax_edit_advanced/', methods=['POST'])
 def ajax_edit_advanced():
 	if session.get('id_user_logged'):
-		phone = html.escape(request.form.get('phone'))
-		language = html.escape(request.form.get('language'))
-		status = html.escape(request.form.get('status'))
-		political = html.escape(request.form.get('political'))
-		fb = html.escape(request.form.get('fb'))
-		tw = html.escape(request.form.get('tw'))
-		inst = html.escape(request.form.get('inst'))
-		site = html.escape(request.form.get('site'))
-		hobbies = html.escape(request.form.get('hobbies'))
-		tv_shows = html.escape(request.form.get('tv_shows'))
-		movies = html.escape(request.form.get('movies'))
-		games = html.escape(request.form.get('games'))
-		music = html.escape(request.form.get('music'))
-		books = html.escape(request.form.get('books'))
-		writers = html.escape(request.form.get('writers'))
-		others = html.escape(request.form.get('others'))
+		phone = html.escape(request.form.get('phone').strip())
+		language = html.escape(request.form.get('language').strip())
+		status = html.escape(request.form.get('status').strip())
+		political = html.escape(request.form.get('political').strip())
+		fb = html.escape(request.form.get('fb').strip())
+		tw = html.escape(request.form.get('tw').strip())
+		inst = html.escape(request.form.get('inst').strip())
+		site = html.escape(request.form.get('site').strip())
+		hobbies = html.escape(request.form.get('hobbies').strip())
+		tv_shows = html.escape(request.form.get('tv_shows').strip())
+		movies = html.escape(request.form.get('movies').strip())
+		games = html.escape(request.form.get('games').strip())
+		music = html.escape(request.form.get('music').strip())
+		books = html.escape(request.form.get('books').strip())
+		writers = html.escape(request.form.get('writers').strip())
+		others = html.escape(request.form.get('others').strip())
 		id_user = session.get('id_user_logged')
 		res = update_advanced_about(phone, language, status, political, fb, tw, inst, site, hobbies, tv_shows, movies, games, music, books, writers, others, id_user)
 		if not res:
@@ -179,13 +196,16 @@ def edit_profile_avatar():
 def ajax_save_ava():
 	if session.get('id_user_logged'):
 		ava = request.files['ava']
-		filename = str(datetime.now().timestamp()).replace(".", "") + "-" + session.get('user_data')['first_name'] + "-" + session.get('user_data')['last_name'] + ".jpg"
-		photos.save(ava, "avatars", filename)
-		update_avatar("/static/uploads/avatars/" + filename, session.get('id_user_logged'))
-		user = get_user_by_id(session.get('id_user_logged'))
-		rating = user['rating'] + 5
-		update_rating(rating, session.get('id_user_logged'))
-		session['user_data'] = get_user_by_id(session.get('id_user_logged'))
+		filename = str(datetime.now().timestamp()).replace(".", "") + "-" + session.get('user_data')['first_name'] + \
+			"-" + session.get('user_data')['last_name'] + "." + ava.filename.rsplit('.', 1)[1].lower()
+		res = allowed_ex(ava.content_type)
+		if res:
+			photos.save(ava, "avatars", filename)
+			update_avatar("/static/uploads/avatars/" + filename, session.get('id_user_logged'))
+			user = get_user_by_id(session.get('id_user_logged'))
+			rating = user['rating'] + 5
+			update_rating(rating, session.get('id_user_logged'))
+			session['user_data'] = get_user_by_id(session.get('id_user_logged'))
 		return redirect(request.referrer)
 	return redirect('/')
 
@@ -257,7 +277,8 @@ def ajax_delete_user_request():
 			return "same user"
 		del_fr = delete_user_request(auth_id, user_id)
 		if not del_fr:
-			msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " delete request to friends."
+			msg = "User: " + session.get('user_data')['first_name'] + " " + \
+				session.get('user_data')['last_name'] + " delete request to friends."
 			add_notification(user_id, msg)
 			return "0"
 	return "false"
@@ -273,7 +294,8 @@ def ajax_add_user_request():
 			return "same user"
 		add_fr = add_friend(auth_id, user_id)
 		if not add_fr:
-			msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " add you request to friends."
+			msg = "User: " + session.get('user_data')['first_name'] + " " + \
+				session.get('user_data')['last_name'] + " add you request to friends."
 			add_notification(user_id, msg)
 			return "waiting"
 	return "false"
@@ -289,11 +311,15 @@ def ajax_confirm_user_request():
 			return "same user"
 		conf_fr = confirm_user_request(user_id, auth_id)
 		if not conf_fr:
-			msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " confirm you request to friends."
+			msg = "User: " + session.get('user_data')['first_name'] + " " + \
+				session.get('user_data')['last_name'] + " confirm you request to friends."
 			add_notification(user_id, msg)
 			user = get_user_by_id(user_id)
 			rating = user['rating'] + 10
 			update_rating(rating, user_id)
+			user2 = get_user_by_id(auth_id)
+			rating2 = user2['rating'] + 10
+			update_rating(rating2, auth_id)
 			session['friendlist'] = get_friendlist(auth_id)
 			session['not_friends'] = get_not_friends(auth_id)
 			return "1"
@@ -312,11 +338,15 @@ def ajax_delete_user_friend():
 		if not res1:
 			res2 = delete_user_request(user_id, auth_id)
 			if not res2:
-				msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " delete friendsip."
+				msg = "User: " + session.get('user_data')['first_name'] + " " + \
+					session.get('user_data')['last_name'] + " delete friendsip."
 				add_notification(user_id, msg)
 				user = get_user_by_id(user_id)
 				rating = user['rating'] - 10
 				update_rating(rating, user_id)
+				user2 = get_user_by_id(auth_id)
+				rating2 = user2['rating'] - 10
+				update_rating(rating2, auth_id)
 				session['friendlist'] = get_friendlist(auth_id)
 				session['not_friends'] = get_not_friends(auth_id)
 				return "0"
@@ -335,7 +365,8 @@ def about(id_user=None):
 		user = session.get('user_data')
 		about = get_about(session.get('id_user_logged'))
 	if session.get('id_user_logged') and not user['id_user'] == session.get('id_user_logged'):
-		msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " view your profile"
+		msg = "User: " + session.get('user_data')['first_name'] + " " + \
+			session.get('user_data')['last_name'] + " view your profile"
 		add_notification(user['id_user'], msg)
 	data = {
 		'user': user,
@@ -357,7 +388,8 @@ def album(id_user=None):
 		user = get_user_by_id(session.get('id_user_logged'))
 		album = user_images(session.get('id_user_logged'))
 	if session.get('id_user_logged') and not user['id_user'] == session.get('id_user_logged'):
-		msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " view your profile"
+		msg = "User: " + session.get('user_data')['first_name'] + " " + \
+			session.get('user_data')['last_name'] + " view your profile"
 		add_notification(user['id_user'], msg)
 	data = {
 		'user': user,
@@ -384,13 +416,16 @@ def ajax_save_album():
 		images = request.files.getlist('images[]')
 		i = 0
 		for image in images:
-			filename = str(datetime.now().timestamp()).replace(".", "") + "-" + session.get('user_data')['first_name'] + "-" + session.get('user_data')['last_name'] + "-" + str(i) + ".jpg"
-			photos.save(image, "img", filename)
-			add_image(session.get('id_user_logged'), "/static/uploads/img/" + filename)
-			i = i + 1
-			user = get_user_by_id(session.get('id_user_logged'))
-			rating = user['rating'] + 5
-			update_rating(rating, session.get('id_user_logged'))
+			filename = str(datetime.now().timestamp()).replace(".", "") + "-" + session.get('user_data')['first_name'] + \
+				"-" + session.get('user_data')['last_name'] + "-" + str(i) + "." + image.filename.rsplit('.', 1)[1].lower()
+			res = allowed_ex(image.content_type)
+			if res:
+				photos.save(image, "img", filename)
+				add_image(session.get('id_user_logged'), "/static/uploads/img/" + filename)
+				i = i + 1
+				user = get_user_by_id(session.get('id_user_logged'))
+				rating = user['rating'] + 5
+				update_rating(rating, session.get('id_user_logged'))
 		return redirect(request.referrer)
 	return redirect('/')
 
@@ -403,7 +438,8 @@ def report(id_user):
 		return redirect(request.referrer)
 	report_user(session.get('id_user_logged'), id_user)
 	if session.get('id_user_logged') and not id_user == session.get('id_user_logged'):
-		msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " send report to you."
+		msg = "User: " + session.get('user_data')['first_name'] + " " + \
+			session.get('user_data')['last_name'] + " send report to you."
 		add_notification(id_user, msg)
 		user = get_user_by_id(id_user)
 		rating = user['rating'] - 10
@@ -419,7 +455,8 @@ def block(id_user):
 		return redirect(request.referrer)
 	block_user(session.get('id_user_logged'), id_user)
 	if session.get('id_user_logged') and not id_user == session.get('id_user_logged'):
-		msg = "User: " + session.get('user_data')['first_name'] + " " + session.get('user_data')['last_name'] + " block you."
+		msg = "User: " + session.get('user_data')['first_name'] + " " + \
+			session.get('user_data')['last_name'] + " block you."
 		add_notification(id_user, msg)
 		user = get_user_by_id(id_user)
 		rating = user['rating'] - 10
