@@ -39,8 +39,6 @@ def search():
 
 @app.route('/ajax_filter_apply', methods=['POST'])
 def ajax_filter_apply():
-    print(request.form)
-
     id_user = session.get('id_user_logged')
     users = get_search_users(id_user)
     filtered_users = []
@@ -73,10 +71,10 @@ def ajax_filter_apply():
             if not request.form['tag_1'] in tags_list:
                 flag = False
         if request.form['tag_2']:
-            if not request.form['tag_1'] in tags_list:
+            if not request.form['tag_2'] in tags_list:
                 flag = False
         if request.form['tag_3']:
-            if not request.form['tag_1'] in tags_list:
+            if not request.form['tag_3'] in tags_list:
                 flag = False
         if flag:
             filtered_users.append(user)
@@ -86,13 +84,13 @@ def ajax_filter_apply():
     if request.form['sort'] == 'dist_desc':
         filtered_users = sorted(filtered_users, key=lambda k: k['distance'], reverse=True)
     if request.form['sort'] == 'age_asc':
-        filtered_users = sorted(filtered_users, key=lambda k: k['distance'])
+        filtered_users = sorted(filtered_users, key=lambda k: k['age'])
     if request.form['sort'] == 'age_desc':
-        filtered_users = sorted(filtered_users, key=lambda k: k['distance'], reverse=True)
-    if request.form['sort'] == 'dist_asc':
-        filtered_users = sorted(filtered_users, key=lambda k: k['distance'])
+        filtered_users = sorted(filtered_users, key=lambda k: k['age'], reverse=True)
+    if request.form['sort'] == 'rate_asc':
+        filtered_users = sorted(filtered_users, key=lambda k: k['rating'])
     if request.form['sort'] == 'rate_desc':
-        filtered_users = sorted(filtered_users, key=lambda k: k['distance'], reverse=True)
+        filtered_users = sorted(filtered_users, key=lambda k: k['rating'], reverse=True)
 
     for i in filtered_users:
         print(i)
