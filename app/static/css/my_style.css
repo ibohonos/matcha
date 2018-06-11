@@ -15,6 +15,10 @@
   min-height: calc(100vh - 462px);
 }
 
+.rx_search_content{
+  min-height: calc(100vh - 102px);
+}
+
 .rx_cursor_default{
     cursor: default;
 }

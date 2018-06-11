@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Search{% endblock %}
 {% block main %}
-	<div id="page-contents">
+	<div id="page-contents" class="rx_search_content">
 		<div class="container">
 			<div class="row">
 
@@ -33,6 +33,17 @@
                 </div>
                 <div class="form-group col-xs-6">
                 <input id="fame_to" class="form-control input-group-lg" type="text" name="fame_to" title="Enter Fame" placeholder="Fame to">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-xs-8">
+                <label for="gender_select">Gender</label>
+                <select class="form-control" id="gender_select">
+                    <option value="0">Both</option>
+                    <option value="1">Male</option>
+                    <option value="2">Female</option>
+                </select>
                 </div>
             </div>
 
@@ -73,7 +84,7 @@
                     <div class="form-group col-xs-4 sorter_tab"><i id="dist_desc" class="fas fa-angle-down"></i>Distance<i id="dist_asc" class="fas fa-angle-up"></i></div>
                     <div class="form-group col-xs-4 sorter_tab"><i id="rate_desc" class="fas fa-angle-down"></i>Rating<i id="rate_asc" class="fas fa-angle-up"></i></div>
                 </div>
-				<div class="row">
+				<div class="row" id="search_result">
                 {% if data.users_query %}
 					{% for user in data.users_query %}
 							<div class="col-md-4 col-sm-4">
