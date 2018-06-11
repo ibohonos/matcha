@@ -1,7 +1,7 @@
 function chat_start()
 {
     event.preventDefault();
-    var chat_to = event.srcElement.parentNode.childNodes[2].innerHTML;
+    var chat_to = event.srcElement.parentNode.getElementsByClassName("chat_login_to")[0].innerHTML;
     var chat_from = $("#user_login").text();
 
     console.log(chat_from);
@@ -12,7 +12,7 @@ function chat_start()
 		type: 'POST',
 		success: function(response)
 		{
-            var form = $('<form action="/chat" method="post">' +
+            var form = $('<form class="none" action="/chat" method="post">' +
             '<input type="text" name="room_name" value="' + response + '" />' +
             '<input type="text" name="chat_to" value="' + chat_to + '" />' +
             '<input type="text" name="chat_from" value="' + chat_from + '" /></form>');

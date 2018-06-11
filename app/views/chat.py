@@ -9,6 +9,7 @@ from datetime import datetime
 import html
 from app.views.notifications import add_notification
 from app.models.friendship import all_friends, all_friends_request
+from app.views.notifications import get_users_online_list
 
 chat_users_sid_to_id = {}
 chat_users_sid_to_room = {}
@@ -36,7 +37,8 @@ def chat():
 	context = {'chat_room': 'room_for_all'}
 	data = {
 		'friends': all_friends_request(session.get('id_user_logged')),
-		"all_friends": all_friends(session.get("id_user_logged"))
+		"all_friends": all_friends(session.get("id_user_logged")),
+		'users_online': get_users_online_list()
 	}
 
 	try:
@@ -52,6 +54,11 @@ def chat():
 	try:
 		context['chat_room'] = request.form['room_name']
 		context['chat_to'] = check_user(request.form['chat_to'], request.form['chat_to'])
+		print("-----")
+		print(context['chat_to'])
+		print(check_user(request.form['chat_to'], request.form['chat_to']))
+		print(request.form['chat_to'])
+		print("-----")
 		context['chat_from'] = check_user(request.form['chat_from'], request.form['chat_from'])
 	except:
 		return redirect(url_for('index'))
