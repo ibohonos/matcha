@@ -147,6 +147,7 @@ ul.album-photos p {
 
 .user_span_info {
 	margin-left: 5px;
+	display: block;
 }
 
 .user_span_info strong{
@@ -177,4 +178,8 @@ ul.album-photos p {
 
 .no_pading{
 	padding: 0px !important;
+}
+
+.timeline-cover .navbar-mobile .mobile-menu ul li::after {
+	content: none;
 }
