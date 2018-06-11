@@ -2,6 +2,9 @@
 {% block title %}{{ data.user.first_name }} {{ data.user.last_name }} about - Matcha 40k{% endblock %}
 {% block scripts %}
 	<script src="{{ url_for('static', filename='js/users.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/gmap.js') }}"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqLNucodvPuxX_30MWoh6g1YT6hWnvzS4&callback=init_about_Map"
+			type="text/javascript"></script>
 {% endblock %}
 {% block main %}
 	<div class="container">
@@ -167,20 +170,24 @@
 					{% endif %}
 					<div class="about-content-block">
 						<h4 class="grey"><i class="ion-ios-location-outline icon-in-title"></i>Location</h4>
-						<p>228 Park Eve, New York</p>
 						<div class="google-maps">
-							<div id="map" class="map"></div>
-						</div>
+                            <div id="map_about" class="map edit-map"></div>
+                        </div>
 					</div>
 					<div class="about-content-block">
 						<h4 class="grey"><i class="ion-ios-heart-outline icon-in-title"></i>Interests</h4>
-						<ul class="interests list-inline">
-							<li><span class="int-icons" title="Bycycle riding"><i class="icon ion-android-bicycle"></i></span></li>
-							<li><span class="int-icons" title="Photography"><i class="icon ion-ios-camera"></i></span></li>
-							<li><span class="int-icons" title="Shopping"><i class="icon ion-android-cart"></i></span></li>
-							<li><span class="int-icons" title="Traveling"><i class="icon ion-android-plane"></i></span></li>
-							<li><span class="int-icons" title="Eating"><i class="icon ion-android-restaurant"></i></span></li>
-						</ul>
+
+                        <div class="edit-block">
+				  <ul class="list-inline interests rx_cursor_default" id="tags_edit_list">
+
+                    {% if data.tags %}
+                      {% for tag in data.tags %}
+                        <li>{% if tag.tag_sign%}<i class="{{tag.tag_sign}}"></i>{% endif %} {{tag.tag}}</li>
+                      {% endfor %}
+                    {% endif %}
+				  </ul>
+                        </div>
+
 					</div>
 				</div>
 			</div>
@@ -191,4 +198,10 @@
 		</div>
 	  </div>
 	</div>
+    </div>
+
+<div class="none" id="about_latitude">{{data.get('location')[0].latitude}}</div>
+<div class="none" id="about_longitude">{{data.get('location')[0].longitude}}</div>
+
 {% endblock %}
+latitude

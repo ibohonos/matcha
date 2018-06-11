@@ -114,6 +114,10 @@ ul.album-photos p {
 	height: 500px;
 }
 
+#map_about{
+    height: 400px;
+}
+
 #markerLayer img {
 	border: 1px solid black !important;
 	border-radius: 50%;

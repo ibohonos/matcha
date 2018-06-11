@@ -8,6 +8,7 @@ from app.models.posts import all_user_post
 from app.models.tags import get_tags_by_id_user
 from app.models.comments import all_post_comments
 from app.models.likes import liked, disliked, len_post_dislikes, len_post_likes
+from app.models.location import get_location_by_id
 from app.views.notifications import add_notification
 from app.views.login import get_friendlist
 from app.views.newsfeed import get_not_friends
@@ -368,10 +369,15 @@ def about(id_user=None):
 		msg = "User: " + session.get('user_data')['first_name'] + " " + \
 			session.get('user_data')['last_name'] + " view your profile"
 		add_notification(user['id_user'], msg)
+
+	location = get_location_by_id(id_user)
+	tags = get_tags_by_id_user(id_user)
 	data = {
 		'user': user,
 		'about': about,
-		'all_friends': all_friends(user['id_user'])
+		'all_friends': all_friends(user['id_user']),
+		'location': location,
+		'tags': tags
 	}
 	return render_template("timeline-about.html", data=data)
 

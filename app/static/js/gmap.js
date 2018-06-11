@@ -116,3 +116,23 @@ function map_people_nearby() {
      };
   myoverlay.setMap(map);
 }
+
+function init_about_Map() {
+  let latitude = parseFloat($('#about_latitude').text());
+  let longitude = parseFloat($('#about_longitude').text());
+  var uluru = {lat: latitude, lng: longitude};
+  if (!document.getElementById('map_about')){return};
+  var map = new google.maps.Map(document.getElementById('map_about'), {
+	zoom: 12,
+	center: uluru,
+	zoomControl: true,
+	scaleControl: false,
+	scrollwheel: false,
+	disableDoubleClickZoom: true
+  });
+
+  var marker = new google.maps.Marker({
+	position: uluru,
+	map: map,
+  });
+}
