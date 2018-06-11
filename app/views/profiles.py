@@ -196,17 +196,18 @@ def edit_profile_avatar():
 @app.route('/ajax_save_ava/', methods=['POST'])
 def ajax_save_ava():
 	if session.get('id_user_logged'):
-		ava = request.files['ava']
-		filename = str(datetime.now().timestamp()).replace(".", "") + "-" + session.get('user_data')['first_name'] + \
-			"-" + session.get('user_data')['last_name'] + "." + ava.filename.rsplit('.', 1)[1].lower()
-		res = allowed_ex(ava.content_type)
-		if res:
-			photos.save(ava, "avatars", filename)
-			update_avatar("/static/uploads/avatars/" + filename, session.get('id_user_logged'))
-			user = get_user_by_id(session.get('id_user_logged'))
-			rating = user['rating'] + 5
-			update_rating(rating, session.get('id_user_logged'))
-			session['user_data'] = get_user_by_id(session.get('id_user_logged'))
+		if request.files:
+			ava = request.files['ava']
+			filename = str(datetime.now().timestamp()).replace(".", "") + "-" + session.get('user_data')['first_name'] + \
+				"-" + session.get('user_data')['last_name'] + "." + ava.filename.rsplit('.', 1)[1].lower()
+			res = allowed_ex(ava.content_type)
+			if res:
+				photos.save(ava, "avatars", filename)
+				update_avatar("/static/uploads/avatars/" + filename, session.get('id_user_logged'))
+				user = get_user_by_id(session.get('id_user_logged'))
+				rating = user['rating'] + 5
+				update_rating(rating, session.get('id_user_logged'))
+				session['user_data'] = get_user_by_id(session.get('id_user_logged'))
 		return redirect(request.referrer)
 	return redirect('/')
 
@@ -419,19 +420,20 @@ def create_album():
 @app.route('/ajax_save_album/', methods=['POST'])
 def ajax_save_album():
 	if session.get('id_user_logged'):
-		images = request.files.getlist('images[]')
-		i = 0
-		for image in images:
-			filename = str(datetime.now().timestamp()).replace(".", "") + "-" + session.get('user_data')['first_name'] + \
-				"-" + session.get('user_data')['last_name'] + "-" + str(i) + "." + image.filename.rsplit('.', 1)[1].lower()
-			res = allowed_ex(image.content_type)
-			if res:
-				photos.save(image, "img", filename)
-				add_image(session.get('id_user_logged'), "/static/uploads/img/" + filename)
-				i = i + 1
-				user = get_user_by_id(session.get('id_user_logged'))
-				rating = user['rating'] + 5
-				update_rating(rating, session.get('id_user_logged'))
+		if request.files:
+			images = request.files.getlist('images[]')
+			i = 0
+			for image in images:
+				filename = str(datetime.now().timestamp()).replace(".", "") + "-" + session.get('user_data')['first_name'] + \
+					"-" + session.get('user_data')['last_name'] + "-" + str(i) + "." + image.filename.rsplit('.', 1)[1].lower()
+				res = allowed_ex(image.content_type)
+				if res:
+					photos.save(image, "img", filename)
+					add_image(session.get('id_user_logged'), "/static/uploads/img/" + filename)
+					i = i + 1
+					user = get_user_by_id(session.get('id_user_logged'))
+					rating = user['rating'] + 5
+					update_rating(rating, session.get('id_user_logged'))
 		return redirect(request.referrer)
 	return redirect('/')
 
