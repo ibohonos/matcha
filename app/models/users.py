@@ -154,3 +154,9 @@ def get_users_and_locations(id_user):
 	sql = "SELECT * FROM users INNER JOIN location ON users.id_user = location.id_user WHERE users.id_user != ? AND users.active = 1"
 	res = db_connect(sql, arguments)
 	return res
+
+def get_users_search(id_user):
+	arguments = [id_user]
+	sql = "SELECT * FROM users INNER JOIN location ON users.id_user = location.id_user INNER JOIN about ON users.id_user = about.id_user WHERE users.id_user != ? AND users.active = 1"
+	res = db_connect(sql, arguments)
+	return res
