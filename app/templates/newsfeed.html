@@ -17,7 +17,6 @@
 					{% for post in data.all_posts(friend.id_requester) %}
 						{% set user_post = data.get_user_by_id(post.id_user_from) %}
 						<div class="post-content" id="post{{ post.id_post }}">
-	{#						<img src="http://placehold.it/1920x1280" alt="post-image" class="img-responsive post-image" />#}
 							<div class="post-container">
 								{% if post.id_user_from == session.get('id_user_logged') or post.id_user == session.get('id_user_logged') %}
 									<div class="btn text-red dell" onclick="dell_post({{ post.id_post }})">X</div>

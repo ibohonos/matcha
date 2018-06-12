@@ -2,8 +2,8 @@
 {% block title %}Edit Profile {{ data.user.first_name }} {{ data.user.last_name }} | Change My Password - Matcha 40k{% endblock %}
 {% block scripts %}
 	<script src="{{ url_for('static', filename='js/users.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/gmap.js') }}"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqLNucodvPuxX_30MWoh6g1YT6hWnvzS4&callback=init_edit_Map"
+	<script src="{{ url_for('static', filename='js/gmap.js') }}"></script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqLNucodvPuxX_30MWoh6g1YT6hWnvzS4&callback=init_edit_Map"
 			type="text/javascript"></script>
 {% endblock %}
 {% block main %}
@@ -30,11 +30,11 @@
 				  <div class="line"></div>
 				</div>
 
-                <div class="google-maps">
-                    <div id="map_edit" class="map edit-map"></div>
-                </div>
+				<div class="google-maps">
+					<div id="map_edit" class="map edit-map"></div>
+				</div>
 
-                  <div class="row">
+				  <div class="row">
 					  <div class="form-group col-xs-6">
 						<label for="lat">Latitude</label>
 						<input id="lat" class="form-control input-group-lg" type="text" name="lat" placeholder="lat" value="{{ session.location[0].latitude }}" disabled>

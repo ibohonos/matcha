@@ -44,7 +44,3 @@ def index():
 		return render_template('newsfeed.html', data=data)
 	return render_template('index-register.html')
 
-# app.add_url_rule("/test2", "test2", test2, methods=['GET', 'POST'])
-
-# rkhilenksmtp@gmail.com
-# asdQWE123

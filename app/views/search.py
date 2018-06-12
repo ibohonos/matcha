@@ -5,6 +5,7 @@ from datetime import date, datetime
 from app.models.users import get_users_search
 from app.views.geolocation import calculate_distanse
 from app.models.tags import get_tags_by_id_user
+from app.models.friendship import all_friends
 import json
 
 
@@ -31,6 +32,7 @@ def search():
 		users_query = get_search_users(id_user)
 		data = {
 			'users_query': users_query,
+			'all_friends': all_friends(session.get('id_user_logged'))
 		}
 		return render_template('people-search.html', data=data)
 	return redirect("/")

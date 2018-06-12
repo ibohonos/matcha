@@ -20,46 +20,46 @@ tags_to_fa.update({'fas fa-wine-glass': ['wine', 'drink', 'drinking', 'буха�
 
 @app.route('/ajax_add_tag', methods=['POST'])
 def ajax_add_tag():
-    id_user = request.form.get('id_user')
-    tag = request.form.get('tag_name')
-    tag_sign = ""
+	id_user = request.form.get('id_user')
+	tag = request.form.get('tag_name')
+	tag_sign = ""
 
-    try:
-        id_tag = check_tag(tag)[0].get('id_tag')
-    except:
-        id_tag = None
+	try:
+		id_tag = check_tag(tag)[0].get('id_tag')
+	except:
+		id_tag = None
 
-    if not id_tag:
-        for key, value in tags_to_fa.items():
-            if tag.lower() in value:
-                tag_sign = key
-        add_tag(tag, tag_sign)
-        id_tag = check_tag(tag)[0].get('id_tag')
+	if not id_tag:
+		for key, value in tags_to_fa.items():
+			if tag.lower() in value:
+				tag_sign = key
+		add_tag(tag, tag_sign)
+		id_tag = check_tag(tag)[0].get('id_tag')
 
-    if check_tag_in_user(id_tag, id_user):
-        return "tag_exist"
+	if check_tag_in_user(id_tag, id_user):
+		return "tag_exist"
 
-    res = add_tag_to_user(id_tag, id_user)
-    if not res:
-        for key, value in tags_to_fa.items():
-            if tag.lower() in value:
-                tag_sign = key
-        return tag_sign
-    else:
-        return "error"
+	res = add_tag_to_user(id_tag, id_user)
+	if not res:
+		for key, value in tags_to_fa.items():
+			if tag.lower() in value:
+				tag_sign = key
+		return tag_sign
+	else:
+		return "error"
 
 
 @app.route('/ajax_remove_tag', methods=['POST'])
 def ajax_remove_tag():
-    id_user = request.form.get('id_user')
-    tag = request.form.get('tag_name')
+	id_user = request.form.get('id_user')
+	tag = request.form.get('tag_name')
 
-    try:
-        id_tag = check_tag(tag)[0].get('id_tag')
-    except:
-        return "error_no_tag"
-    res = remove_tag_from_user(id_tag, id_user)
-    if not res:
-        return "success"
-    else:
-        return "error"
+	try:
+		id_tag = check_tag(tag)[0].get('id_tag')
+	except:
+		return "error_no_tag"
+	res = remove_tag_from_user(id_tag, id_user)
+	if not res:
+		return "success"
+	else:
+		return "error"

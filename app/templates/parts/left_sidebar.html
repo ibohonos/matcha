@@ -4,7 +4,6 @@
 	<div class="profile-card">
 		<img src="{{ session.get('user_data').avatar }}" alt="user" class="profile-photo" />
 		<h5><a href="{{ url_for('profile', id_user=session.get('user_data').id_user) }}" class="text-white">{{ session.get('user_data').first_name }} {{ session.get('user_data').last_name }}</a></h5>
-		{#				<h5><a href="timeline.html" class="text-white">{{ session.get('user_data').first_name }} {{ session.get('user_data').last_name }}</a></h5>#}
 		<p class="text-white"><i class="ion ion-android-person-add"></i> {{ data.all_friends.__len__() }} followers</p>
 	</div><!--profile card ends-->
 	<ul class="nav-news-feed">
@@ -12,8 +11,6 @@
 		<li><i class="icon ion-ios-people"></i><div><a href="{{ url_for('people_nearby') }}">People Nearby</a></div></li>
 		<li><i class="icon ion-ios-people-outline"></i><div><a href="{{ url_for('friends') }}">Friends request</a></div></li>
 		<li><i class="icon ion-images"></i><div><a href="{{ url_for('album') }}">Images</a></div></li>
-{#		<li><i class="icon ion-chatboxes"></i><div><a href="newsfeed-messages.html">Messages</a></div></li>#}
-{#		<li><i class="icon ion-ios-videocam"></i><div><a href="newsfeed-videos.html">Videos</a></div></li>#}
 	</ul><!--news-feed links ends-->
 	<div id="chat-block">
 		<div class="title">Chat online</div>
@@ -21,10 +18,10 @@
 			{% if session.friendlist %}
 				{% for friend in session.friendlist %}
 					<li><a href="#" title="{{friend.first_name}} {{friend.last_name}}"><img src="{{friend.avatar}}" alt="user" class="img-responsive profile-photo" onclick="chat_start()"/>
-                        {% if friend.id_user in data.users_online %}
-                        <span class="online-dot"></span>
-                        {% endif %}
-                    <div class="none chat_login_to">{{friend.login}}</div></a></li>
+						{% if friend.id_user in data.users_online %}
+						<span class="online-dot"></span>
+						{% endif %}
+					<div class="none chat_login_to">{{friend.login}}</div></a></li>
 				{% endfor %}
 			{% endif %}
 		</ul>

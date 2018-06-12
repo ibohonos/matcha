@@ -46,38 +46,31 @@
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav navbar-right main-menu">
-{#						<li class="dropdown">#}
-{#							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Home <span><img src="{{ url_for('static', filename='images/down-arrow.png') }}" alt="" /></span></a>#}
-{#							<ul class="dropdown-menu newsfeed-home">#}
-{#								<li><a href="index.html">Landing Page 1</a></li>#}
-{#								<li><a href="index-register.html">Landing Page 2</a></li>#}
-{#							</ul>#}
-{#						</li>#}
 
 						<li class="dropdown">
 							{% if session.get('user_data') %}
-                                <li class="dropdown">
+								<li class="dropdown">
 
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i {% if session.notifications %} class="fab fa-affiliatetheme" {% else %} class="fab fa-affiliatetheme none" {% endif %} id="notif_horn"></i>Notifications</a>
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i {% if session.notifications %} class="fab fa-affiliatetheme" {% else %} class="fab fa-affiliatetheme none" {% endif %} id="notif_horn"></i>Notifications</a>
 
-                                     <ul class="dropdown-menu newsfeed-home" id="notifications">
-                                         {% if session.notifications %}
-                                         {% for notif in session.notifications %}
-                                         <li><a>{{notif.notification}}</a></li>
-                                         {% endfor %}
-                                         <li><a href="" id="notification_red" onclick="notification_red()">Mark all as red</a></li>
-                                         {% endif %}
-                                     </ul>
-                                </li>
-                                <li class="dropdown">
+									 <ul class="dropdown-menu newsfeed-home" id="notifications">
+										 {% if session.notifications %}
+										 {% for notif in session.notifications %}
+										 <li><a>{{notif.notification}}</a></li>
+										 {% endfor %}
+										 <li><a href="" id="notification_red" onclick="notification_red()">Mark all as red</a></li>
+										 {% endif %}
+									 </ul>
+								</li>
+								<li class="dropdown">
 								<a href="{{ url_for('index') }}">Newsfeed</a>
-                                </li>
+								</li>
 							{% else %}
 								<a href="{{ url_for('index') }}">Login / Register</a>
 							{% endif %}
 						</li>
 						{% if session.get('user_data') %}
-                            <li class="dropdown"><a href="{{ url_for('search') }}">Search</a></li>
+							<li class="dropdown"><a href="{{ url_for('search') }}">Search</a></li>
 							<li class="dropdown"><a href="{{ url_for('profile', id_user=session.get('id_user_logged')) }}">Profile</a></li>
 							<li class="dropdown"><a href="{{ url_for('edit_profile') }}">Edit profile</a></li>
 							<li class="dropdown"><a href="{{ url_for('ajax_logout') }}">Logout</a></li>
@@ -102,8 +95,8 @@
 		<div class="spinner"></div>
 	</div>
 
-    <div class="none" id="user_login">{{session.get('user_data').login}}</div>
-    <div class="none" id="user_id">{{session.get('id_user_logged')}}</div>
+	<div class="none" id="user_login">{{session.get('user_data').login}}</div>
+	<div class="none" id="user_id">{{session.get('id_user_logged')}}</div>
 
 	<!-- Scripts
 	================================================= -->
@@ -112,8 +105,8 @@
 	<script src="{{ url_for('static', filename='js/jquery.sticky-kit.min.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/jquery.scrollbar.min.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
-    <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+	<script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
 	{% block scripts %}{% endblock %}
 </body>
 </html>

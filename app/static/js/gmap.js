@@ -16,27 +16,27 @@ function init_edit_Map() {
   var marker = new google.maps.Marker({
 	position: uluru,
 	map: map,
-    draggable:true,
-    title:"Drag me!"
+	draggable:true,
+	title:"Drag me!"
   });
 
   google.maps.event.addListener(marker, 'dragend', function (event) {
-      document.getElementById("lat").value = event.latLng.lat();
-      document.getElementById("long").value = event.latLng.lng();
+	  document.getElementById("lat").value = event.latLng.lat();
+	  document.getElementById("long").value = event.latLng.lng();
   });
 
   $("#upd_loc_btn").click(function() {
   event.preventDefault();
   $.ajax({
-            url: '/ajax_update_location',
-            data: {'id_user': $("#user_id").text(), 'latitude': parseFloat($('#lat').val()), 'longitude': parseFloat($('#long').val())},
-            type: 'POST',
-            success: function (response) {
-                console.log(response);
-            },
-            error: function (error) {
-                console.log(error);
-            }
+			url: '/ajax_update_location',
+			data: {'id_user': $("#user_id").text(), 'latitude': parseFloat($('#lat').val()), 'longitude': parseFloat($('#long').val())},
+			type: 'POST',
+			success: function (response) {
+				console.log(response);
+			},
+			error: function (error) {
+				console.log(error);
+			}
   });
   });
 }
@@ -57,8 +57,8 @@ function init_UNIT_Map() {
   var marker = new google.maps.Marker({
 	position: uluru,
 	map: map,
-    draggable:true,
-    title:"Drag me!"
+	draggable:true,
+	title:"Drag me!"
   });
 }
 
@@ -80,40 +80,40 @@ function map_people_nearby() {
   });
 
   var marker = new google.maps.Marker({
-    position: uluru,
+	position: uluru,
 	map: map,
-    icon: {
+	icon: {
 		url: $('#avatar').text(),
 		scaledSize: new google.maps.Size(32, 32)
 	},
-    title:$("#user_login").text()
+	title:$("#user_login").text()
   });
 
   let users = document.getElementsByClassName("nearby-user");
 
   for (var i = 0; i < users.length; i++) {
-      let user_photo = users[i].getElementsByClassName("profile-photo-lg")[0].src;
-      let longitude = parseFloat(users[i].getElementsByClassName("longitude")[0].innerHTML);
-      let latitude = parseFloat(users[i].getElementsByClassName("latitude")[0].innerHTML);
-      let name = users[i].getElementsByClassName("profile-link")[0].innerHTML;
+	  let user_photo = users[i].getElementsByClassName("profile-photo-lg")[0].src;
+	  let longitude = parseFloat(users[i].getElementsByClassName("longitude")[0].innerHTML);
+	  let latitude = parseFloat(users[i].getElementsByClassName("latitude")[0].innerHTML);
+	  let name = users[i].getElementsByClassName("profile-link")[0].innerHTML;
 
 
-      let marker = new google.maps.Marker({
-        position: {lat: latitude, lng: longitude},
-	    map: map,
-        icon: {
-	    	url: user_photo,
-	    	scaledSize: new google.maps.Size(32, 32)
-	    },
-         title:name
-        });
+	  let marker = new google.maps.Marker({
+		position: {lat: latitude, lng: longitude},
+		map: map,
+		icon: {
+			url: user_photo,
+			scaledSize: new google.maps.Size(32, 32)
+		},
+		 title:name
+		});
 
   }
 
   var myoverlay = new google.maps.OverlayView();
-     myoverlay.draw = function () {
-         this.getPanes().markerLayer.id='markerLayer';
-     };
+	 myoverlay.draw = function () {
+		 this.getPanes().markerLayer.id='markerLayer';
+	 };
   myoverlay.setMap(map);
 }
 

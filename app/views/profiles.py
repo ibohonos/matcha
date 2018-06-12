@@ -170,18 +170,6 @@ def edit_profile_interests():
 	return redirect('/')
 
 
-@app.route('/profile/edit/settings/')
-def edit_profile_settings():
-	if session.get('id_user_logged'):
-		data = {
-			'user': session.get('user_data'),
-			'about': get_about(session.get('id_user_logged')),
-			'all_friends': all_friends(session.get('id_user_logged'))
-		}
-		return render_template('edit-profile-settings.html', data=data)
-	return redirect('/')
-
-
 @app.route('/profile/edit/avatar/')
 def edit_profile_avatar():
 	if session.get('id_user_logged'):
@@ -440,7 +428,7 @@ def ajax_save_album():
 
 @app.route('/user/id<int:id_user>/report/')
 def report(id_user):
-	if not session.get('id_user_logged') or not id_user:
+	if not session.get('id_user_logged') and not id_user:
 		return redirect('/')
 	if if_user_reported(session.get('id_user_logged'), id_user) or session.get('id_user_logged') == id_user:
 		return redirect(request.referrer)
@@ -457,7 +445,7 @@ def report(id_user):
 
 @app.route('/user/id<int:id_user>/block/')
 def block(id_user):
-	if not session.get('id_user_logged') or not id_user:
+	if not session.get('id_user_logged') and not id_user:
 		return redirect('/')
 	if if_user_blocked(session.get('id_user_logged'), id_user) or session.get('id_user_logged') == id_user:
 		return redirect(request.referrer)
