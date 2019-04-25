@@ -1,6 +1,6 @@
 from app import app
 from flask import session, redirect, request, jsonify
-import html
+import cgi
 from app.models.comments import add_comment, get_by_comment_id, dell_comment
 from app.models.users import get_user_by_id
 
@@ -10,7 +10,7 @@ def ajax_add_comment():
 	if session.get('id_user_logged'):
 		id_user = session.get('id_user_logged')
 		id_post = request.form.get('id_post')
-		text = html.escape(request.form.get('text').strip())
+		text = cgi.escape(request.form.get('text').strip())
 
 		if text:
 			user = get_user_by_id(id_user)

@@ -1,0 +1,8 @@
+# Wsgi template
+AddHandler wsgi-script .wsgi
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^www.matcha.vuetube.top$ [NC]
+RewriteRule ^(.*)$ http://matcha.vuetube.top/$1 [R=301,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ /app.wsgi/$1 [QSA,PT,L]
+

@@ -1,6 +1,6 @@
 from app import app, mail
 import hashlib
-import html
+import cgi
 from flask import render_template, request, session, redirect, url_for
 import re
 from datetime import datetime
@@ -31,8 +31,8 @@ def get_friendlist(id_user):
 
 @app.route('/ajax_registration', methods=['POST'])
 def ajax_registration():
-	r_email = html.escape(request.form['email'])
-	r_login = html.escape(request.form['login'])
+	r_email = cgi.escape(request.form['email'])
+	r_login = cgi.escape(request.form['login'])
 	pwd = request.form['pasword']
 	r_first = request.form['first_name']
 	r_last = request.form['last_name']
@@ -115,7 +115,7 @@ def activate():
 def ajax_login():
 	if session.get('id_user_logged'):
 		return "already_logged"
-	l_login = html.escape(request.form['login'])
+	l_login = cgi.escape(request.form['login'])
 	pwd = request.form['pwd']
 
 	if not l_login:
@@ -181,7 +181,7 @@ def recover():
 
 @app.route('/ajax_recover', methods=['POST'])
 def ajax_recover():
-	r_login = html.escape(request.form['login'])
+	r_login = cgi.escape(request.form['login'])
 
 	check = check_user(r_login, r_login)
 	if len(check) == 1:

@@ -6,7 +6,7 @@ from app.models.users import *
 from app.models.messages import *
 from collections import Counter
 from datetime import datetime
-import html
+import cgi
 from app.views.notifications import add_notification
 from app.models.friendship import all_friends, all_friends_request
 from app.views.notifications import get_users_online_list
@@ -98,7 +98,7 @@ def message(data):
 	user_data = get_user_by_id(data['user_id'])
 	data['user_data'] = user_data
 	data['date_time'] = "{:%Y-%m-%d %H:%M:%S}".format(datetime.now())
-	data['message'] = html.escape(data['message'])
+	data['message'] = cgi.escape(data['message'])
 	room_data = get_chat_room_by_name(room)
 	user_to_online = check_user_online(data['user_to_id'])
 	save_message(room_data[0]['id_chat_room'], data['user_id'], data['user_to_id'], data['message'], user_to_online)

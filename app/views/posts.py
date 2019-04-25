@@ -1,6 +1,6 @@
 from app import app
 from flask import session, request, jsonify
-import html
+import cgi
 from app.models.posts import create_post, get_post_by_id, dell_post
 from app.models.users import get_user_by_id, update_rating
 from app.models.likes import dell_post_likes, dell_post_dislikes
@@ -10,7 +10,7 @@ from app.views.notifications import add_notification
 
 @app.route('/ajax_create_post', methods=['POST'])
 def ajax_create_post():
-	content = html.escape(request.form.get('content').strip())
+	content = cgi.escape(request.form.get('content').strip())
 	auth_id = session.get('id_user_logged')
 	user_id = request.form.get('user_id')
 

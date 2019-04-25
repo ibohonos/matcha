@@ -12,8 +12,8 @@ from app.models.location import get_location_by_id
 from app.views.notifications import add_notification
 from app.views.login import get_friendlist
 from app.views.newsfeed import get_not_friends
-import html
-
+import cgi
+import time
 
 photos = UploadSet('photos', IMAGES)
 app.config['UPLOADED_PHOTOS_DEST'] = "app/static/uploads"
@@ -87,15 +87,15 @@ def edit_profile():
 @app.route('/ajax_edit_basic/', methods=['POST'])
 def ajax_edit_basic():
 	if session.get('id_user_logged'):
-		first_name = html.escape(request.form.get('first_name').strip())
-		last_name = html.escape(request.form.get('last_name').strip())
-		email = html.escape(request.form.get('email').strip())
-		optradio = html.escape(request.form.get('optradio').strip())
-		sex = html.escape(request.form.get('sex').strip())
-		city = html.escape(request.form.get('city').strip())
-		country = html.escape(request.form.get('country').strip())
-		information = html.escape(request.form.get('information').strip())
-		theme = html.escape(request.form.get('theme').strip())
+		first_name = cgi.escape(request.form.get('first_name').strip())
+		last_name = cgi.escape(request.form.get('last_name').strip())
+		email = cgi.escape(request.form.get('email').strip())
+		optradio = cgi.escape(request.form.get('optradio').strip())
+		sex = cgi.escape(request.form.get('sex').strip())
+		city = cgi.escape(request.form.get('city').strip())
+		country = cgi.escape(request.form.get('country').strip())
+		information = cgi.escape(request.form.get('information').strip())
+		theme = cgi.escape(request.form.get('theme').strip())
 		id_user = session.get('id_user_logged')
 		location = str(city) + " " + str(country)
 
@@ -132,22 +132,22 @@ def edit_profile_advanced():
 @app.route('/ajax_edit_advanced/', methods=['POST'])
 def ajax_edit_advanced():
 	if session.get('id_user_logged'):
-		phone = html.escape(request.form.get('phone').strip())
-		language = html.escape(request.form.get('language').strip())
-		status = html.escape(request.form.get('status').strip())
-		political = html.escape(request.form.get('political').strip())
-		fb = html.escape(request.form.get('fb').strip())
-		tw = html.escape(request.form.get('tw').strip())
-		inst = html.escape(request.form.get('inst').strip())
-		site = html.escape(request.form.get('site').strip())
-		hobbies = html.escape(request.form.get('hobbies').strip())
-		tv_shows = html.escape(request.form.get('tv_shows').strip())
-		movies = html.escape(request.form.get('movies').strip())
-		games = html.escape(request.form.get('games').strip())
-		music = html.escape(request.form.get('music').strip())
-		books = html.escape(request.form.get('books').strip())
-		writers = html.escape(request.form.get('writers').strip())
-		others = html.escape(request.form.get('others').strip())
+		phone = cgi.escape(request.form.get('phone').strip())
+		language = cgi.escape(request.form.get('language').strip())
+		status = cgi.escape(request.form.get('status').strip())
+		political = cgi.escape(request.form.get('political').strip())
+		fb = cgi.escape(request.form.get('fb').strip())
+		tw = cgi.escape(request.form.get('tw').strip())
+		inst = cgi.escape(request.form.get('inst').strip())
+		site = cgi.escape(request.form.get('site').strip())
+		hobbies = cgi.escape(request.form.get('hobbies').strip())
+		tv_shows = cgi.escape(request.form.get('tv_shows').strip())
+		movies = cgi.escape(request.form.get('movies').strip())
+		games = cgi.escape(request.form.get('games').strip())
+		music = cgi.escape(request.form.get('music').strip())
+		books = cgi.escape(request.form.get('books').strip())
+		writers = cgi.escape(request.form.get('writers').strip())
+		others = cgi.escape(request.form.get('others').strip())
 		id_user = session.get('id_user_logged')
 		res = update_advanced_about(phone, language, status, political, fb, tw, inst, site, hobbies, tv_shows, movies, games, music, books, writers, others, id_user)
 		if not res:
@@ -186,7 +186,7 @@ def ajax_save_ava():
 	if session.get('id_user_logged'):
 		if request.files:
 			ava = request.files['ava']
-			filename = str(datetime.now().timestamp()).replace(".", "") + "-" + session.get('user_data')['first_name'] + \
+			filename = str(time.mktime(datetime.now().timetuple())).replace(".", "") + "-" + session.get('user_data')['first_name'] + \
 				"-" + session.get('user_data')['last_name'] + "." + ava.filename.rsplit('.', 1)[1].lower()
 			res = allowed_ex(ava.content_type)
 			if res:

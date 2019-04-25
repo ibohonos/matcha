@@ -1,3 +1,4 @@
+# - *- coding: utf- 8 - *-
 from app import app
 from flask import request, session
 from app.models.tags import *

@@ -53,7 +53,7 @@
 							<div class="post-date hidden-xs hidden-sm">
 
 								<h5>{{ user_post.first_name }}</h5>
-								<p class="text-grey">{{ post.date_creation.split(' ')[0] }}</p>
+								<p class="text-grey">{{ post.date_creation.strftime("%d-%m-%Y") }}</p>
 
 							</div><!--Post Date End-->
 {#							<img src="http://placehold.it/1920x1280" alt="post-image" class="img-responsive post-image" />#}
@@ -65,7 +65,7 @@
 								<div class="post-detail">
 									<div class="user-info">
 										<h5><a href="{{ url_for('profile', id_user=user_post.id_user) }}" class="profile-link">{{ user_post.first_name }} {{ user_post.last_name }}</a> <span class="following">following</span></h5>
-										<p class="text-muted">Published a {{ post.type }} on a {{ post.date_creation.split(' ')[1] }}</p>
+										<p class="text-muted">Published a {{ post.type }} on a {{ post.date_creation.strftime("%H:%M") }}</p>
 									</div>
 									<div class="reaction">
 										{% if session.get('id_user_logged') and data.liked(session.get('id_user_logged'), post.id_post) %}

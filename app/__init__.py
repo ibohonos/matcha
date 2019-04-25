@@ -9,6 +9,7 @@ from app.models.comments import all_post_comments
 from app.models.likes import liked, disliked, len_post_likes, len_post_dislikes
 
 app = Flask(__name__)
+app.config['JSON_AS_ASCII'] = False
 
 app.secret_key = os.urandom(16)
 socketio = SocketIO(app)
@@ -43,4 +44,8 @@ def index():
 		}
 		return render_template('newsfeed.html', data=data)
 	return render_template('index-register.html')
+
+
+if __name__ == '__main__':
+	socketio.run(app)
 

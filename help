@@ -1,0 +1,5 @@
+For install requirements packs:
+cd /home/sites/web/matcha.vuetube.top/private/; source venv/bin/activate; pip install -r /home/sites/web/matcha.vuetube.top/public_html/requirements.txt; deactivate
+For reload app:
+touch /home/sites/web/matcha.vuetube.top/public_html/app.wsgi
+
